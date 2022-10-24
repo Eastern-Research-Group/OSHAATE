@@ -1,9 +1,16 @@
-import React from "react";
-import { useState } from "react";
+import React from 'react';
+import { useState } from 'react';
 
 function DermalInput() {
+  let validated = false;
   const [inputFields, setInputFields] = useState([
-    { ingredient: "", WT: "", LD50: "", limitDoseData: "", classification: "" },
+    {
+      ingredient: '',
+      WT: '',
+      LD50: '',
+      limitDoseData: '',
+      classification: '',
+    },
   ]);
 
   const handleChange = (idx, event) => {
@@ -13,14 +20,68 @@ function DermalInput() {
   };
 
   const addFields = () => {
-    let newfield = {
-      ingredient: "",
-      WT: "",
-      LD50: "",
-      limitDoseData: "",
-      classification: "",
-    };
-    setInputFields([...inputFields, newfield]);
+    validateRows();
+    if (validated) {
+      let newfield = {
+        ingredient: '',
+        WT: '',
+        LD50: '',
+        limitDoseData: '',
+        classification: '',
+      };
+      setInputFields([...inputFields, newfield]);
+    }
+  };
+
+  const validateRows = () => {
+    //validate last row before adding new row
+    let data = [...inputFields];
+    if (data.length > 0) {
+      if (data[data.length - 1].ingredient === '') {
+        alert('Ingredient is required in the last row.');
+        return false;
+      }
+      if (data[data.length - 1].WT === '') {
+        alert('Weight (WT) is required in the last row.');
+        return false;
+      }
+      if (
+        data[data.length - 1].LD50 === '' &&
+        data[data.length - 1].limitDoseData === '' &&
+        data[data.length - 1].classification === ''
+      ) {
+        alert(
+          'LD50 or Limit Dose Data or Classification is required in the last row.'
+        );
+        return false;
+      }
+      if (
+        !(
+          data[data.length - 1].LD50 !== '' &&
+          data[data.length - 1].limitDoseData === '' &&
+          data[data.length - 1].classification === ''
+        ) &&
+        !(
+          data[data.length - 1].LD50 === '' &&
+          data[data.length - 1].limitDoseData !== '' &&
+          data[data.length - 1].classification === ''
+        ) &&
+        !(
+          data[data.length - 1].LD50 === '' &&
+          data[data.length - 1].limitDoseData === '' &&
+          data[data.length - 1].classification !== ''
+        )
+      ) {
+        alert(
+          'Enter only one of LD50, Limit Dose Data, or Classification in the last row.'
+        );
+        return false;
+      } //else {
+      validated = true;
+      console.log(inputFields);
+      //return;
+      //}
+    }
   };
 
   const removeFields = (idx) => {
@@ -30,8 +91,8 @@ function DermalInput() {
   };
 
   const submit = (e) => {
+    validateRows();
     e.preventDefault();
-    console.log(inputFields);
   };
 
   return (
@@ -56,7 +117,7 @@ function DermalInput() {
                   <input
                     type="text"
                     name="ingredient"
-                    required="required"
+                    //required="required"
                     value={input.ingredient}
                     onChange={(event) => handleChange(idx, event)}
                   />
@@ -66,7 +127,7 @@ function DermalInput() {
                     type="number"
                     min="0"
                     name="WT"
-                    required="required"
+                    //required="required"
                     value={input.WT}
                     onChange={(event) => handleChange(idx, event)}
                   />
@@ -86,6 +147,7 @@ function DermalInput() {
                     value={input.limitDoseData}
                     onChange={(event) => handleChange(idx, event)}
                   >
+                    <option value="">Select</option>
                     <option>&le; 50</option>
                     <option>&gt; 50 - &le; 200</option>
                     <option>&gt; 200 - &le; 1,000</option>
@@ -100,6 +162,7 @@ function DermalInput() {
                     value={input.classification}
                     onChange={(event) => handleChange(idx, event)}
                   >
+                    <option value="">Select</option>
                     <option>Category 1</option>
                     <option>Category 2</option>
                     <option>Category 3</option>
@@ -130,7 +193,10 @@ function DermalInput() {
         <br />
         <div></div>
         <br />
-        <button onClick={addFields}>Add Row</button> &nbsp;
+        <button type="button" onClick={addFields}>
+          Add Row
+        </button>{' '}
+        &nbsp;
         <button type="submit" onClick={submit}>
           Calculate
         </button>
