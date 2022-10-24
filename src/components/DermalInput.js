@@ -1,61 +1,42 @@
 import React from "react";
+import { useState } from "react";
 
-//TODO: Remove Arrows/Spinners for number type input
-///* Chrome, Safari, Edge, Opera */
-/*input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}*/
-/* Firefox */
-/*input[type=number] {
-  -moz-appearance: textfield;
-}*/
+function DermalInput() {
+  const [inputFields, setInputFields] = useState([
+    { ingredient: "", WT: "", LD50: "", limitDoseData: "", classification: "" },
+  ]);
 
-class DermalInput extends React.Component {
-  state = {
-    rows: [{}],
+  const handleChange = (idx, event) => {
+    let data = [...inputFields];
+    data[idx][event.target.name] = event.target.value;
+    setInputFields(data);
   };
-  handleChange = (idx) => (e) => {
-    //TODO: onchange error
-    const { name, value } = e.target;
-    const rows = [...this.state.rows];
-    rows[idx] = {
-      [name]: value,
-    };
-    this.setState({
-      rows,
-    });
-    //console.log(rows[0].ingredient);
-    console.log(this.state.rows); //TODO: only outputting last changed value as single, see https://codesandbox.io/s/3vk7jxv69p
-  };
-  handleAddRow = () => {
-    const item = {
+
+  const addFields = () => {
+    let newfield = {
       ingredient: "",
       WT: "",
       LD50: "",
       limitDoseData: "",
       classification: "",
     };
-    this.setState({
-      rows: [...this.state.rows, item],
-    });
+    setInputFields([...inputFields, newfield]);
   };
-  /*handleRemoveRow = () => {
-    this.setState({
-      rows: this.state.rows.slice(0, -1),
-    });
-  };*/
-  handleRemoveSpecificRow = (idx) => () => {
-    const rows = [...this.state.rows];
-    rows.splice(idx, 1);
-    this.setState({ rows });
+
+  const removeFields = (idx) => {
+    let data = [...inputFields];
+    data.splice(idx, 1);
+    setInputFields(data);
   };
-  handleCalculation = () => {};
-  render() {
-    //console.log(this.state.rows.length);
-    return (
-      <div>
+
+  const submit = (e) => {
+    e.preventDefault();
+    console.log(inputFields);
+  };
+
+  return (
+    <div>
+      <form onSubmit={submit}>
         <table id="dermal">
           <thead>
             <tr>
@@ -68,7 +49,7 @@ class DermalInput extends React.Component {
             </tr>
           </thead>
           <tbody>
-            {this.state.rows.map((item, idx) => (
+            {inputFields.map((input, idx) => (
               <tr id="addr0" key={idx}>
                 {/*<td>{idx}</td>*/}
                 <td>
@@ -76,8 +57,8 @@ class DermalInput extends React.Component {
                     type="text"
                     name="ingredient"
                     required="required"
-                    value={this.state.rows[idx].ingredient} // || "" resolves onchange error, but makes inputs mutually exclusive
-                    onChange={this.handleChange(idx)}
+                    value={input.ingredient}
+                    onChange={(event) => handleChange(idx, event)}
                   />
                 </td>
                 <td>
@@ -86,9 +67,8 @@ class DermalInput extends React.Component {
                     min="0"
                     name="WT"
                     required="required"
-                    value={this.state.rows[idx].WT} // || "" resolves onchange error, but makes inputs mutually exclusive
-                    onChange={this.handleChange(idx)}
-                    className="form-control"
+                    value={input.WT}
+                    onChange={(event) => handleChange(idx, event)}
                   />
                 </td>
                 <td>
@@ -96,15 +76,15 @@ class DermalInput extends React.Component {
                     type="number"
                     min="0"
                     name="LD50"
-                    value={this.state.rows[idx].LD50} // || "" resolves onchange error, but makes inputs mutually exclusive
-                    onChange={this.handleChange(idx)}
+                    value={input.LD50}
+                    onChange={(event) => handleChange(idx, event)}
                   />
                 </td>
                 <td>
                   <select
                     name="limitDoseData"
-                    value={this.state.rows[idx].limitDoseData}
-                    onChange={this.handleChange(idx)}
+                    value={input.limitDoseData}
+                    onChange={(event) => handleChange(idx, event)}
                   >
                     <option>&le; 50</option>
                     <option>&gt; 50 - &le; 200</option>
@@ -117,8 +97,8 @@ class DermalInput extends React.Component {
                 <td>
                   <select
                     name="classification"
-                    value={this.state.rows[idx].classification}
-                    onChange={this.handleChange(idx)}
+                    value={input.classification}
+                    onChange={(event) => handleChange(idx, event)}
                   >
                     <option>Category 1</option>
                     <option>Category 2</option>
@@ -130,32 +110,36 @@ class DermalInput extends React.Component {
                 </td>
                 <td>
                   {idx === 0 ? null : (
-                    <button onClick={this.handleRemoveSpecificRow(idx)}>
-                      Remove
-                    </button>
+                    <button onClick={() => removeFields(idx)}>Remove</button>
                   )}
                 </td>
               </tr>
             ))}
+            <tr>
+              <td>
+                <label>
+                  <input type="text" placeholder="Combined Unknown" />
+                </label>
+              </td>
+              <td>
+                <input type="text" />
+              </td>
+            </tr>
           </tbody>
         </table>
         <br />
-        <div>
-          <label className="text-bold">* Combined Unknown (%)</label>
-          <input type="text" />
-        </div>
+        <div></div>
         <br />
-        {/*NOTE: does this get added with add row?*/}
-        <button onClick={this.handleAddRow}>Add Row</button> &nbsp;
-        <button type="submit" onClick={this.handleCalculation}>
+        <button onClick={addFields}>Add Row</button> &nbsp;
+        <button type="submit" onClick={submit}>
           Calculate
         </button>
         {/*{this.state.rows.length === 1 ? null : (
           <button onClick={this.handleRemoveRow}>Delete Last Row</button>
         )}*/}
-      </div>
-    );
-  }
+      </form>
+    </div>
+  );
 }
 
 export default DermalInput;

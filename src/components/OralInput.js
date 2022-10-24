@@ -1,4 +1,5 @@
 import React from "react";
+import { useState } from "react";
 
 //TODO: Remove Arrows/Spinners for number type input
 ///* Chrome, Safari, Edge, Opera */
@@ -12,45 +13,39 @@ input::-webkit-inner-spin-button {
   -moz-appearance: textfield;
 }*/
 
-class OralInput extends React.Component {
-  state = {
-    rows: [{}],
+function OralInput() {
+  const [inputFields, setInputFields] = useState([
+    { ingredient: "", WT: "", toxicity: "" },
+  ]);
+
+  const handleChange = (idx, event) => {
+    let data = [...inputFields];
+    data[idx][event.target.name] = event.target.value;
+    setInputFields(data);
   };
-  handleChange = (idx) => (e) => {
-    const { name, value } = e.target;
-    const rows = [...this.state.rows];
-    rows[idx] = {
-      [name]: value,
-    };
-    this.setState({
-      rows,
-    });
-  };
-  handleAddRow = () => {
-    const item = {
+
+  const addFields = () => {
+    let newfield = {
       ingredient: "",
       WT: "",
       toxicity: "",
     };
-    this.setState({
-      rows: [...this.state.rows, item],
-    });
+    setInputFields([...inputFields, newfield]);
   };
-  /*handleRemoveRow = () => {
-    this.setState({
-      rows: this.state.rows.slice(0, -1),
-    });
-  };*/
-  handleRemoveSpecificRow = (idx) => () => {
-    const rows = [...this.state.rows];
-    rows.splice(idx, 1);
-    this.setState({ rows });
+
+  const removeFields = (idx) => {
+    let data = [...inputFields];
+    data.splice(idx, 1);
+    setInputFields(data);
   };
-  handleCalculation = () => {};
-  render() {
-    //console.log(this.state.rows.length);
-    return (
-      <div>
+
+  const submit = (e) => {
+    e.preventDefault();
+    console.log(inputFields);
+  };
+  return (
+    <div>
+      <form onSubmit={submit}>
         <table id="oral">
           <thead>
             <tr>
@@ -61,7 +56,7 @@ class OralInput extends React.Component {
             </tr>
           </thead>
           <tbody>
-            {this.state.rows.map((item, idx) => (
+            {this.state.rows.map((input, idx) => (
               <tr id="addr0" key={idx}>
                 {/*<td>{idx}</td>*/}
                 <td>
@@ -69,8 +64,8 @@ class OralInput extends React.Component {
                     type="text"
                     name="ingredient"
                     required="required"
-                    value={this.state.rows[idx].ingredient || ""}
-                    onChange={this.handleChange(idx)}
+                    value={input.ingredient}
+                    onChange={(event) => handleChange(idx, event)}
                   />
                 </td>
                 <td>
@@ -79,16 +74,15 @@ class OralInput extends React.Component {
                     min="0"
                     name="WT"
                     required="required"
-                    value={this.state.rows[idx].WT || ""}
-                    onChange={this.handleChange(idx)}
-                    className="form-control"
+                    value={input.WT}
+                    onChange={(event) => handleChange(idx, event)}
                   />
                 </td>
                 <td>
                   <select
                     name="toxicity"
-                    value={this.state.rows[idx].toxicity}
-                    onChange={this.handleChange(idx)}
+                    value={input.toxicity}
+                    onChange={(event) => handleChange(idx, event)}
                   >
                     <option>0 &lt; Category 1 &le; 5</option>
                     <option>5 &lt; Category 2 &le; 50</option>
@@ -99,30 +93,33 @@ class OralInput extends React.Component {
                 </td>
                 <td>
                   {idx === 0 ? null : (
-                    <button onClick={this.handleRemoveSpecificRow(idx)}>
-                      Remove
-                    </button>
+                    <button onClick={() => removeFields(idx)}>Remove</button>
                   )}
                 </td>
               </tr>
             ))}
+            <tr>
+              <td>
+                <label>
+                  <input type="text" placeholder="Combined Unknown" />
+                </label>
+              </td>
+              <td>
+                <input type="text" />
+              </td>
+            </tr>
           </tbody>
         </table>
         <br />
-        <div>
-          <label className="text-bold">* Combined Unknown (%)</label>
-          <input type="text" />
-        </div>
+        <div></div>
         <br />
-        {/*NOTE: does this get added with add row?*/}
-        <button onClick={this.handleAddRow}>Add Row</button> &nbsp;
-        <button onClick={this.handleCalculation}>Calculate</button>
-        {/*{this.state.rows.length === 1 ? null : (
-          <button onClick={this.handleRemoveRow}>Delete Last Row</button>
-        )}*/}
-      </div>
-    );
-  }
+        <button onClick={addFields}>Add Row</button> &nbsp;
+        <button type="submit" onClick={submit}>
+          Calculate
+        </button>
+      </form>
+    </div>
+  );
 }
 
 export default OralInput;
