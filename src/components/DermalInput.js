@@ -3,6 +3,7 @@ import { useState } from 'react';
 
 function DermalInput() {
   let validated = false;
+  let dermalResult = 0;
   const [inputFields, setInputFields] = useState([
     {
       ingredient: '',
@@ -76,11 +77,9 @@ function DermalInput() {
           'Enter only one of LD50, Limit Dose Data, or Classification in the last row.'
         );
         return false;
-      } //else {
+      }
       validated = true;
-      console.log(inputFields);
-      //return;
-      //}
+      //console.log(inputFields);
     }
   };
 
@@ -90,14 +89,103 @@ function DermalInput() {
     setInputFields(data);
   };
 
-  const submit = (e) => {
+  const calculate = () => {
     validateRows();
-    e.preventDefault();
+    //console.log(inputFields);
+    //CALCULATIONS
+    let data = [...inputFields];
+    const results = data.map((obj) => {
+      //Calculate LD50 values: if not empty, return weight/LD50 value
+      if (obj.LD50 !== '') {
+        return {
+          ...obj,
+          LD50: parseFloat(obj.WT) / parseFloat(obj.LD50),
+        };
+      }
+      //Calculate Classification values: if not empty, return weight/point estimate
+      if (obj.classification !== '') {
+        return {
+          ...obj,
+          classification:
+            parseFloat(obj.WT) /
+            dermalPointEstimateLookup('Classification', obj.classification),
+        };
+      }
+      //Calculate Limit Dose values: if not empty, return weight/point estimate
+      if (obj.limitDoseData !== '') {
+        return {
+          ...obj,
+          limitDoseData:
+            parseFloat(obj.WT) /
+            dermalPointEstimateLookup('Limit Dose', obj.limitDoseData),
+        };
+      }
+      return obj;
+    });
+
+    //console.log(results);
+    let sum = 0;
+    results.forEach((element) => {
+      if (element.LD50 !== '') {
+        sum += element.LD50;
+      }
+      if (element.limitDoseData !== '') {
+        sum += element.limitDoseData;
+      }
+      if (element.classification !== '') {
+        sum += element.classification;
+      }
+    });
+    dermalResult = 100 / sum;
+    console.log(dermalResult); //TODO: this should not output if empty input fields
   };
+
+  //TODO: split this out to its own file?
+  function dermalPointEstimateLookup(type, val) {
+    var result = '';
+    var lookup = [
+      {
+        classification: 'Category 1',
+        'Limit Dose': '≤ 50',
+        'Point Estimate': 5,
+      },
+      {
+        Classification: 'Category 2',
+        'Limit Dose': '> 50 - ≤ 200',
+        'Point Estimate': 50,
+      },
+      {
+        Classification: 'Category 3',
+        'Limit Dose': '> 200 - ≤ 1,000',
+        'Point Estimate': 300,
+      },
+      {
+        Classification: 'Category 4',
+        'Limit Dose': '> 1,000 - ≤ 2,000',
+        'Point Estimate': 1100,
+      },
+      {
+        Classification: 'Category 5',
+        'Limit Dose': '> 2,000 - ≤ 5,000',
+        'Point Estimate': 2500,
+      },
+      {
+        Classification: 'Not Classified (LD50 > 5,000)',
+        'Limit Dose': '> 2,000 (No signs of toxicigty)',
+        'Point Estimate': null,
+      },
+    ];
+
+    result = lookup
+      .filter((item) => item[type] === val)
+      .map((item) => item['Point Estimate']);
+    //console.log(result);
+    return result;
+  }
 
   return (
     <div>
-      <form onSubmit={submit}>
+      <form onSubmit={calculate}>
         <table id="dermal">
           <thead>
             <tr>
@@ -114,62 +202,77 @@ function DermalInput() {
               <tr id="addr0" key={idx}>
                 {/*<td>{idx}</td>*/}
                 <td>
-                  <input
-                    type="text"
-                    name="ingredient"
-                    //required="required"
-                    value={input.ingredient}
-                    onChange={(event) => handleChange(idx, event)}
-                  />
+                  <label htmlFor="ingredient">
+                    <input
+                      type="text"
+                      id="ingredient"
+                      name="ingredient"
+                      //required="required"
+                      value={input.ingredient}
+                      onChange={(event) => handleChange(idx, event)}
+                    />
+                  </label>
                 </td>
                 <td>
-                  <input
-                    type="number"
-                    min="0"
-                    name="WT"
-                    //required="required"
-                    value={input.WT}
-                    onChange={(event) => handleChange(idx, event)}
-                  />
+                  <label htmlFor="WT">
+                    <input
+                      type="number"
+                      id="WT"
+                      min="0"
+                      name="WT"
+                      //required="required"
+                      value={input.WT}
+                      onChange={(event) => handleChange(idx, event)}
+                    />
+                  </label>
                 </td>
                 <td>
-                  <input
-                    type="number"
-                    min="0"
-                    name="LD50"
-                    value={input.LD50}
-                    onChange={(event) => handleChange(idx, event)}
-                  />
+                  <label htmlFor="LD50">
+                    <input
+                      type="number"
+                      id="LD50"
+                      min="0"
+                      name="LD50"
+                      value={input.LD50}
+                      onChange={(event) => handleChange(idx, event)}
+                    />
+                  </label>
                 </td>
                 <td>
-                  <select
-                    name="limitDoseData"
-                    value={input.limitDoseData}
-                    onChange={(event) => handleChange(idx, event)}
-                  >
-                    <option value="">Select</option>
-                    <option>&le; 50</option>
-                    <option>&gt; 50 - &le; 200</option>
-                    <option>&gt; 200 - &le; 1,000</option>
-                    <option>&gt; 1,000 - &le; 2,000</option>
-                    <option>&gt; 2,000 - &le; 5,000</option>
-                    <option>&gt; 2,000 (No signs of toxicity)</option>
-                  </select>
+                  <label htmlFor="limitDoseData">
+                    <select
+                      name="limitDoseData"
+                      id="limitDoseData"
+                      value={input.limitDoseData}
+                      onChange={(event) => handleChange(idx, event)}
+                    >
+                      <option value="">Select</option>
+                      <option>&le; 50</option>
+                      <option>&gt; 50 - &le; 200</option>
+                      <option>&gt; 200 - &le; 1,000</option>
+                      <option>&gt; 1,000 - &le; 2,000</option>
+                      <option>&gt; 2,000 - &le; 5,000</option>
+                      <option>&gt; 2,000 (No signs of toxicity)</option>
+                    </select>
+                  </label>
                 </td>
                 <td>
-                  <select
-                    name="classification"
-                    value={input.classification}
-                    onChange={(event) => handleChange(idx, event)}
-                  >
-                    <option value="">Select</option>
-                    <option>Category 1</option>
-                    <option>Category 2</option>
-                    <option>Category 3</option>
-                    <option>Category 4</option>
-                    <option>Category 5</option>
-                    <option>Not Classified (LD50 &gt; 5,000)</option>
-                  </select>
+                  <label htmlFor="classification">
+                    <select
+                      name="classification"
+                      id="classification"
+                      value={input.classification}
+                      onChange={(event) => handleChange(idx, event)}
+                    >
+                      <option value="">Select</option>
+                      <option>Category 1</option>
+                      <option>Category 2</option>
+                      <option>Category 3</option>
+                      <option>Category 4</option>
+                      <option>Category 5</option>
+                      <option>Not Classified (LD50 &gt; 5,000)</option>
+                    </select>
+                  </label>
                 </td>
                 <td>
                   {idx === 0 ? null : (
@@ -180,12 +283,18 @@ function DermalInput() {
             ))}
             <tr>
               <td>
-                <label>
-                  <input type="text" placeholder="Combined Unknown" />
+                <label htmlFor="combinedUnknown">
+                  <input
+                    type="text"
+                    id="combinedUnknown"
+                    placeholder="Combined Unknown"
+                  />
                 </label>
               </td>
               <td>
-                <input type="text" />
+                <label htmlFor="combinedUnknownWeight">
+                  <input type="text" id="combinedUnknownWeight" />
+                </label>
               </td>
             </tr>
           </tbody>
@@ -197,13 +306,14 @@ function DermalInput() {
           Add Row
         </button>{' '}
         &nbsp;
-        <button type="submit" onClick={submit}>
+        <button type="button" onClick={calculate}>
           Calculate
         </button>
         {/*{this.state.rows.length === 1 ? null : (
           <button onClick={this.handleRemoveRow}>Delete Last Row</button>
         )}*/}
       </form>
+      <p>{dermalResult}</p>
     </div>
   );
 }
