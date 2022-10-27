@@ -1,7 +1,7 @@
-import React from "react";
-import Pathway from "./Pathway";
+import React from 'react';
+import Pathway from './Pathway';
 
-const PathwayList = props => {
+const PathwayList = (props) => {
   const { pathways } = props;
 
   const renderPathways = pathways.map(({ id, title, category }) => {
@@ -11,8 +11,12 @@ const PathwayList = props => {
       </div>
     );
   });
- 
-  return <><div>{renderPathways}</div></>;
+
+  return (
+    <>
+      <div>{renderPathways}</div>
+    </>
+  );
 };
 
 export default PathwayList;

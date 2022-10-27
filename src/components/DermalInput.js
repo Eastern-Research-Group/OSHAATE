@@ -1,33 +1,35 @@
 import React from 'react';
 import { useState } from 'react';
+import { dermalPointEstimateLookup } from './Lookups.js';
 
-function DermalInput() {
-  let validated = false;
-  let dermalResult = 0;
+//function DermalInput() {
+const DermalInput = () => {
   const [inputFields, setInputFields] = useState([
     {
       ingredient: '',
       WT: '',
       LD50: '',
-      limitDoseData: '',
+      limitDose: '',
       classification: '',
     },
   ]);
+  const [dermalResult, setDermalResult] = useState(0);
+  let validated = false;
 
-  const handleChange = (idx, event) => {
+  const handleFormChange = (idx, event) => {
     let data = [...inputFields];
     data[idx][event.target.name] = event.target.value;
     setInputFields(data);
   };
 
-  const addFields = () => {
+  const addFormFields = () => {
     validateRows();
     if (validated) {
       let newfield = {
         ingredient: '',
         WT: '',
         LD50: '',
-        limitDoseData: '',
+        limitDose: '',
         classification: '',
       };
       setInputFields([...inputFields, newfield]);
@@ -48,7 +50,7 @@ function DermalInput() {
       }
       if (
         data[data.length - 1].LD50 === '' &&
-        data[data.length - 1].limitDoseData === '' &&
+        data[data.length - 1].limitDose === '' &&
         data[data.length - 1].classification === ''
       ) {
         alert(
@@ -59,17 +61,17 @@ function DermalInput() {
       if (
         !(
           data[data.length - 1].LD50 !== '' &&
-          data[data.length - 1].limitDoseData === '' &&
+          data[data.length - 1].limitDose === '' &&
           data[data.length - 1].classification === ''
         ) &&
         !(
           data[data.length - 1].LD50 === '' &&
-          data[data.length - 1].limitDoseData !== '' &&
+          data[data.length - 1].limitDose !== '' &&
           data[data.length - 1].classification === ''
         ) &&
         !(
           data[data.length - 1].LD50 === '' &&
-          data[data.length - 1].limitDoseData === '' &&
+          data[data.length - 1].limitDose === '' &&
           data[data.length - 1].classification !== ''
         )
       ) {
@@ -83,105 +85,65 @@ function DermalInput() {
     }
   };
 
-  const removeFields = (idx) => {
+  const calculate = (e) => {
+    e.preventDefault();
+    validateRows();
+    //console.log(inputFields);
+    if (validated) {
+      //CALCULATIONS
+      let d = [...inputFields];
+      const results = d.map((obj) => {
+        //Calculate LD50 values: if not empty, return weight/LD50 value
+        if (obj.LD50 !== '') {
+          return {
+            ...obj,
+            LD50: parseFloat(obj.WT) / parseFloat(obj.LD50),
+          };
+        }
+        //Calculate Classification values: if not empty, return weight/point estimate
+        if (obj.classification !== '') {
+          return {
+            ...obj,
+            classification:
+              parseFloat(obj.WT) /
+              dermalPointEstimateLookup('Classification', obj.classification),
+          };
+        }
+        //Calculate Limit Dose values: if not empty, return weight/point estimate
+        if (obj.limitDose !== '') {
+          return {
+            ...obj,
+            limitDose:
+              parseFloat(obj.WT) /
+              dermalPointEstimateLookup('Limit Dose', obj.limitDose),
+          };
+        }
+        return obj;
+      });
+
+      //console.log(results);
+      let sum = 0;
+      results.forEach((item) => {
+        if (item.LD50 !== '') {
+          sum += item.LD50;
+        }
+        if (item.limitDose !== '') {
+          sum += item.limitDose;
+        }
+        if (item.classification !== '') {
+          sum += item.classification;
+        }
+      });
+      //TODO: this needs to be passed to Results
+      setDermalResult(100 / sum);
+    }
+  };
+
+  const removeFormFields = (idx) => {
     let data = [...inputFields];
     data.splice(idx, 1);
     setInputFields(data);
   };
-
-  const calculate = () => {
-    validateRows();
-    //console.log(inputFields);
-    //CALCULATIONS
-    let data = [...inputFields];
-    const results = data.map((obj) => {
-      //Calculate LD50 values: if not empty, return weight/LD50 value
-      if (obj.LD50 !== '') {
-        return {
-          ...obj,
-          LD50: parseFloat(obj.WT) / parseFloat(obj.LD50),
-        };
-      }
-      //Calculate Classification values: if not empty, return weight/point estimate
-      if (obj.classification !== '') {
-        return {
-          ...obj,
-          classification:
-            parseFloat(obj.WT) /
-            dermalPointEstimateLookup('Classification', obj.classification),
-        };
-      }
-      //Calculate Limit Dose values: if not empty, return weight/point estimate
-      if (obj.limitDoseData !== '') {
-        return {
-          ...obj,
-          limitDoseData:
-            parseFloat(obj.WT) /
-            dermalPointEstimateLookup('Limit Dose', obj.limitDoseData),
-        };
-      }
-      return obj;
-    });
-
-    //console.log(results);
-    let sum = 0;
-    results.forEach((element) => {
-      if (element.LD50 !== '') {
-        sum += element.LD50;
-      }
-      if (element.limitDoseData !== '') {
-        sum += element.limitDoseData;
-      }
-      if (element.classification !== '') {
-        sum += element.classification;
-      }
-    });
-    dermalResult = 100 / sum;
-    console.log(dermalResult); //TODO: this should not output if empty input fields
-  };
-
-  //TODO: split this out to its own file?
-  function dermalPointEstimateLookup(type, val) {
-    var result = '';
-    var lookup = [
-      {
-        classification: 'Category 1',
-        'Limit Dose': '≤ 50',
-        'Point Estimate': 5,
-      },
-      {
-        Classification: 'Category 2',
-        'Limit Dose': '> 50 - ≤ 200',
-        'Point Estimate': 50,
-      },
-      {
-        Classification: 'Category 3',
-        'Limit Dose': '> 200 - ≤ 1,000',
-        'Point Estimate': 300,
-      },
-      {
-        Classification: 'Category 4',
-        'Limit Dose': '> 1,000 - ≤ 2,000',
-        'Point Estimate': 1100,
-      },
-      {
-        Classification: 'Category 5',
-        'Limit Dose': '> 2,000 - ≤ 5,000',
-        'Point Estimate': 2500,
-      },
-      {
-        Classification: 'Not Classified (LD50 > 5,000)',
-        'Limit Dose': '> 2,000 (No signs of toxicigty)',
-        'Point Estimate': null,
-      },
-    ];
-
-    result = lookup
-      .filter((item) => item[type] === val)
-      .map((item) => item['Point Estimate']);
-    //console.log(result);
-    return result;
-  }
 
   return (
     <div>
@@ -208,8 +170,9 @@ function DermalInput() {
                       id="ingredient"
                       name="ingredient"
                       //required="required"
+                      placeholder="Enter ingredient"
                       value={input.ingredient}
-                      onChange={(event) => handleChange(idx, event)}
+                      onChange={(event) => handleFormChange(idx, event)}
                     />
                   </label>
                 </td>
@@ -221,8 +184,9 @@ function DermalInput() {
                       min="0"
                       name="WT"
                       //required="required"
+                      placeholder="Enter weight (%)"
                       value={input.WT}
-                      onChange={(event) => handleChange(idx, event)}
+                      onChange={(event) => handleFormChange(idx, event)}
                     />
                   </label>
                 </td>
@@ -233,18 +197,19 @@ function DermalInput() {
                       id="LD50"
                       min="0"
                       name="LD50"
+                      //placeholder="Enter LD50 (mg/kg)"
                       value={input.LD50}
-                      onChange={(event) => handleChange(idx, event)}
+                      onChange={(event) => handleFormChange(idx, event)}
                     />
                   </label>
                 </td>
                 <td>
-                  <label htmlFor="limitDoseData">
+                  <label htmlFor="limitDose">
                     <select
-                      name="limitDoseData"
-                      id="limitDoseData"
-                      value={input.limitDoseData}
-                      onChange={(event) => handleChange(idx, event)}
+                      name="limitDose"
+                      id="limitDose"
+                      value={input.limitDose}
+                      onChange={(event) => handleFormChange(idx, event)}
                     >
                       <option value="">Select</option>
                       <option>&le; 50</option>
@@ -262,7 +227,7 @@ function DermalInput() {
                       name="classification"
                       id="classification"
                       value={input.classification}
-                      onChange={(event) => handleChange(idx, event)}
+                      onChange={(event) => handleFormChange(idx, event)}
                     >
                       <option value="">Select</option>
                       <option>Category 1</option>
@@ -276,7 +241,9 @@ function DermalInput() {
                 </td>
                 <td>
                   {idx === 0 ? null : (
-                    <button onClick={() => removeFields(idx)}>Remove</button>
+                    <button onClick={() => removeFormFields(idx)}>
+                      Remove
+                    </button>
                   )}
                 </td>
               </tr>
@@ -293,7 +260,11 @@ function DermalInput() {
               </td>
               <td>
                 <label htmlFor="combinedUnknownWeight">
-                  <input type="text" id="combinedUnknownWeight" />
+                  <input
+                    type="text"
+                    id="combinedUnknownWeight"
+                    placeholder="Enter weight (%)"
+                  />
                 </label>
               </td>
             </tr>
@@ -302,7 +273,7 @@ function DermalInput() {
         <br />
         <div></div>
         <br />
-        <button type="button" onClick={addFields}>
+        <button type="button" onClick={addFormFields}>
           Add Row
         </button>{' '}
         &nbsp;
@@ -313,9 +284,15 @@ function DermalInput() {
           <button onClick={this.handleRemoveRow}>Delete Last Row</button>
         )}*/}
       </form>
-      <p>{dermalResult}</p>
+      <br />
+      <div id="dermalResults">
+        <hr />
+        <p>
+          <b>Dermal Pathway Result</b>: {dermalResult}
+        </p>
+      </div>
     </div>
   );
-}
+};
 
 export default DermalInput;
