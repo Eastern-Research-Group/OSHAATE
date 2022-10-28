@@ -1,6 +1,7 @@
 import React from 'react';
 //import { useState } from 'react';
-import DermalInput from './DermalInput';
+//import DermalInput from './DermalInput';
+import Dermal from './Dermal';
 //import DermalResult from './DermalResult';
 //import OralInput from "./OralInput";
 
@@ -9,7 +10,7 @@ const Pathway = ({ title, category }) => {
     <>
       <br />
       <h3>{title}</h3>
-      {category === 'dermal' ? <DermalInput /> : null}
+      {category === 'dermal' ? <Dermal /> : null}
       {/*{category === "oral" ? <OralInput /> : null} */}
 
       <div id="results">
