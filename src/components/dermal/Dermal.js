@@ -1,11 +1,9 @@
 import React from 'react';
 import { useState } from 'react';
 import DermalInput from './DermalInput';
-import DermalResult from './DermalResult';
-import { dermalPointEstimateLookup } from './Lookups.js';
+import { dermalPointEstimate } from '../Lookups';
 
-//function DermalInput() {
-const Dermal = () => {
+const Dermal = ({ dermalResult, setDermalResult }) => {
   const [inputFields, setInputFields] = useState([
     {
       ingredient: '',
@@ -15,7 +13,7 @@ const Dermal = () => {
       classification: '',
     },
   ]);
-  const [dermalResult, setDermalResult] = useState(null);
+
   let validated = false;
 
   const handleFormChange = (idx, event) => {
@@ -89,6 +87,7 @@ const Dermal = () => {
 
   const calculate = (e) => {
     e.preventDefault();
+
     validateRows();
     //console.log(inputFields);
     if (validated) {
@@ -108,7 +107,7 @@ const Dermal = () => {
             ...obj,
             classification:
               parseFloat(obj.WT) /
-              dermalPointEstimateLookup('Classification', obj.classification),
+              dermalPointEstimate('Classification', obj.classification),
           };
         }
         //Calculate Limit Dose values: if not empty, return weight/point estimate
@@ -117,7 +116,7 @@ const Dermal = () => {
             ...obj,
             limitDose:
               parseFloat(obj.WT) /
-              dermalPointEstimateLookup('Limit Dose', obj.limitDose),
+              dermalPointEstimate('Limit Dose', obj.limitDose),
           };
         }
         return obj;
@@ -136,10 +135,29 @@ const Dermal = () => {
           sum += item.classification;
         }
       });
-      //TODO: pass value to DermalResults component
+      //calculated value to pass to DermalResults component
       setDermalResult(Math.round(100 / sum));
-    }
+
+      //TODO: get DermResultsCat value to pass to DermResults component
+      //https://stackoverflow.com/questions/38056887/javascript-object-find-a-key-value-when-in-range
+      //function getValue(search) {
+      /*for (let range in dermalPointEstimateLookup[0]) {
+          let split = range.split('-');
+          console.log(split);
+          if (
+            search >= parseInt(split[0]) &&
+            search <= parseInt(split[1] || split[0])
+          )
+            return 'test'; //dermalPointEstimateLookup('Classification', dermalResult);
+            //dermalPointEstimateLookup('Range')
+        }
+      //}*/
+      //console.log(dermalPointEstimateLookup.lookup[0]);
+      //setDermalResultCat(getValue(dermalResult));
+    } //end validated conditional
   };
+
+  //console.log(dermalResultCat);
 
   const removeFormFields = (idx) => {
     let data = [...inputFields];
@@ -167,8 +185,6 @@ const Dermal = () => {
           <button onClick={this.handleRemoveRow}>Delete Last Row</button>
         )}*/}
       </form>
-      <br />
-      <DermalResult dermalResult={dermalResult} />
     </div>
   );
 };

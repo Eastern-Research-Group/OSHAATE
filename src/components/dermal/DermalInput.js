@@ -1,6 +1,4 @@
 import React from 'react';
-//import { useState } from 'react';
-//import { dermalPointEstimateLookup } from './Lookups.js';
 
 const Input = ({ inputFields, handleFormChange, removeFormFields }) => {
   return (
@@ -8,7 +6,6 @@ const Input = ({ inputFields, handleFormChange, removeFormFields }) => {
       <table id="dermal">
         <thead>
           <tr>
-            {/*<th>#</th>*/}
             <th>Ingredient</th>
             <th>WT%</th>
             <th>LD50 (mg/kg)</th>
@@ -19,7 +16,6 @@ const Input = ({ inputFields, handleFormChange, removeFormFields }) => {
         <tbody>
           {inputFields.map((input, idx) => (
             <tr id="addr0" key={idx}>
-              {/*<td>{idx}</td>*/}
               <td>
                 <label htmlFor="ingredient">
                   <input
