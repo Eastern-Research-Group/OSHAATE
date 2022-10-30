@@ -17,11 +17,16 @@ const Pathway = ({ title, category }) => {
       ) : null}
       {/*{category === "oral" ? <OralInput /> : null} */}
 
-      <div id="results">
-        {category === 'dermal' ? (
-          <DermalResult dermalResult={dermalResult} />
-        ) : null}
-      </div>
+      {(category === 'dermal' && dermalResult !== null) ||
+      category === 'oral' ||
+      category === 'inhalationGases' ||
+      category === 'inhalationVapors' ? (
+        <div id="results">
+          {category === 'dermal' ? (
+            <DermalResult dermalResult={dermalResult} />
+          ) : null}
+        </div>
+      ) : null}
     </>
   );
 };

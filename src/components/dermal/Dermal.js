@@ -36,55 +36,6 @@ const Dermal = ({ dermalResult, setDermalResult }) => {
     }
   };
 
-  const validateRows = () => {
-    //validate last row before adding new row
-    let data = [...inputFields];
-    if (data.length > 0) {
-      if (data[data.length - 1].ingredient === '') {
-        alert('Ingredient is required in the last row.');
-        return false;
-      }
-      if (data[data.length - 1].WT === '') {
-        alert('Weight (WT) is required in the last row.');
-        return false;
-      }
-      if (
-        data[data.length - 1].LD50 === '' &&
-        data[data.length - 1].limitDose === '' &&
-        data[data.length - 1].classification === ''
-      ) {
-        alert(
-          'LD50 or Limit Dose Data or Classification is required in the last row.'
-        );
-        return false;
-      }
-      if (
-        !(
-          data[data.length - 1].LD50 !== '' &&
-          data[data.length - 1].limitDose === '' &&
-          data[data.length - 1].classification === ''
-        ) &&
-        !(
-          data[data.length - 1].LD50 === '' &&
-          data[data.length - 1].limitDose !== '' &&
-          data[data.length - 1].classification === ''
-        ) &&
-        !(
-          data[data.length - 1].LD50 === '' &&
-          data[data.length - 1].limitDose === '' &&
-          data[data.length - 1].classification !== ''
-        )
-      ) {
-        alert(
-          'Enter only one of LD50, Limit Dose Data, or Classification in the last row.'
-        );
-        return false;
-      }
-      validated = true;
-      //console.log(inputFields);
-    }
-  };
-
   const calculate = (e) => {
     e.preventDefault();
 
@@ -163,6 +114,55 @@ const Dermal = ({ dermalResult, setDermalResult }) => {
     let data = [...inputFields];
     data.splice(idx, 1);
     setInputFields(data);
+  };
+
+  const validateRows = () => {
+    //validate last row before adding new row
+    let data = [...inputFields];
+    if (data.length > 0) {
+      if (data[data.length - 1].ingredient === '') {
+        alert('Ingredient is required in the last row.');
+        return false;
+      }
+      if (data[data.length - 1].WT === '') {
+        alert('Weight (WT) is required in the last row.');
+        return false;
+      }
+      if (
+        data[data.length - 1].LD50 === '' &&
+        data[data.length - 1].limitDose === '' &&
+        data[data.length - 1].classification === ''
+      ) {
+        alert(
+          'LD50 or Limit Dose Data or Classification is required in the last row.'
+        );
+        return false;
+      }
+      if (
+        !(
+          data[data.length - 1].LD50 !== '' &&
+          data[data.length - 1].limitDose === '' &&
+          data[data.length - 1].classification === ''
+        ) &&
+        !(
+          data[data.length - 1].LD50 === '' &&
+          data[data.length - 1].limitDose !== '' &&
+          data[data.length - 1].classification === ''
+        ) &&
+        !(
+          data[data.length - 1].LD50 === '' &&
+          data[data.length - 1].limitDose === '' &&
+          data[data.length - 1].classification !== ''
+        )
+      ) {
+        alert(
+          'Enter only one of LD50, Limit Dose Data, or Classification in the last row.'
+        );
+        return false;
+      }
+      validated = true;
+      //console.log(inputFields);
+    }
   };
 
   return (
