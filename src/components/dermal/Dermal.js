@@ -1,9 +1,15 @@
 import React from 'react';
 import { useState } from 'react';
 import DermalInput from './DermalInput';
-import { dermalPointEstimate } from '../Lookups';
+import { dermalPointEstimate } from './DermalLookup';
+import { dermalCategory } from './DermalLookup';
 
-const Dermal = ({ dermalResult, setDermalResult }) => {
+const Dermal = ({
+  dermalResult,
+  setDermalResult,
+  dermalResultCat,
+  setDermalResultCat,
+}) => {
   const [inputFields, setInputFields] = useState([
     {
       ingredient: '',
@@ -73,7 +79,6 @@ const Dermal = ({ dermalResult, setDermalResult }) => {
         return obj;
       });
 
-      //console.log(results);
       let sum = 0;
       results.forEach((item) => {
         if (item.LD50 !== '') {
@@ -86,29 +91,12 @@ const Dermal = ({ dermalResult, setDermalResult }) => {
           sum += item.classification;
         }
       });
-      //calculated value to pass to DermalResults component
+      //calculate value to pass to DermalResults
       setDermalResult(Math.round(100 / sum));
-
-      //TODO: get DermResultsCat value to pass to DermResults component
-      //https://stackoverflow.com/questions/38056887/javascript-object-find-a-key-value-when-in-range
-      //function getValue(search) {
-      /*for (let range in dermalPointEstimateLookup[0]) {
-          let split = range.split('-');
-          console.log(split);
-          if (
-            search >= parseInt(split[0]) &&
-            search <= parseInt(split[1] || split[0])
-          )
-            return 'test'; //dermalPointEstimateLookup('Classification', dermalResult);
-            //dermalPointEstimateLookup('Range')
-        }
-      //}*/
-      //console.log(dermalPointEstimateLookup.lookup[0]);
-      //setDermalResultCat(getValue(dermalResult));
+      //lookup DermalResultsCat
+      setDermalResultCat(dermalCategory(dermalResult));
     } //end validated conditional
   };
-
-  //console.log(dermalResultCat);
 
   const removeFormFields = (idx) => {
     let data = [...inputFields];
@@ -161,7 +149,6 @@ const Dermal = ({ dermalResult, setDermalResult }) => {
         return false;
       }
       validated = true;
-      //console.log(inputFields);
     }
   };
 
