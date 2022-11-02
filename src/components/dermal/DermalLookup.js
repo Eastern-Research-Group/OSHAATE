@@ -37,7 +37,7 @@ let dermalLookup = [
   {
     Classification: 'Not Classified (LD50 > 5,000)',
     'Point Estimate': null,
-    'Limit Dose': '> 2,000 (No signs of toxicigty)',
+    'Limit Dose': '> 2,000 (No signs of toxicity)',
     min: 5000,
   },
 ];

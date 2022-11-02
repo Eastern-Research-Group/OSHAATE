@@ -53,31 +53,68 @@ const Dermal = ({
       const results = d.map((obj) => {
         //Calculate LD50 values: if not empty, return weight/LD50 value
         if (obj.LD50 !== '') {
-          return {
-            ...obj,
-            LD50: parseFloat(obj.WT) / parseFloat(obj.LD50),
-          };
+          //TODO: handle if LD50 > 5000 (ignore in calc?)
+          if (!(parseFloat(obj.LD50) > 5000)) {
+            return {
+              ...obj,
+              LD50: parseFloat(obj.WT) / parseFloat(obj.LD50),
+            };
+          }
+          //if LD50 > 5000, set to 0 to ignore in calc?
+          else {
+            return {
+              ...obj,
+              LD50: 0,
+            };
+          }
         }
+
         //Calculate Classification values: if not empty, return weight/point estimate
         if (obj.classification !== '') {
-          return {
-            ...obj,
-            classification:
-              parseFloat(obj.WT) /
-              dermalPointEstimate('Classification', obj.classification),
-          };
+          //handle if Classification is Not Classified
+          if (obj.classification !== 'Not Classified (LD50 > 5,000)') {
+            return {
+              ...obj,
+              classification:
+                parseFloat(obj.WT) /
+                dermalPointEstimate('Classification', obj.classification),
+            };
+          }
+          //if Classification is Not Classified, set to 0 to ignore in calc
+          else {
+            return {
+              ...obj,
+              classification: 0,
+            };
+          }
         }
         //Calculate Limit Dose values: if not empty, return weight/point estimate
         if (obj.limitDose !== '') {
-          return {
-            ...obj,
-            limitDose:
-              parseFloat(obj.WT) /
-              dermalPointEstimate('Limit Dose', obj.limitDose),
-          };
+          //if not null Point Estimate
+          if (
+            !dermalPointEstimate('Limit Dose', obj.limitDose).every(
+              (element) => element === null
+            )
+          ) {
+            return {
+              ...obj,
+              limitDose:
+                parseFloat(obj.WT) /
+                dermalPointEstimate('Limit Dose', obj.limitDose),
+            };
+          }
+          //else handle null Point Estimate for No toxicity, set to 0 to ignore in calc
+          else {
+            return {
+              ...obj,
+              limitDose: 0,
+            };
+          }
         }
         return obj;
       });
+
+      //console.log(results);
 
       let sum = 0;
       results.forEach((item) => {
@@ -91,10 +128,13 @@ const Dermal = ({
           sum += item.classification;
         }
       });
+      //console.log(sum);
       //calculate value to pass to DermalResults
       setDermalResult(Math.round(100 / sum));
+      //console.log(dermalResult);
       //lookup DermalResultsCat
       setDermalResultCat(dermalCategory(dermalResult));
+      //console.log(dermalResultCat);
     } //end validated conditional
   };
 
