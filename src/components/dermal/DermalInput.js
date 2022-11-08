@@ -1,30 +1,22 @@
 import React from 'react'; //, { useState }
 
 const Input = ({ inputFields, handleFormChange, removeFormFields }) => {
-  /*const [checked, setChecked] = useState(false);
-
-  function toggle(value) {
-    return !value;
-  }*/
-
   return (
-    <div>
+    <div id="tablewrapper">
       <table id="dermal">
         <thead>
           <tr>
-            <th></th>
             <th>Ingredient</th>
             <th>WT%</th>
             <th>LD50 (mg/kg)</th>
             <th>Limit Dose (mg/kg)</th>
             <th>Classification (mg/kg)</th>
-            <th>Unknown</th>
           </tr>
         </thead>
         <tbody>
           {inputFields.map((input, idx) => (
             <tr id="addr0" key={idx}>
-              <td>{idx + 1}</td>
+              {/*<td>{idx + 1}</td>*/}
               <td data-label="Ingredient">
                 <label htmlFor="ingredient">
                   <input
@@ -101,25 +93,6 @@ const Input = ({ inputFields, handleFormChange, removeFormFields }) => {
                   </select>
                 </label>
               </td>
-              <td data-label="Unknown">
-                {/* See: https://codesandbox.io/s/react-hooks-usestate-checkbox-onchange-vs-onclick-8w9v2?file=/src/index.js
-                https://medium.com/programming-essentials/how-to-manage-a-checkbox-with-react-hooks-f8c3d973eeca */}
-                <label htmlFor="unknown">
-                  <input
-                    type="checkbox"
-                    id="unknown"
-                    name="unknown"
-                    //checked={checked}
-                    //onChange={() => setChecked(toggle)}
-
-                    onChange={(event) => handleFormChange(idx, event)}
-
-                    //onChange={(e) => setChecked(e.target.checked)}
-                    //value={input.WT}
-                    //onChange={(event) => handleFormChange(idx, event)}
-                  />
-                </label>
-              </td>
               <td>
                 {idx === 0 ? null : (
                   <button onClick={() => removeFormFields(idx)}>Remove</button>
@@ -127,26 +100,20 @@ const Input = ({ inputFields, handleFormChange, removeFormFields }) => {
               </td>
             </tr>
           ))}
-          {/*<tr>
+          <tr>
             <td>
               <label htmlFor="combinedUnknown">
-                <input
-                  type="text"
-                  id="combinedUnknown"
-                  placeholder="Combined Unknown"
-                />
+                <b>Combined Unknown:</b>
               </label>
             </td>
             <td>
-              <label htmlFor="combinedUnknownWeight">
-                <input
-                  type="text"
-                  id="combinedUnknownWeight"
-                  placeholder="Enter weight (%)"
-                />
-              </label>
+              <input
+                type="text"
+                id="combinedUnknown"
+                placeholder="Enter weight (%)"
+              />
             </td>
-                </tr>*/}
+          </tr>
         </tbody>
       </table>
     </div>

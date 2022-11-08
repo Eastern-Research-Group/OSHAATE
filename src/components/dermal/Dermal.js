@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import DermalInput from './DermalInput';
-//import DermalInputNoTable from './DermalInputNoTable';
 import { dermalPointEstimate } from './DermalLookup';
 import { dermalCategory } from './DermalLookup';
 
@@ -17,7 +16,6 @@ const Dermal = ({
       LD50: '',
       limitDose: '',
       classification: '',
-      unknown: '',
     },
   ]);
 
@@ -25,14 +23,7 @@ const Dermal = ({
 
   const handleFormChange = (idx, event) => {
     let data = [...inputFields];
-    //console.log(data[idx][event.target.name]); //on checkbox change = "on"
-    //if (data[idx][event.target.name] !== 'unknown') {
     data[idx][event.target.name] = event.target.value;
-    //} else {
-    //data[idx].unknown = 'test';
-    //data[idx][event.target.name] = 'test';
-    //}
-
     setInputFields(data);
   };
 
@@ -46,7 +37,6 @@ const Dermal = ({
         LD50: '',
         limitDose: '',
         classification: '',
-        unknown: '',
       };
       setInputFields([...inputFields, newfield]);
     }
@@ -141,7 +131,10 @@ const Dermal = ({
       //console.log(sum);
       //calculate value to pass to DermalResults
       setDermalResult(Math.round(100 / sum));
-      //console.log(dermalResult);
+      console.log(dermalResult);
+      if (!isFinite(dermalResult)) {
+        setDermalResult('Not a Relevant Route of Exposure');
+      }
       //lookup DermalResultsCat
       setDermalResultCat(dermalCategory(dermalResult));
       //console.log(dermalResultCat);
@@ -217,7 +210,7 @@ const Dermal = ({
         />
         <br />
         <button type="button" onClick={addFormFields}>
-          Add Row
+          Add Ingredient
         </button>{' '}
         &nbsp;
         <button type="button" onClick={calculate}>

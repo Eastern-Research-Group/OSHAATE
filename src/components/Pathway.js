@@ -24,7 +24,8 @@ const Pathway = ({ title, category }) => {
       {(category === 'dermal' && dermalResult !== null) ||
       category === 'oral' ||
       category === 'inhalationGases' ||
-      category === 'inhalationVapors' ? (
+      category === 'inhalationVapors' ||
+      category === 'inhalationDustsMists' ? (
         <div id="results">
           {category === 'dermal' ? (
             <DermalResult

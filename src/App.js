@@ -25,6 +25,11 @@ const pathwaysList = [
     title: '2.4 Enter Ingredients: Inhalation - Vapors Example',
     category: 'inhalationVapors',
   },
+  {
+    id: 5,
+    title: '2.5 Enter Ingredients: Inhalation - Dusts/Mists',
+    category: 'inhalationDustsMists',
+  },
 ];
 
 export default class App extends Component {
@@ -35,6 +40,7 @@ export default class App extends Component {
       oral: false,
       inhalationGases: false,
       inhalationVapors: false,
+      inhalationDustsMists: false,
     },
   };
 
@@ -62,6 +68,7 @@ export default class App extends Component {
     return (
       <div className="App">
         <h1>OSHA ATE Calculator</h1>
+        <p>Intro text and links to reference and guidelines.</p>
         <hr />
         <h2>Data Input Section</h2>
         <fieldset>
@@ -95,6 +102,13 @@ export default class App extends Component {
             name="inhalationVapors"
             handleChange={this.handleChange}
             checked={this.state.categories.inhalationVapors}
+          />
+          <Checkbox
+            id="5"
+            title="Inhalation - Dusts/Mists"
+            name="inhalationDustsMists"
+            handleChange={this.handleChange}
+            checked={this.state.categories.inhalationDustsMists}
           />
         </fieldset>
         <PathwayList
