@@ -1,6 +1,6 @@
-import React from 'react';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import DermalInput from './DermalInput';
+//import DermalInputNoTable from './DermalInputNoTable';
 import { dermalPointEstimate } from './DermalLookup';
 import { dermalCategory } from './DermalLookup';
 
@@ -17,6 +17,7 @@ const Dermal = ({
       LD50: '',
       limitDose: '',
       classification: '',
+      unknown: '',
     },
   ]);
 
@@ -24,11 +25,19 @@ const Dermal = ({
 
   const handleFormChange = (idx, event) => {
     let data = [...inputFields];
+    //console.log(data[idx][event.target.name]); //on checkbox change = "on"
+    //if (data[idx][event.target.name] !== 'unknown') {
     data[idx][event.target.name] = event.target.value;
+    //} else {
+    //data[idx].unknown = 'test';
+    //data[idx][event.target.name] = 'test';
+    //}
+
     setInputFields(data);
   };
 
   const addFormFields = () => {
+    console.log(inputFields);
     validateRows();
     if (validated) {
       let newfield = {
@@ -37,6 +46,7 @@ const Dermal = ({
         LD50: '',
         limitDose: '',
         classification: '',
+        unknown: '',
       };
       setInputFields([...inputFields, newfield]);
     }
@@ -195,6 +205,11 @@ const Dermal = ({
   return (
     <div>
       <form onSubmit={calculate}>
+        {/*<DermalInput
+          inputFields={inputFields}
+          handleFormChange={handleFormChange}
+          removeFormFields={removeFormFields}
+  />*/}
         <DermalInput
           inputFields={inputFields}
           handleFormChange={handleFormChange}
