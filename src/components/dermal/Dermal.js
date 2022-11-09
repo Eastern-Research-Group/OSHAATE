@@ -19,18 +19,25 @@ const Dermal = ({
     },
   ]);
 
-  let validated = false;
+  const [unknown, setUnknown] = useState(null);
 
-  const handleFormChange = (idx, event) => {
+  let validated = false;
+  let sum = 0;
+
+  const handleFormChange = (event, idx) => {
     let data = [...inputFields];
     data[idx][event.target.name] = event.target.value;
     setInputFields(data);
   };
 
+  const handleUnknownChange = (event) => {
+    setUnknown(event.target.value);
+  };
+
   const addFormFields = () => {
-    console.log(inputFields);
     validateRows();
     if (validated) {
+      console.log(inputFields);
       let newfield = {
         ingredient: '',
         WT: '',
@@ -115,8 +122,6 @@ const Dermal = ({
       });
 
       //console.log(results);
-
-      let sum = 0;
       results.forEach((item) => {
         if (item.LD50 !== '') {
           sum += item.LD50;
@@ -128,11 +133,16 @@ const Dermal = ({
           sum += item.classification;
         }
       });
-      //console.log(sum);
-      //calculate value to pass to DermalResults
-      setDermalResult(Math.round(100 / sum));
-      console.log(dermalResult);
+
+      //calculate result
+      if (unknown > 10) {
+        setDermalResult(Math.round((100 - unknown) / sum));
+      } else {
+        setDermalResult(Math.round(100 / sum));
+      }
+
       if (!isFinite(dermalResult)) {
+        //TODO: verify this
         setDermalResult('Not a Relevant Route of Exposure');
       }
       //lookup DermalResultsCat
@@ -141,7 +151,7 @@ const Dermal = ({
     } //end validated conditional
   };
 
-  const removeFormFields = (idx) => {
+  const removeRow = (idx) => {
     let data = [...inputFields];
     data.splice(idx, 1);
     setInputFields(data);
@@ -198,15 +208,11 @@ const Dermal = ({
   return (
     <div>
       <form onSubmit={calculate}>
-        {/*<DermalInput
-          inputFields={inputFields}
-          handleFormChange={handleFormChange}
-          removeFormFields={removeFormFields}
-  />*/}
         <DermalInput
           inputFields={inputFields}
           handleFormChange={handleFormChange}
-          removeFormFields={removeFormFields}
+          handleUnknownChange={handleUnknownChange}
+          removeRow={removeRow}
         />
         <br />
         <button type="button" onClick={addFormFields}>

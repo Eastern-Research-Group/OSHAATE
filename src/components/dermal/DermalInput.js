@@ -1,6 +1,11 @@
 import React from 'react'; //, { useState }
 
-const Input = ({ inputFields, handleFormChange, removeFormFields }) => {
+const Input = ({
+  inputFields,
+  handleFormChange,
+  handleUnknownChange,
+  removeRow,
+}) => {
   return (
     <div id="tablewrapper">
       <table id="dermal">
@@ -16,7 +21,6 @@ const Input = ({ inputFields, handleFormChange, removeFormFields }) => {
         <tbody>
           {inputFields.map((input, idx) => (
             <tr id="addr0" key={idx}>
-              {/*<td>{idx + 1}</td>*/}
               <td data-label="Ingredient">
                 <label htmlFor="ingredient">
                   <input
@@ -26,7 +30,7 @@ const Input = ({ inputFields, handleFormChange, removeFormFields }) => {
                     //required="required"
                     placeholder="Enter ingredient"
                     value={input.ingredient}
-                    onChange={(event) => handleFormChange(idx, event)}
+                    onChange={(event) => handleFormChange(event, idx)}
                   />
                 </label>
               </td>
@@ -40,7 +44,7 @@ const Input = ({ inputFields, handleFormChange, removeFormFields }) => {
                     //required="required"
                     placeholder="Enter weight (%)"
                     value={input.WT}
-                    onChange={(event) => handleFormChange(idx, event)}
+                    onChange={(event) => handleFormChange(event, idx)}
                   />
                 </label>
               </td>
@@ -53,7 +57,7 @@ const Input = ({ inputFields, handleFormChange, removeFormFields }) => {
                     name="LD50"
                     placeholder="Enter LD50 (mg/kg)"
                     value={input.LD50}
-                    onChange={(event) => handleFormChange(idx, event)}
+                    onChange={(event) => handleFormChange(event, idx)}
                   />
                 </label>
               </td>
@@ -63,7 +67,7 @@ const Input = ({ inputFields, handleFormChange, removeFormFields }) => {
                     name="limitDose"
                     id="limitDose"
                     value={input.limitDose}
-                    onChange={(event) => handleFormChange(idx, event)}
+                    onChange={(event) => handleFormChange(event, idx)}
                   >
                     <option value="">Select Limit Dose</option>
                     <option>&le; 50</option>
@@ -81,7 +85,7 @@ const Input = ({ inputFields, handleFormChange, removeFormFields }) => {
                     name="classification"
                     id="classification"
                     value={input.classification}
-                    onChange={(event) => handleFormChange(idx, event)}
+                    onChange={(event) => handleFormChange(event, idx)}
                   >
                     <option value="">Select Classification</option>
                     <option>Category 1</option>
@@ -95,22 +99,27 @@ const Input = ({ inputFields, handleFormChange, removeFormFields }) => {
               </td>
               <td>
                 {idx === 0 ? null : (
-                  <button onClick={() => removeFormFields(idx)}>Remove</button>
+                  <button onClick={() => removeRow(idx)}>Remove</button>
                 )}
               </td>
             </tr>
           ))}
           <tr>
             <td>
-              <label htmlFor="combinedUnknown">
+              <br />
+              <label htmlFor="unknown">
                 <b>Combined Unknown:</b>
               </label>
             </td>
             <td>
+              <br />
               <input
                 type="text"
-                id="combinedUnknown"
+                id="unknown"
+                name="unknown"
                 placeholder="Enter weight (%)"
+                //value={inputFields.unknown}
+                onChange={(event) => handleUnknownChange(event)}
               />
             </td>
           </tr>

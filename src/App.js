@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import Checkbox from './components/Checkbox';
 import PathwayList from './components/PathwayList';
-//import logo from './logo.svg';
 import './App.css';
 
 const pathwaysList = [

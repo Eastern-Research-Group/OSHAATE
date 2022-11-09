@@ -3,11 +3,9 @@
 }
 div#tablewrapper {
   overflow-x: auto;
-}
-div#tablewrapper table#dermal thead th {
   text-align: left;
-  /*font-size: 0.9rem;*/
 }
+
 label {
   padding-right: 20px;
 }
