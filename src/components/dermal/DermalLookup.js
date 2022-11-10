@@ -49,12 +49,10 @@ export const dermalPointEstimate = (key, val) => {
 };
 
 export const dermalCategory = (val) => {
-  //console.log(val); //Infinity
   if (val < 5000) {
-    return dermalLookup
-      .filter((item) => val >= item.min && val <= item.max)
-      .map((item) => item['Classification']);
+    let obj = dermalLookup.find((o) => val >= o.min && val <= o.max);
+    return obj.Classification;
   } else {
-    return ['Not Classified (LD50 > 5,000)'];
+    return 'Not Classified (LD50 > 5,000)';
   }
 };
