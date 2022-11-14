@@ -167,24 +167,22 @@ const Dermal = ({ setDermalResult, dermalResult }) => {
   };
 
   return (
-    <div>
-      <form onSubmit={calculate}>
-        <DermalInput
-          inputFields={inputFields}
-          handleFormChange={handleFormChange}
-          handleUnknownChange={handleUnknownChange}
-          removeRow={removeRow}
-        />
-        <br />
-        <button type="button" id="add" onClick={validateRows}>
-          Add Ingredient
-        </button>{' '}
-        &nbsp;
-        <button type="button" id="calculate" onClick={validateRows}>
-          Calculate
-        </button>
-      </form>
-    </div>
+    <form>
+      <DermalInput
+        inputFields={inputFields}
+        handleFormChange={handleFormChange}
+        handleUnknownChange={handleUnknownChange}
+        removeRow={removeRow}
+      />
+      <br />
+      <button type="button" id="add" onClick={validateRows}>
+        Add Ingredient
+      </button>{' '}
+      &nbsp;
+      <button type="button" id="calculate" onClick={validateRows}>
+        Calculate
+      </button>
+    </form>
   );
 };
 

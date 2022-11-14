@@ -20,7 +20,7 @@ const Input = ({
         </thead>
         <tbody>
           {inputFields.map((input, idx) => (
-            <tr id="addr0" key={idx}>
+            <tr key={idx}>
               <td data-label="Ingredient">
                 <label htmlFor="ingredient">
                   <input
