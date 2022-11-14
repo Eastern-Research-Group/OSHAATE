@@ -1,5 +1,5 @@
-import React from "react";
-import { useState } from "react";
+import React from 'react';
+import { useState } from 'react';
 
 //TODO: Remove Arrows/Spinners for number type input
 ///* Chrome, Safari, Edge, Opera */
@@ -15,7 +15,7 @@ input::-webkit-inner-spin-button {
 
 function OralInput() {
   const [inputFields, setInputFields] = useState([
-    { ingredient: "", WT: "", toxicity: "" },
+    { ingredient: '', WT: '', toxicity: '' },
   ]);
 
   const handleChange = (idx, event) => {
@@ -26,9 +26,9 @@ function OralInput() {
 
   const addFields = () => {
     let newfield = {
-      ingredient: "",
-      WT: "",
-      toxicity: "",
+      ingredient: '',
+      WT: '',
+      toxicity: '',
     };
     setInputFields([...inputFields, newfield]);
   };
@@ -93,7 +93,9 @@ function OralInput() {
                 </td>
                 <td>
                   {idx === 0 ? null : (
-                    <button onClick={() => removeFields(idx)}>Remove</button>
+                    <button typ="button" onClick={() => removeFields(idx)}>
+                      Remove
+                    </button>
                   )}
                 </td>
               </tr>
@@ -113,8 +115,11 @@ function OralInput() {
         <br />
         <div></div>
         <br />
-        <button onClick={addFields}>Add Row</button> &nbsp;
-        <button type="submit" onClick={submit}>
+        <button type="button" onClick={addFields}>
+          Add Row
+        </button>{' '}
+        &nbsp;
+        <button type="button" onClick={submit}>
           Calculate
         </button>
       </form>

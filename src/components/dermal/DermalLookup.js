@@ -34,12 +34,12 @@ let dermalLookup = [
     min: 2000,
     max: 5000,
   },
-  {
+  /*{
     Classification: 'Not Classified (LD50 > 5,000)',
-    'Point Estimate': null,
+    'Point Estimate': 0, //null?
     'Limit Dose': '> 2,000 (No signs of toxicity)',
     min: 5000,
-  },
+  },*/
 ];
 
 export const dermalPointEstimate = (key, val) => {
@@ -49,10 +49,9 @@ export const dermalPointEstimate = (key, val) => {
 };
 
 export const dermalCategory = (val) => {
-  if (val < 5000) {
-    let obj = dermalLookup.find((o) => val >= o.min && val <= o.max);
-    return obj.Classification;
-  } else {
+  /*if (val > 5000) {
     return 'Not Classified (LD50 > 5,000)';
-  }
+  } else {*/
+  return dermalLookup.find((o) => val >= o.min && val <= o.max).Classification;
+  //}
 };

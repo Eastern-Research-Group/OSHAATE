@@ -5,6 +5,10 @@ div#tablewrapper {
   overflow-x: auto;
   text-align: left;
 }
+table th,
+table td label {
+  font-size: 0.9rem;
+}
 
 label {
   padding-right: 20px;

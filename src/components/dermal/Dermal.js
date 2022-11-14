@@ -32,19 +32,17 @@ const Dermal = ({ setDermalResult, dermalResult }) => {
 
     if (!data[data.length - 1].ingredient) {
       formIsValid = false;
-      alert('Ingredient is required in the last row.');
+      alert('Ingredient is required in row.');
     } else if (!data[data.length - 1].WT) {
       formIsValid = false;
-      alert('Weight (WT) is required in the last row.');
+      alert('Weight (WT) is required in row.');
     } else if (
       !data[data.length - 1].LD50 &&
       !data[data.length - 1].limitDose &&
       !data[data.length - 1].classification
     ) {
       formIsValid = false;
-      alert(
-        'LD50 or Limit Dose Data or Classification is required in the last row.'
-      );
+      alert('LD50 or Limit Dose Data or Classification is required in row.');
     } else if (
       !(
         data[data.length - 1].LD50 &&
@@ -64,22 +62,36 @@ const Dermal = ({ setDermalResult, dermalResult }) => {
     ) {
       formIsValid = false;
       alert(
-        'Enter only one of LD50, Limit Dose Data, or Classification in the last row.'
+        'Enter only one of LD50, Limit Dose Data, or Classification in row.'
       );
     } else {
+      if (data[data.length - 1].LD50 && data[data.length - 1].LD50 > 5000) {
+        formIsValid = false;
+        alert('LD50 greater than 5,000 mg/kg cannot be calculated.');
+      }
       //return formIsValid;
-      //console.log(formIsValid);
       if (formIsValid && e.target.id === 'add') {
         addRow();
       }
+
+      const totalWTPercent = data.reduce((accumulator, object) => {
+        return accumulator + parseFloat(object.WT);
+      }, 0);
+
       if (formIsValid && e.target.id === 'calculate') {
-        calculate();
+        if (
+          (!unknown && totalWTPercent === 100) ||
+          (unknown && totalWTPercent + parseFloat(unknown) === 100)
+        ) {
+          calculate();
+        } else {
+          alert('Total weight entered must be equal to 100%');
+        }
       }
     }
   };
 
   const addRow = () => {
-    //console.log(inputFields);
     let newfield = {
       ingredient: '',
       WT: '',
@@ -101,69 +113,37 @@ const Dermal = ({ setDermalResult, dermalResult }) => {
     let sum = 0;
     let results = d.map((obj) => {
       //Calculate LD50 values: if not empty, return weight/LD50 value
+      //NOTE: LD50 values > 5,000 not in any GHS Dermal Acute Category, don't calculate?
       if (obj.LD50 !== '') {
-        //handle if LD50 > 5000
-        if (!(parseFloat(obj.LD50) > 5000)) {
-          return {
-            ...obj,
-            LD50: parseFloat(obj.WT) / parseFloat(obj.LD50),
-          };
-        }
-        //if LD50 > 5000, set to 0 to ignore in calc?
-        else {
-          return {
-            ...obj,
-            LD50: 0,
-          };
-        }
+        return {
+          ...obj,
+          LD50: parseFloat(obj.WT) / parseFloat(obj.LD50),
+        };
       }
-
       //Calculate Classification values: if not empty, return weight/point estimate
+      //NOTE: there is no point estimate for Not Classified (LD50 > 5,000), WT cannot be divided by 0
       if (obj.classification !== '') {
-        //handle if Classification is Not Classified
-        if (obj.classification !== 'Not Classified (LD50 > 5,000)') {
-          return {
-            ...obj,
-            classification:
-              parseFloat(obj.WT) /
-              dermalPointEstimate('Classification', obj.classification),
-          };
-        }
-        //if Classification is Not Classified, set to 0 to ignore in calc?
-        else {
-          return {
-            ...obj,
-            classification: 0,
-          };
-        }
+        return {
+          ...obj,
+          classification:
+            parseFloat(obj.WT) /
+            dermalPointEstimate('Classification', obj.classification),
+        };
       }
       //Calculate Limit Dose values: if not empty, return weight/point estimate
+      //NOTE: there is no point estimate for > 2,000 (No signs of toxicity), WT cannot be divided by 0
       if (obj.limitDose !== '') {
-        //if not null Point Estimate
-        if (
-          !dermalPointEstimate('Limit Dose', obj.limitDose).every(
-            (element) => element === null
-          )
-        ) {
-          return {
-            ...obj,
-            limitDose:
-              parseFloat(obj.WT) /
-              dermalPointEstimate('Limit Dose', obj.limitDose),
-          };
-        }
-        //else handle null Point Estimate for No toxicity, set to 0 to ignore in calc?
-        else {
-          return {
-            ...obj,
-            limitDose: 0,
-          };
-        }
+        return {
+          ...obj,
+          limitDose:
+            parseFloat(obj.WT) /
+            dermalPointEstimate('Limit Dose', obj.limitDose),
+        };
       }
       return obj;
     });
 
-    //console.log(results);
+    //sum
     results.forEach((item) => {
       if (item.LD50 !== '') {
         sum += item.LD50;
@@ -176,14 +156,12 @@ const Dermal = ({ setDermalResult, dermalResult }) => {
       }
     });
 
-    console.log(results);
+    //console.log(results);
 
     //calculate result
     if (unknown !== null && unknown > 10) {
-      //console.log('no unknown or unknown greater than 10');
       setDermalResult(Math.round((100 - unknown) / sum));
     } else {
-      //console.log('no unknown or unknown less than 10');
       setDermalResult(Math.round(100 / sum));
     }
   };
@@ -205,9 +183,6 @@ const Dermal = ({ setDermalResult, dermalResult }) => {
         <button type="button" id="calculate" onClick={validateRows}>
           Calculate
         </button>
-        {/*{this.state.rows.length === 1 ? null : (
-          <button onClick={this.handleRemoveRow}>Delete Last Row</button>
-        )}*/}
       </form>
     </div>
   );

@@ -1,4 +1,4 @@
-import React from 'react'; //, { useState }
+import React from 'react';
 
 const Input = ({
   inputFields,
@@ -75,7 +75,7 @@ const Input = ({
                     <option>&gt; 200 - &le; 1,000</option>
                     <option>&gt; 1,000 - &le; 2,000</option>
                     <option>&gt; 2,000 - &le; 5,000</option>
-                    <option>&gt; 2,000 (No signs of toxicity)</option>
+                    {/*<option>&gt; 2,000 (No signs of toxicity)</option>*/}
                   </select>
                 </label>
               </td>
@@ -93,13 +93,15 @@ const Input = ({
                     <option>Category 3</option>
                     <option>Category 4</option>
                     <option>Category 5</option>
-                    <option>Not Classified (LD50 &gt; 5,000)</option>
+                    {/*<option>Not Classified (LD50 &gt; 5,000)</option>*/}
                   </select>
                 </label>
               </td>
               <td>
                 {idx === 0 ? null : (
-                  <button onClick={() => removeRow(idx)}>Remove</button>
+                  <button type="button" onClick={() => removeRow(idx)}>
+                    Remove
+                  </button>
                 )}
               </td>
             </tr>
@@ -114,11 +116,10 @@ const Input = ({
             <td>
               <br />
               <input
-                type="text"
+                type="number"
                 id="unknown"
                 name="unknown"
                 placeholder="Enter weight (%)"
-                //value={inputFields.unknown}
                 onChange={(event) => handleUnknownChange(event)}
               />
             </td>
