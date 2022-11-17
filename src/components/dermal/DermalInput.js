@@ -1,5 +1,13 @@
 import React from 'react';
 
+function Tooltip({ children, title, position }) {
+  return (
+    <div className={`tooltip`} data-position={position} data-tool-tip={title}>
+      {children}
+    </div>
+  );
+}
+
 const Input = ({
   inputFields,
   handleFormChange,
@@ -15,13 +23,13 @@ const Input = ({
             <th>WT%</th>
             <th>LD50 (mg/kg)</th>
             <th>Limit Dose (mg/kg)</th>
-            <th>Classification (mg/kg)</th>
+            <th>Classification</th>
           </tr>
         </thead>
         <tbody>
           {inputFields.map((input, idx) => (
             <tr key={idx}>
-              <td data-label="Ingredient">
+              <td>
                 <label htmlFor="ingredient">
                   <input
                     type="text"
@@ -34,10 +42,11 @@ const Input = ({
                   />
                 </label>
               </td>
-              <td data-label="WT%">
+              <td>
                 <label htmlFor="WT">
                   <input
                     type="number"
+                    step=".01"
                     id="WT"
                     min="0"
                     name="WT"
@@ -48,10 +57,11 @@ const Input = ({
                   />
                 </label>
               </td>
-              <td data-label="LD50 (mg/kg)">
+              <td>
                 <label htmlFor="LD50">
                   <input
                     type="number"
+                    step=".01"
                     id="LD50"
                     min="0"
                     name="LD50"
@@ -61,7 +71,7 @@ const Input = ({
                   />
                 </label>
               </td>
-              <td data-label="Limit Dose (mg/kg)">
+              <td>
                 <label htmlFor="limitDose">
                   <select
                     name="limitDose"
@@ -75,11 +85,11 @@ const Input = ({
                     <option>&gt; 200 - &le; 1,000</option>
                     <option>&gt; 1,000 - &le; 2,000</option>
                     <option>&gt; 2,000 - &le; 5,000</option>
-                    {/*<option>&gt; 2,000 (No signs of toxicity)</option>*/}
+                    <option>&gt; 2,000 (No signs of toxicity)</option>
                   </select>
                 </label>
               </td>
-              <td data-label="Classification (mg/kg)">
+              <td>
                 <label htmlFor="classification">
                   <select
                     name="classification"
@@ -93,7 +103,7 @@ const Input = ({
                     <option>Category 3</option>
                     <option>Category 4</option>
                     <option>Category 5</option>
-                    {/*<option>Not Classified (LD50 &gt; 5,000)</option>*/}
+                    <option>Not Classified (LD50 &gt; 5,000)</option>
                   </select>
                 </label>
               </td>
@@ -109,9 +119,14 @@ const Input = ({
           <tr>
             <td>
               <br />
-              <label htmlFor="unknown">
-                <b>Combined Unknown:</b>
-              </label>
+              <Tooltip
+                title='Sum of relevant ingredient(s) with unknown "route name" toxicity'
+                position="right"
+              >
+                <label htmlFor="unknown" className="tooltip">
+                  Sum Unknown Toxicity &#9432;
+                </label>
+              </Tooltip>
             </td>
             <td>
               <br />

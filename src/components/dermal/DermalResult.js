@@ -11,10 +11,13 @@ const DermalResult = ({ dermalResult }) => {
       <h3>Dermal Pathway Result</h3>
       <p>
         Dermal ATE mix ={' '}
-        {dermalResult.toLocaleString('en-US') +
-          ' mg/kg (' +
-          dermalResultCat +
-          ')'}
+        {dermalResult !== null
+          ? ' ' +
+            dermalResult.toLocaleString('en-US') +
+            ' mg/kg (' +
+            dermalResultCat +
+            ')'
+          : ' Not a Relevant Route of Exposure (Not Classified)'}
       </p>
     </div>
   );

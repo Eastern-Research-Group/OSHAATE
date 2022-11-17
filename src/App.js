@@ -72,7 +72,7 @@ export default class App extends Component {
         <h2>Data Input Section</h2>
         <fieldset>
           <legend>
-            <h3>1. Choose a Pathway:</h3>
+            <h3>1. Choose Exposure Route(s):</h3>
           </legend>
           <Checkbox
             id="1"

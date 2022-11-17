@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 
 export default class Checkbox extends Component {
   render() {
@@ -6,14 +6,16 @@ export default class Checkbox extends Component {
 
     return (
       <>
-        <input
-          id={id}
-          type="checkbox"
-          name={name}
-          onChange={handleChange}
-          checked={checked}
-        />
-        <label htmlFor={id}> {title}</label>
+        <label htmlFor={id}>
+          <input
+            id={id}
+            type="checkbox"
+            name={name}
+            onChange={handleChange}
+            checked={checked}
+          />
+          {title}
+        </label>
       </>
     );
   }

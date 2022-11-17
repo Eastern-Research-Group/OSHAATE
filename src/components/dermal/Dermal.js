@@ -65,10 +65,10 @@ const Dermal = ({ setDermalResult, dermalResult }) => {
         'Enter only one of LD50, Limit Dose Data, or Classification in row.'
       );
     } else {
-      if (data[data.length - 1].LD50 && data[data.length - 1].LD50 > 5000) {
+      /*if (data[data.length - 1].LD50 && data[data.length - 1].LD50 > 5000) {
         formIsValid = false;
         alert('LD50 greater than 5,000 mg/kg cannot be calculated.');
-      }
+      }*/
       //return formIsValid;
       if (formIsValid && e.target.id === 'add') {
         addRow();
@@ -80,12 +80,12 @@ const Dermal = ({ setDermalResult, dermalResult }) => {
 
       if (formIsValid && e.target.id === 'calculate') {
         if (
-          (!unknown && totalWTPercent === 100) ||
-          (unknown && totalWTPercent + parseFloat(unknown) === 100)
+          !(!unknown && totalWTPercent > 100) ||
+          (unknown && totalWTPercent + parseFloat(unknown) > 100)
         ) {
           calculate();
         } else {
-          alert('Total weight entered must be equal to 100%');
+          alert('Total weight entered must not be greater than 100%.');
         }
       }
     }
@@ -109,61 +109,67 @@ const Dermal = ({ setDermalResult, dermalResult }) => {
   };
 
   const calculate = () => {
-    let d = [...inputFields];
+    let data = [...inputFields];
     let sum = 0;
-    let results = d.map((obj) => {
-      //Calculate LD50 values: if not empty, return weight/LD50 value
-      //NOTE: LD50 values > 5,000 not in any GHS Dermal Acute Category, don't calculate?
-      if (obj.LD50 !== '') {
-        return {
-          ...obj,
-          LD50: parseFloat(obj.WT) / parseFloat(obj.LD50),
-        };
-      }
-      //Calculate Classification values: if not empty, return weight/point estimate
-      //NOTE: there is no point estimate for Not Classified (LD50 > 5,000), WT cannot be divided by 0
-      if (obj.classification !== '') {
-        return {
-          ...obj,
-          classification:
-            parseFloat(obj.WT) /
-            dermalPointEstimate('Classification', obj.classification),
-        };
-      }
-      //Calculate Limit Dose values: if not empty, return weight/point estimate
-      //NOTE: there is no point estimate for > 2,000 (No signs of toxicity), WT cannot be divided by 0
-      if (obj.limitDose !== '') {
-        return {
-          ...obj,
-          limitDose:
-            parseFloat(obj.WT) /
-            dermalPointEstimate('Limit Dose', obj.limitDose),
-        };
-      }
-      return obj;
-    });
+    let results = data
+      .filter(
+        (obj) =>
+          (obj.LD50 !== '' && parseFloat(obj.LD50) <= 5000) ||
+          (obj.limitDose !== '' &&
+            obj.limitDose !== '> 2,000 (No signs of toxicity)') ||
+          (obj.classification !== '' &&
+            obj.classification !== 'Not Classified (LD50 > 5,000)')
+      )
+      .map((obj) => {
+        if (obj.LD50 !== '') {
+          return {
+            ...obj,
+            LD50: parseFloat(obj.WT) / parseFloat(obj.LD50),
+          };
+        }
+        if (obj.limitDose !== '') {
+          return {
+            ...obj,
+            limitDose:
+              parseFloat(obj.WT) /
+              dermalPointEstimate('Limit Dose', obj.limitDose),
+          };
+        }
+        if (obj.classification !== '') {
+          return {
+            ...obj,
+            classification:
+              parseFloat(obj.WT) /
+              dermalPointEstimate('Classification', obj.classification),
+          };
+        }
+        return obj;
+      });
 
     //sum
-    results.forEach((item) => {
-      if (item.LD50 !== '') {
-        sum += item.LD50;
+    if (results.length) {
+      results.forEach((item) => {
+        if (item.LD50 !== '') {
+          sum += item.LD50;
+        }
+        if (item.limitDose !== '') {
+          sum += item.limitDose;
+        }
+        if (item.classification !== '') {
+          sum += item.classification;
+        }
+      });
+      //calculate result
+      if (unknown !== null && unknown > 10) {
+        setDermalResult(Math.round((100 - unknown) / sum));
+      } else {
+        setDermalResult(Math.round(100 / sum));
       }
-      if (item.limitDose !== '') {
-        sum += item.limitDose;
-      }
-      if (item.classification !== '') {
-        sum += item.classification;
-      }
-    });
-
-    //console.log(results);
-
-    //calculate result
-    if (unknown !== null && unknown > 10) {
-      setDermalResult(Math.round((100 - unknown) / sum));
     } else {
-      setDermalResult(Math.round(100 / sum));
+      //not valid for calculation
+      setDermalResult(null);
     }
+    //console.log(results);
   };
 
   return (

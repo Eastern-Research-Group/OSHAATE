@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import Dermal from './dermal/Dermal';
 import DermalResult from './dermal/DermalResult';
-//import OralInput from "./OralInput";
+//import Oral from './oral/Oral';
+//import OralResult from './oral/OralResult';
 
 const Pathway = ({ title, category }) => {
   const [dermalResult, setDermalResult] = useState(null);
+  //const [oralResult, setOralResult] = useState(null);
   return (
     <>
       <br />
@@ -12,9 +14,11 @@ const Pathway = ({ title, category }) => {
       {category === 'dermal' ? (
         <Dermal dermalResult={dermalResult} setDermalResult={setDermalResult} />
       ) : null}
-      {/*{category === "oral" ? <OralInput /> : null} */}
+      {/*{category === 'oral' ? (
+        <Oral oralResult={oralResult} setOralResult={setOralResult} />
+      ) : null} */}
 
-      {(category === 'dermal' && dermalResult !== null) ||
+      {category === 'dermal' ||
       category === 'oral' ||
       category === 'inhalationGases' ||
       category === 'inhalationVapors' ||
@@ -23,6 +27,7 @@ const Pathway = ({ title, category }) => {
           {category === 'dermal' ? (
             <DermalResult dermalResult={dermalResult} />
           ) : null}
+          {/*{category === 'oral' ? <OralResult oralResult={oralResult} /> : null}*/}
         </div>
       ) : null}
     </>
