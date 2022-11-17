@@ -1,7 +1,7 @@
 import React from 'react';
 import { dermalCategory } from './DermalLookup';
 
-const DermalResult = ({ dermalResult }) => {
+const DermalResult = ({ dermalResult, showDermalResult }) => {
   //lookup result category
   let dermalResultCat = dermalCategory(dermalResult);
   return (

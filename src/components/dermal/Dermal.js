@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import DermalInput from './DermalInput';
 import { dermalPointEstimate } from './DermalLookup';
 
-const Dermal = ({ setDermalResult, dermalResult }) => {
+const Dermal = ({ setDermalResult, setShowDermalResult }) => {
   const [inputFields, setInputFields] = useState([
     {
       ingredient: '',
@@ -146,6 +146,8 @@ const Dermal = ({ setDermalResult, dermalResult }) => {
         return obj;
       });
 
+    //console.log(results);
+
     //sum
     if (results.length) {
       results.forEach((item) => {
@@ -165,11 +167,9 @@ const Dermal = ({ setDermalResult, dermalResult }) => {
       } else {
         setDermalResult(Math.round(100 / sum));
       }
-    } else {
-      //not valid for calculation
-      setDermalResult(null);
     }
-    //console.log(results);
+    //show results after calculation run
+    setShowDermalResult(true);
   };
 
   return (
