@@ -17,7 +17,15 @@ const Dermal = ({ setDermalResult, setShowDermalResult }) => {
 
   const handleFormChange = (event, idx) => {
     let data = [...inputFields];
-    data[idx][event.target.name] = event.target.value;
+    //limit WT and LD50 input to 2 decimal places
+    if (event.target.name === 'WT' || event.target.name === 'LD50') {
+      data[idx][event.target.name] = event.target.value.replace(
+        /(?<=\.[0-9]{2}).+/g,
+        ''
+      );
+    } else {
+      data[idx][event.target.name] = event.target.value;
+    }
     setInputFields(data);
   };
 
@@ -26,7 +34,7 @@ const Dermal = ({ setDermalResult, setShowDermalResult }) => {
   };
 
   const validateRows = (e) => {
-    e.preventDefault();
+    //e.preventDefault();
     let data = [...inputFields];
     let formIsValid = true;
 

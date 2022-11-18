@@ -35,7 +35,6 @@ const Input = ({
                     type="text"
                     id="ingredient"
                     name="ingredient"
-                    //required="required"
                     placeholder="Enter ingredient"
                     value={input.ingredient}
                     onChange={(event) => handleFormChange(event, idx)}
@@ -46,11 +45,9 @@ const Input = ({
                 <label htmlFor="WT">
                   <input
                     type="number"
-                    step=".01"
-                    id="WT"
                     min="0"
+                    id="WT"
                     name="WT"
-                    //required="required"
                     placeholder="Enter weight (%)"
                     value={input.WT}
                     onChange={(event) => handleFormChange(event, idx)}
@@ -61,9 +58,8 @@ const Input = ({
                 <label htmlFor="LD50">
                   <input
                     type="number"
-                    step=".01"
-                    id="LD50"
                     min="0"
+                    id="LD50"
                     name="LD50"
                     placeholder="Enter LD50 (mg/kg)"
                     value={input.LD50}
