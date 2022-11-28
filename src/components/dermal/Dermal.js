@@ -89,8 +89,10 @@ const Dermal = ({ setDermalResult, setShowDermalResult }) => {
 
       if (formIsValid && e.target.id === 'calculate') {
         if (
-          !(!unknown && totalWTPercent > 100) ||
-          (unknown && totalWTPercent + parseFloat(unknown) > 100)
+          !(
+            (!unknown && totalWTPercent > 100) ||
+            (unknown !== null && totalWTPercent + parseFloat(unknown) > 100)
+          )
         ) {
           calculate();
         } else {
