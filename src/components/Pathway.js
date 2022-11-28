@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 import Dermal from './dermal/Dermal';
 import DermalResult from './dermal/DermalResult';
-//import Oral from './oral/Oral';
-//import OralResult from './oral/OralResult';
+import Oral from './oral/Oral';
+import OralResult from './oral/OralResult';
 
 const Pathway = ({ title, category }) => {
   const [dermalResult, setDermalResult] = useState(null);
   let [showDermalResult, setShowDermalResult] = useState(false);
-  //const [oralResult, setOralResult] = useState(null);
+  const [oralResult, setOralResult] = useState(null);
+  let [showOralResult, setShowOralResult] = useState(false);
   return (
     <>
       <br />
@@ -20,9 +21,14 @@ const Pathway = ({ title, category }) => {
           setShowDermalResult={setShowDermalResult}
         />
       ) : null}
-      {/*{category === 'oral' ? (
-        <Oral oralResult={oralResult} setOralResult={setOralResult} />
-      ) : null} */}
+      {category === 'oral' ? (
+        <Oral
+          oralResult={oralResult}
+          setOralResult={setOralResult}
+          showOralResult={showOralResult}
+          setShowDermalResult={setShowDermalResult}
+        />
+      ) : null}
 
       {category === 'dermal' ||
       category === 'oral' ||
@@ -36,7 +42,12 @@ const Pathway = ({ title, category }) => {
               showDermalResult={showDermalResult}
             />
           ) : null}
-          {/*{category === 'oral' ? <OralResult oralResult={oralResult} /> : null}*/}
+          {category === 'oral' && showOralResult ? (
+            <OralResult
+              oralResult={oralResult}
+              showOralResult={showOralResult}
+            />
+          ) : null}
         </div>
       ) : null}
     </>

@@ -9,13 +9,13 @@ function Tooltip({ children, title, position }) {
 }
 
 const Input = ({
-  inputFields,
-  handleFormChange,
-  handleUnknownChange,
+  dermalInputFields,
+  handleDermalFormChange,
+  handleDermalUnknownChange,
   removeRow,
 }) => {
   return (
-    <div id="tablewrapper">
+    <div className="tablewrapper">
       <table id="dermal">
         <thead>
           <tr>
@@ -27,30 +27,30 @@ const Input = ({
           </tr>
         </thead>
         <tbody>
-          {inputFields.map((input, idx) => (
+          {dermalInputFields.map((input, idx) => (
             <tr key={idx}>
               <td>
-                <label htmlFor="ingredient">
+                <label htmlFor="ingredientDermal">
                   <input
                     type="text"
-                    id="ingredient"
-                    name="ingredient"
+                    id="ingredientDermal"
+                    name="ingredientDermal"
                     placeholder="Enter ingredient"
                     value={input.ingredient}
-                    onChange={(event) => handleFormChange(event, idx)}
+                    onChange={(event) => handleDermalFormChange(event, idx)}
                   />
                 </label>
               </td>
               <td>
-                <label htmlFor="WT">
+                <label htmlFor="weightDermal">
                   <input
                     type="number"
                     min="0"
-                    id="WT"
-                    name="WT"
+                    id="weightDermal"
+                    name="weightDermal"
                     placeholder="Enter weight (%)"
                     value={input.WT}
-                    onChange={(event) => handleFormChange(event, idx)}
+                    onChange={(event) => handleDermalFormChange(event, idx)}
                   />
                 </label>
               </td>
@@ -63,7 +63,7 @@ const Input = ({
                     name="LD50"
                     placeholder="Enter LD50 (mg/kg)"
                     value={input.LD50}
-                    onChange={(event) => handleFormChange(event, idx)}
+                    onChange={(event) => handleDermalFormChange(event, idx)}
                   />
                 </label>
               </td>
@@ -73,7 +73,7 @@ const Input = ({
                     name="limitDose"
                     id="limitDose"
                     value={input.limitDose}
-                    onChange={(event) => handleFormChange(event, idx)}
+                    onChange={(event) => handleDermalFormChange(event, idx)}
                   >
                     <option value="">Select Limit Dose</option>
                     <option>&le; 50</option>
@@ -91,7 +91,7 @@ const Input = ({
                     name="classification"
                     id="classification"
                     value={input.classification}
-                    onChange={(event) => handleFormChange(event, idx)}
+                    onChange={(event) => handleDermalFormChange(event, idx)}
                   >
                     <option value="">Select Classification</option>
                     <option>Category 1</option>
@@ -119,7 +119,7 @@ const Input = ({
                 title='Sum of relevant ingredient(s) with unknown "route name" toxicity'
                 position="right"
               >
-                <label htmlFor="unknown" className="tooltip">
+                <label htmlFor="unknownDermal" className="tooltip">
                   Sum Unknown Toxicity &#9432;
                 </label>
               </Tooltip>
@@ -128,10 +128,10 @@ const Input = ({
               <br />
               <input
                 type="number"
-                id="unknown"
-                name="unknown"
+                id="unknownDermal"
+                name="unknownDermal"
                 placeholder="Enter weight (%)"
-                onChange={(event) => handleUnknownChange(event)}
+                onChange={(event) => handleDermalUnknownChange(event)}
               />
             </td>
           </tr>

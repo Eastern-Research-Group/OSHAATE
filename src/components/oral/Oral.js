@@ -2,32 +2,40 @@ import React, { useState } from 'react';
 import OralInput from './OralInput';
 //import { dermalPointEstimate } from './DermalLookup';
 
-const Oral = ({ setOralResult, oralResult }) => {
-  const [inputFields, setInputFields] = useState([
-    { ingredient: '', WT: '', toxicity: '' },
+const Oral = ({ setOralResult, setShowOralResult }) => {
+  const [oralInputFields, setOralInputFields] = useState([
+    { ingredientOral: '', weightOral: '', toxicity: '' },
   ]);
 
   let [unknown, setUnknown] = useState(null);
 
-  const handleFormChange = (event, idx) => {
-    let data = [...inputFields];
-    data[idx][event.target.name] = event.target.value;
-    setInputFields(data);
+  const handleOralFormChange = (event, idx) => {
+    let data = [...oralInputFields];
+    //limit WT input to 2 decimal places
+    if (event.target.name === 'weightOral') {
+      data[idx][event.target.name] = event.target.value.replace(
+        /(?<=\.[0-9]{2}).+/g,
+        ''
+      );
+    } else {
+      data[idx][event.target.name] = event.target.value;
+    }
+    setOralInputFields(data);
   };
 
-  const handleUnknownChange = (event) => {
+  const handleOralUnknownChange = (event) => {
     setUnknown(event.target.value);
   };
 
   const validateRows = (e) => {
     e.preventDefault();
-    let data = [...inputFields];
+    let data = [...oralInputFields];
     let formIsValid = true;
 
-    if (!data[data.length - 1].ingredient) {
+    if (!data[data.length - 1].ingredientOral) {
       formIsValid = false;
       alert('Ingredient is required in row.');
-    } else if (!data[data.length - 1].WT) {
+    } else if (!data[data.length - 1].weightOral) {
       formIsValid = false;
       alert('Weight (WT) is required in row.');
     } else if (!data[data.length - 1].toxicity) {
@@ -39,105 +47,109 @@ const Oral = ({ setOralResult, oralResult }) => {
         addRow();
       }
 
-      /*const totalWTPercent = data.reduce((accumulator, object) => {
-        return accumulator + parseFloat(object.WT);
+      const totalWTPercent = data.reduce((accumulator, object) => {
+        return accumulator + parseFloat(object.weightOral);
       }, 0);
 
       if (formIsValid && e.target.id === 'calculate') {
         if (
-          (!unknown && totalWTPercent === 100) ||
-          (unknown && totalWTPercent + parseFloat(unknown) === 100)
+          !(!unknown && totalWTPercent > 100) ||
+          (unknown && totalWTPercent + parseFloat(unknown) > 100)
         ) {
-          calculate();
+          /*calculate();*/ console.log('calculate');
         } else {
-          alert('Total weight entered must be equal to 100%');
+          alert('Total weight entered must not be greater than 100%.');
         }
-      }*/
+      }
     }
   };
 
   const addRow = () => {
     let newfield = {
-      ingredient: '',
-      WT: '',
-      LD50: '',
-      limitDose: '',
-      classification: '',
+      ingredientOral: '',
+      weightOral: '',
+      toxicity: '',
     };
-    setInputFields([...inputFields, newfield]);
+    setOralInputFields([...oralInputFields, newfield]);
   };
 
   const removeRow = (idx) => {
-    let data = [...inputFields];
+    let data = [...oralInputFields];
     data.splice(idx, 1);
-    setInputFields(data);
+    setOralInputFields(data);
   };
 
-  //TODO: FOR ORAL
+  //TODO: CUSTOMIZE FOR ORAL
   /*const calculate = () => {
-    let d = [...inputFields];
+    let data = [...oralInputFields];
     let sum = 0;
-    let results = d.map((obj) => {
-      //Calculate LD50 values: if not empty, return weight/LD50 value
-      //NOTE: LD50 values > 5,000 not in any GHS Dermal Acute Category, don't calculate?
-      if (obj.LD50 !== '') {
-        return {
-          ...obj,
-          LD50: parseFloat(obj.WT) / parseFloat(obj.LD50),
-        };
-      }
-      //Calculate Classification values: if not empty, return weight/point estimate
-      //NOTE: there is no point estimate for Not Classified (LD50 > 5,000), WT cannot be divided by 0
-      if (obj.classification !== '') {
-        return {
-          ...obj,
-          classification:
-            parseFloat(obj.WT) /
-            dermalPointEstimate('Classification', obj.classification),
-        };
-      }
-      //Calculate Limit Dose values: if not empty, return weight/point estimate
-      //NOTE: there is no point estimate for > 2,000 (No signs of toxicity), WT cannot be divided by 0
-      if (obj.limitDose !== '') {
-        return {
-          ...obj,
-          limitDose:
-            parseFloat(obj.WT) /
-            dermalPointEstimate('Limit Dose', obj.limitDose),
-        };
-      }
-      return obj;
-    });
-
-    //sum
-    results.forEach((item) => {
-      if (item.LD50 !== '') {
-        sum += item.LD50;
-      }
-      if (item.limitDose !== '') {
-        sum += item.limitDose;
-      }
-      if (item.classification !== '') {
-        sum += item.classification;
-      }
-    });
+    let results = data
+      .filter(
+        (obj) =>
+          (obj.LD50 !== '' && parseFloat(obj.LD50) <= 5000) ||
+          (obj.limitDose !== '' &&
+            obj.limitDose !== '> 2,000 (No signs of toxicity)') ||
+          (obj.classification !== '' &&
+            obj.classification !== 'Not Classified (LD50 > 5,000)')
+      )
+      .map((obj) => {
+        if (obj.LD50 !== '') {
+          return {
+            ...obj,
+            LD50: parseFloat(obj.weightDermal) / parseFloat(obj.LD50),
+          };
+        }
+        if (obj.limitDose !== '') {
+          return {
+            ...obj,
+            limitDose:
+              parseFloat(obj.weightDermal) /
+              dermalPointEstimate('Limit Dose', obj.limitDose),
+          };
+        }
+        if (obj.classification !== '') {
+          return {
+            ...obj,
+            classification:
+              parseFloat(obj.weight.Dermal) /
+              dermalPointEstimate('Classification', obj.classification),
+          };
+        }
+        return obj;
+      });
 
     //console.log(results);
 
-    //calculate result
-    if (unknown !== null && unknown > 10) {
-      setDermalResult(Math.round((100 - unknown) / sum));
-    } else {
-      setDermalResult(Math.round(100 / sum));
+    //sum
+    if (results.length) {
+      results.forEach((item) => {
+        if (item.LD50 !== '') {
+          sum += item.LD50;
+        }
+        if (item.limitDose !== '') {
+          sum += item.limitDose;
+        }
+        if (item.classification !== '') {
+          sum += item.classification;
+        }
+      });
+      //calculate result
+      if (unknown !== null && unknown > 10) {
+        setOralResult(Math.round((100 - unknown) / sum));
+      } else {
+        setOralResult(Math.round(100 / sum));
+      }
     }
+    //show results after calculation run
+    setShowOralResult(true);
   };*/
 
   return (
     <form>
       <OralInput
-        inputFields={inputFields}
-        handleFormChange={handleFormChange}
-        handleUnknownChange={handleUnknownChange}
+        oralInputFields={oralInputFields}
+        handleOralFormChange={handleOralFormChange}
+        handleOralUnknownChange={handleOralUnknownChange}
         removeRow={removeRow}
       />
       <br />

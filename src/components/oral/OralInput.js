@@ -1,25 +1,21 @@
 import React from 'react';
 
-//TODO: Remove Arrows/Spinners for number type input
-///* Chrome, Safari, Edge, Opera */
-/*input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}*/
-/* Firefox */
-/*input[type=number] {
-  -moz-appearance: textfield;
-}*/
+function Tooltip({ children, title, position }) {
+  return (
+    <div className={`tooltip`} data-position={position} data-tool-tip={title}>
+      {children}
+    </div>
+  );
+}
 
 const Input = ({
-  inputFields,
-  handleFormChange,
-  handleUnknownChange,
+  oralInputFields,
+  handleOralFormChange,
+  handleOralUnknownChange,
   removeRow,
 }) => {
   return (
-    <div id="tablewrapper">
+    <div className="tablewrapper">
       <table id="oral">
         <thead>
           <tr>
@@ -29,39 +25,49 @@ const Input = ({
           </tr>
         </thead>
         <tbody>
-          {this.state.rows.map((input, idx) => (
+          {oralInputFields.map((input, idx) => (
             <tr key={idx}>
               <td>
-                <input
-                  type="text"
-                  name="ingredient"
-                  required="required"
-                  value={input.ingredient}
-                  onChange={(event) => handleFormChange(idx, event)}
-                />
+                <label htmlFor="ingredientOral">
+                  <input
+                    type="text"
+                    id="ingredientOral"
+                    name="ingredientOral"
+                    placeholder="Enter ingredient"
+                    value={input.ingredient}
+                    onChange={(event) => handleOralFormChange(event, idx)}
+                  />
+                </label>
               </td>
               <td>
-                <input
-                  type="number"
-                  min="0"
-                  name="WT"
-                  required="required"
-                  value={input.WT}
-                  onChange={(event) => handleFormChange(idx, event)}
-                />
+                <label htmlFor="weightOral">
+                  <input
+                    type="number"
+                    min="0"
+                    id="weightOral"
+                    name="weightOral"
+                    placeholder="Enter weight (%)"
+                    value={input.weightOral}
+                    onChange={(event) => handleOralFormChange(event, idx)}
+                  />
+                </label>
               </td>
               <td>
-                <select
-                  name="toxicity"
-                  value={input.toxicity}
-                  onChange={(event) => handleFormChange(idx, event)}
-                >
-                  <option>0 &lt; Category 1 &le; 5</option>
-                  <option>5 &lt; Category 2 &le; 50</option>
-                  <option>50 &lt; Category 3 &le; 300</option>
-                  <option>300 &lt; Category 4 &le; 2,000</option>
-                  <option>2,000 &lt; Category 5 &le; 5,000</option>
-                </select>
+                <label htmlFor="toxicity">
+                  <select
+                    name="toxicity"
+                    id="toxicity"
+                    value={input.toxicity}
+                    onChange={(event) => handleOralFormChange(event, idx)}
+                  >
+                    <option value="">Select Available Toxicity</option>
+                    <option>0 &lt; Category 1 &le; 5</option>
+                    <option>5 &lt; Category 2 &le; 50</option>
+                    <option>50 &lt; Category 3 &le; 300</option>
+                    <option>300 &lt; Category 4 &le; 2,000</option>
+                    <option>2,000 &lt; Category 5 &le; 5,000</option>
+                  </select>
+                </label>
               </td>
               <td>
                 {idx === 0 ? null : (
@@ -75,26 +81,28 @@ const Input = ({
           <tr>
             <td>
               <br />
-              <label htmlFor="unknown">
-                <b>Combined Unknown:</b>
-              </label>
+              <Tooltip
+                title='Sum of relevant ingredient(s) with unknown "route name" toxicity'
+                position="right"
+              >
+                <label htmlFor="unknownOral" className="tooltip">
+                  Sum Unknown Toxicity &#9432;
+                </label>
+              </Tooltip>
             </td>
             <td>
               <br />
               <input
                 type="number"
-                id="unknown"
-                name="unknown"
+                id="unknownOral"
+                name="unknownOral"
                 placeholder="Enter weight (%)"
-                onChange={(event) => handleUnknownChange(event)}
+                onChange={(event) => handleOralUnknownChange(event)}
               />
             </td>
           </tr>
         </tbody>
       </table>
-      <br />
-      <div></div>
-      <br />
     </div>
   );
 };

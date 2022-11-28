@@ -3,10 +3,10 @@ import DermalInput from './DermalInput';
 import { dermalPointEstimate } from './DermalLookup';
 
 const Dermal = ({ setDermalResult, setShowDermalResult }) => {
-  const [inputFields, setInputFields] = useState([
+  const [dermalInputFields, setDermalInputFields] = useState([
     {
-      ingredient: '',
-      WT: '',
+      ingredientDermal: '',
+      weightDermal: '',
       LD50: '',
       limitDose: '',
       classification: '',
@@ -15,10 +15,10 @@ const Dermal = ({ setDermalResult, setShowDermalResult }) => {
 
   let [unknown, setUnknown] = useState(null);
 
-  const handleFormChange = (event, idx) => {
-    let data = [...inputFields];
+  const handleDermalFormChange = (event, idx) => {
+    let data = [...dermalInputFields];
     //limit WT and LD50 input to 2 decimal places
-    if (event.target.name === 'WT' || event.target.name === 'LD50') {
+    if (event.target.name === 'weightDermal' || event.target.name === 'LD50') {
       data[idx][event.target.name] = event.target.value.replace(
         /(?<=\.[0-9]{2}).+/g,
         ''
@@ -26,22 +26,23 @@ const Dermal = ({ setDermalResult, setShowDermalResult }) => {
     } else {
       data[idx][event.target.name] = event.target.value;
     }
-    setInputFields(data);
+    setDermalInputFields(data);
+    //console.log(dermalInputFields);
   };
 
-  const handleUnknownChange = (event) => {
+  const handleDermalUnknownChange = (event) => {
     setUnknown(event.target.value);
   };
 
   const validateRows = (e) => {
     //e.preventDefault();
-    let data = [...inputFields];
+    let data = [...dermalInputFields];
     let formIsValid = true;
 
-    if (!data[data.length - 1].ingredient) {
+    if (!data[data.length - 1].ingredientDermal) {
       formIsValid = false;
       alert('Ingredient is required in row.');
-    } else if (!data[data.length - 1].WT) {
+    } else if (!data[data.length - 1].weightDermal) {
       formIsValid = false;
       alert('Weight (WT) is required in row.');
     } else if (
@@ -83,7 +84,7 @@ const Dermal = ({ setDermalResult, setShowDermalResult }) => {
       }
 
       const totalWTPercent = data.reduce((accumulator, object) => {
-        return accumulator + parseFloat(object.WT);
+        return accumulator + parseFloat(object.weightDermal);
       }, 0);
 
       if (formIsValid && e.target.id === 'calculate') {
@@ -101,23 +102,24 @@ const Dermal = ({ setDermalResult, setShowDermalResult }) => {
 
   const addRow = () => {
     let newfield = {
-      ingredient: '',
-      WT: '',
+      ingredientDermal: '',
+      weightDermal: '',
       LD50: '',
       limitDose: '',
       classification: '',
     };
-    setInputFields([...inputFields, newfield]);
+    setDermalInputFields([...dermalInputFields, newfield]);
   };
 
   const removeRow = (idx) => {
-    let data = [...inputFields];
+    let data = [...dermalInputFields];
     data.splice(idx, 1);
-    setInputFields(data);
+    setDermalInputFields(data);
   };
 
   const calculate = () => {
-    let data = [...inputFields];
+    //console.log('Dermal calculate clicked');
+    let data = [...dermalInputFields];
     let sum = 0;
     let results = data
       .filter(
@@ -132,14 +134,14 @@ const Dermal = ({ setDermalResult, setShowDermalResult }) => {
         if (obj.LD50 !== '') {
           return {
             ...obj,
-            LD50: parseFloat(obj.WT) / parseFloat(obj.LD50),
+            LD50: parseFloat(obj.weightDermal) / parseFloat(obj.LD50),
           };
         }
         if (obj.limitDose !== '') {
           return {
             ...obj,
             limitDose:
-              parseFloat(obj.WT) /
+              parseFloat(obj.weightDermal) /
               dermalPointEstimate('Limit Dose', obj.limitDose),
           };
         }
@@ -147,7 +149,7 @@ const Dermal = ({ setDermalResult, setShowDermalResult }) => {
           return {
             ...obj,
             classification:
-              parseFloat(obj.WT) /
+              parseFloat(obj.weightDermal) /
               dermalPointEstimate('Classification', obj.classification),
           };
         }
@@ -156,7 +158,7 @@ const Dermal = ({ setDermalResult, setShowDermalResult }) => {
 
     //console.log(results);
 
-    //sum
+    //if results, sum
     if (results.length) {
       results.forEach((item) => {
         if (item.LD50 !== '') {
@@ -175,17 +177,18 @@ const Dermal = ({ setDermalResult, setShowDermalResult }) => {
       } else {
         setDermalResult(Math.round(100 / sum));
       }
+    } else {
+      setDermalResult(null);
     }
-    //show results after calculation run
     setShowDermalResult(true);
   };
 
   return (
     <form>
       <DermalInput
-        inputFields={inputFields}
-        handleFormChange={handleFormChange}
-        handleUnknownChange={handleUnknownChange}
+        dermalInputFields={dermalInputFields}
+        handleDermalFormChange={handleDermalFormChange}
+        handleDermalUnknownChange={handleDermalUnknownChange}
         removeRow={removeRow}
       />
       <br />
