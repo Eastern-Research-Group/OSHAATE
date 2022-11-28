@@ -156,7 +156,7 @@ const Dermal = ({ setDermalResult, setShowDermalResult }) => {
 
     //console.log(results);
 
-    //sum
+    //if results, sum
     if (results.length) {
       results.forEach((item) => {
         if (item.LD50 !== '') {
@@ -175,8 +175,9 @@ const Dermal = ({ setDermalResult, setShowDermalResult }) => {
       } else {
         setDermalResult(Math.round(100 / sum));
       }
+    } else {
+      setDermalResult(null);
     }
-    //show results after calculation run
     setShowDermalResult(true);
   };
 
