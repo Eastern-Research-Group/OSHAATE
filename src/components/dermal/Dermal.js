@@ -34,7 +34,6 @@ const Dermal = ({ setDermalResult, setShowDermalResult }) => {
   };
 
   const validateRows = (e) => {
-    //TODO: apply change to feature/oral-calculator branch
     let data = [...inputFields];
     let formIsValid = true;
 
@@ -73,7 +72,6 @@ const Dermal = ({ setDermalResult, setShowDermalResult }) => {
         'Enter only one of LD50, Limit Dose Data, or Classification in row.'
       );
     } else {
-      //TODO: apply change to feature/oral-calculator branch
       if (formIsValid && e.target.id === 'add') {
         addRow();
       }
@@ -101,7 +99,6 @@ const Dermal = ({ setDermalResult, setShowDermalResult }) => {
   };
 
   const calculate = () => {
-    //TODO: apply change to feature/oral-calculator branch
     let data = [...inputFields];
     let results = data
       .filter(
@@ -176,6 +173,7 @@ const Dermal = ({ setDermalResult, setShowDermalResult }) => {
       setShowDermalResult(true);
     } else {
       alert('Total weight to be calculated must not be greater than 100%.');
+      setShowDermalResult(false);
     }
   };
 
