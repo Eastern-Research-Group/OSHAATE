@@ -35,7 +35,6 @@ const Dermal = ({ setDermalResult, setShowDermalResult }) => {
   };
 
   const validateRows = (e) => {
-    //e.preventDefault();
     let data = [...dermalInputFields];
     let formIsValid = true;
 
@@ -74,30 +73,11 @@ const Dermal = ({ setDermalResult, setShowDermalResult }) => {
         'Enter only one of LD50, Limit Dose Data, or Classification in row.'
       );
     } else {
-      /*if (data[data.length - 1].LD50 && data[data.length - 1].LD50 > 5000) {
-        formIsValid = false;
-        alert('LD50 greater than 5,000 mg/kg cannot be calculated.');
-      }*/
-      //return formIsValid;
       if (formIsValid && e.target.id === 'add') {
         addRow();
       }
-
-      const totalWTPercent = data.reduce((accumulator, object) => {
-        return accumulator + parseFloat(object.weightDermal);
-      }, 0);
-
       if (formIsValid && e.target.id === 'calculate') {
-        if (
-          !(
-            (!unknown && totalWTPercent > 100) ||
-            (unknown !== null && totalWTPercent + parseFloat(unknown) > 100)
-          )
-        ) {
-          calculate();
-        } else {
-          alert('Total weight entered must not be greater than 100%.');
-        }
+        calculate();
       }
     }
   };
@@ -120,9 +100,7 @@ const Dermal = ({ setDermalResult, setShowDermalResult }) => {
   };
 
   const calculate = () => {
-    //console.log('Dermal calculate clicked');
     let data = [...dermalInputFields];
-    let sum = 0;
     let results = data
       .filter(
         (obj) =>
@@ -160,29 +138,44 @@ const Dermal = ({ setDermalResult, setShowDermalResult }) => {
 
     //console.log(results);
 
-    //if results, sum
-    if (results.length) {
-      results.forEach((item) => {
-        if (item.LD50 !== '') {
-          sum += item.LD50;
+    const totalWTPercent = results.reduce((accumulator, object) => {
+      return accumulator + parseFloat(object.weightDermal);
+    }, 0);
+    //validate weight total to be calculated (not greater than 100)
+    if (
+      !(
+        (!unknown && totalWTPercent > 100) ||
+        (unknown !== null && totalWTPercent + parseFloat(unknown) > 100)
+      )
+    ) {
+      //if results, sum
+      let sum = 0;
+      if (results.length) {
+        results.forEach((item) => {
+          if (item.LD50 !== '') {
+            sum += item.LD50;
+          }
+          if (item.limitDose !== '') {
+            sum += item.limitDose;
+          }
+          if (item.classification !== '') {
+            sum += item.classification;
+          }
+        });
+        //calculate result
+        if (unknown !== null && unknown > 10) {
+          setDermalResult(Math.round((100 - unknown) / sum));
+        } else {
+          setDermalResult(Math.round(100 / sum));
         }
-        if (item.limitDose !== '') {
-          sum += item.limitDose;
-        }
-        if (item.classification !== '') {
-          sum += item.classification;
-        }
-      });
-      //calculate result
-      if (unknown !== null && unknown > 10) {
-        setDermalResult(Math.round((100 - unknown) / sum));
       } else {
-        setDermalResult(Math.round(100 / sum));
+        setDermalResult(null);
       }
+      setShowDermalResult(true);
     } else {
-      setDermalResult(null);
+      alert('Total weight to be calculated must not be greater than 100%.');
+      setShowDermalResult(false);
     }
-    setShowDermalResult(true);
   };
 
   return (
