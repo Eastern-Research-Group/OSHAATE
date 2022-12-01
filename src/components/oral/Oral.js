@@ -71,17 +71,15 @@ const Oral = ({ setOralResult, setShowOralResult }) => {
         alert(
           'Enter only one of LD50, Limit Dose Data, or Classification in row.'
         );
-      } else {
-        //return formIsValid;
-        if (formIsValid && e.target.id === 'add') {
-          addRow();
-        }
-        if (formIsValid && e.target.id === 'calculate') {
-          //console.log('calculate');
-          calculate();
-        }
       }
     });
+
+    if (formIsValid && e.target.id === 'add') {
+      addRow();
+    }
+    if (formIsValid && e.target.id === 'calculate') {
+      calculate();
+    }
   };
 
   const addRow = () => {
