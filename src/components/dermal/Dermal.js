@@ -3,22 +3,25 @@ import DermalInput from './DermalInput';
 import { dermalPointEstimate } from './DermalLookup';
 
 const Dermal = ({ setDermalResult, setShowDermalResult }) => {
-  const [dermalInputFields, setDermalInputFields] = useState([
+  const [inputFields, setInputFields] = useState([
     {
-      ingredientDermal: '',
-      weightDermal: '',
-      LD50: '',
-      limitDose: '',
-      classification: '',
+      ingredient_dermal: '',
+      weight_dermal: '',
+      LD50_dermal: '',
+      limitdose_dermal: '',
+      classification_dermal: '',
     },
   ]);
 
   let [unknown, setUnknown] = useState(null);
 
-  const handleDermalFormChange = (event, idx) => {
-    let data = [...dermalInputFields];
+  const handleFormChange = (event, idx) => {
+    let data = [...inputFields];
     //limit WT and LD50 input to 2 decimal places
-    if (event.target.name === 'weightDermal' || event.target.name === 'LD50') {
+    if (
+      event.target.name === 'weight_dermal' ||
+      event.target.name === 'LD50_dermal'
+    ) {
       data[idx][event.target.name] = event.target.value.replace(
         /(?<=\.[0-9]{2}).+/g,
         ''
@@ -26,111 +29,114 @@ const Dermal = ({ setDermalResult, setShowDermalResult }) => {
     } else {
       data[idx][event.target.name] = event.target.value;
     }
-    setDermalInputFields(data);
-    //console.log(dermalInputFields);
+    setInputFields(data);
+    //console.log(inputFields);
   };
 
-  const handleDermalUnknownChange = (event) => {
+  const handleUnknownChange = (event) => {
     setUnknown(event.target.value);
   };
 
   const validateRows = (e) => {
-    let data = [...dermalInputFields];
+    e.preventDefault();
+    let data = [...inputFields];
     let formIsValid = true;
-
-    if (!data[data.length - 1].ingredientDermal) {
-      formIsValid = false;
-      alert('Ingredient is required in row.');
-    } else if (!data[data.length - 1].weightDermal) {
-      formIsValid = false;
-      alert('Weight (WT) is required in row.');
-    } else if (
-      !data[data.length - 1].LD50 &&
-      !data[data.length - 1].limitDose &&
-      !data[data.length - 1].classification
-    ) {
-      formIsValid = false;
-      alert('LD50 or Limit Dose Data or Classification is required in row.');
-    } else if (
-      !(
-        data[data.length - 1].LD50 &&
-        !data[data.length - 1].limitDose &&
-        !data[data.length - 1].classification
-      ) &&
-      !(
-        !data[data.length - 1].LD50 &&
-        data[data.length - 1].limitDose &&
-        !data[data.length - 1].classification
-      ) &&
-      !(
-        !data[data.length - 1].LD50 &&
-        !data[data.length - 1].limitDose &&
-        data[data.length - 1].classification
-      )
-    ) {
-      formIsValid = false;
-      alert(
-        'Enter only one of LD50, Limit Dose Data, or Classification in row.'
-      );
-    } else {
-      if (formIsValid && e.target.id === 'add') {
-        addRow();
+    data.forEach((item) => {
+      if (!item.ingredient_dermal) {
+        formIsValid = false;
+        alert('Ingredient is required in row.');
+      } else if (!item.weight_dermal) {
+        formIsValid = false;
+        alert('Weight (WT) is required in row.');
+      } else if (
+        !item.LD50_dermal &&
+        !item.limitdose_dermal &&
+        !item.classification_dermal
+      ) {
+        formIsValid = false;
+        alert('LD50 or Limit Dose Data or Classification is required in row.');
+      } else if (
+        !(
+          item.LD50_dermal &&
+          !item.limitdose_dermal &&
+          !item.classification_dermal
+        ) &&
+        !(
+          !item.LD50_dermal &&
+          item.limitdose_dermal &&
+          !item.classification_dermal
+        ) &&
+        !(
+          !item.LD50_dermal &&
+          !item.limitdose_dermal &&
+          item.classification_dermal
+        )
+      ) {
+        formIsValid = false;
+        alert(
+          'Enter only one of LD50, Limit Dose Data, or Classification in row.'
+        );
+      } else {
+        if (formIsValid && e.target.id === 'add') {
+          addRow();
+        }
+        if (formIsValid && e.target.id === 'calculate') {
+          calculate();
+        }
       }
-      if (formIsValid && e.target.id === 'calculate') {
-        calculate();
-      }
-    }
+    });
   };
 
   const addRow = () => {
     let newfield = {
-      ingredientDermal: '',
-      weightDermal: '',
-      LD50: '',
-      limitDose: '',
-      classification: '',
+      ingredient_dermal: '',
+      weight_dermal: '',
+      LD50_dermal: '',
+      limitdose_dermal: '',
+      classification_dermal: '',
     };
-    setDermalInputFields([...dermalInputFields, newfield]);
+    setInputFields([...inputFields, newfield]);
   };
 
   const removeRow = (idx) => {
-    let data = [...dermalInputFields];
+    let data = [...inputFields];
     data.splice(idx, 1);
-    setDermalInputFields(data);
+    setInputFields(data);
   };
 
   const calculate = () => {
-    let data = [...dermalInputFields];
+    let data = [...inputFields];
     let results = data
       .filter(
         (obj) =>
-          (obj.LD50 !== '' && parseFloat(obj.LD50) <= 5000) ||
-          (obj.limitDose !== '' &&
-            obj.limitDose !== '> 2,000 (No signs of toxicity)') ||
-          (obj.classification !== '' &&
-            obj.classification !== 'Not Classified (LD50 > 5,000)')
+          (obj.LD50_dermal !== '' && parseFloat(obj.LD50_dermal) <= 5000) ||
+          (obj.limitdose_dermal !== '' &&
+            obj.limitdose_dermal !== '> 2,000 (No signs of toxicity)') ||
+          (obj.classification_dermal !== '' &&
+            obj.classification_dermal !== 'Not Classified (LD50 > 5,000)')
       )
       .map((obj) => {
-        if (obj.LD50 !== '') {
+        if (obj.LD50_dermal !== '') {
           return {
             ...obj,
-            LD50: parseFloat(obj.weightDermal) / parseFloat(obj.LD50),
+            LD50_dermal:
+              parseFloat(obj.weight_dermal) / parseFloat(obj.LD50_dermal),
           };
         }
-        if (obj.limitDose !== '') {
+        if (obj.limitdose_dermal !== '') {
           return {
             ...obj,
-            limitDose:
-              parseFloat(obj.weightDermal) /
-              dermalPointEstimate('Limit Dose', obj.limitDose),
+            limitdose_dermal:
+              parseFloat(obj.weight_dermal) /
+              dermalPointEstimate('Limit Dose', obj.limitdose_dermal),
           };
         }
-        if (obj.classification !== '') {
+        if (obj.classification_dermal !== '') {
           return {
             ...obj,
-            classification:
-              parseFloat(obj.weightDermal) /
-              dermalPointEstimate('Classification', obj.classification),
+            classification_dermal:
+              parseFloat(obj.weight_dermal) /
+              dermalPointEstimate('Classification', obj.classification_dermal),
           };
         }
         return obj;
@@ -138,28 +144,28 @@ const Dermal = ({ setDermalResult, setShowDermalResult }) => {
 
     //console.log(results);
 
-    const totalWTPercent = results.reduce((accumulator, object) => {
-      return accumulator + parseFloat(object.weightDermal);
+    const totalWTPercentDermal = results.reduce((accumulator, object) => {
+      return accumulator + parseFloat(object.weight_dermal);
     }, 0);
     //validate weight total to be calculated (not greater than 100)
     if (
       !(
-        (!unknown && totalWTPercent > 100) ||
-        (unknown !== null && totalWTPercent + parseFloat(unknown) > 100)
+        (!unknown && totalWTPercentDermal > 100) ||
+        (unknown !== null && totalWTPercentDermal + parseFloat(unknown) > 100)
       )
     ) {
       //if results, sum
       let sum = 0;
       if (results.length) {
         results.forEach((item) => {
-          if (item.LD50 !== '') {
-            sum += item.LD50;
+          if (item.LD50_dermal !== '') {
+            sum += item.LD50_dermal;
           }
-          if (item.limitDose !== '') {
-            sum += item.limitDose;
+          if (item.limitdose_dermal !== '') {
+            sum += item.limitdose_dermal;
           }
-          if (item.classification !== '') {
-            sum += item.classification;
+          if (item.classification_dermal !== '') {
+            sum += item.classification_dermal;
           }
         });
         //calculate result
@@ -181,9 +187,9 @@ const Dermal = ({ setDermalResult, setShowDermalResult }) => {
   return (
     <form>
       <DermalInput
-        dermalInputFields={dermalInputFields}
-        handleDermalFormChange={handleDermalFormChange}
-        handleDermalUnknownChange={handleDermalUnknownChange}
+        inputFields={inputFields}
+        handleFormChange={handleFormChange}
+        handleUnknownChange={handleUnknownChange}
         removeRow={removeRow}
       />
       <br />

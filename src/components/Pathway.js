@@ -26,7 +26,7 @@ const Pathway = ({ title, category }) => {
           oralResult={oralResult}
           setOralResult={setOralResult}
           showOralResult={showOralResult}
-          setShowDermalResult={setShowDermalResult}
+          setShowOralResult={setShowOralResult}
         />
       ) : null}
 
