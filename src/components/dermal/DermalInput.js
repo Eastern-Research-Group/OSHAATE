@@ -15,7 +15,7 @@ const Input = ({
   removeRow,
 }) => {
   return (
-    <div id="tablewrapper">
+    <div className="tablewrapper">
       <table id="dermal">
         <thead>
           <tr>
@@ -30,50 +30,52 @@ const Input = ({
           {inputFields.map((input, idx) => (
             <tr key={idx}>
               <td>
-                <label htmlFor="ingredient">
+                <label htmlFor="ingredient_dermal">
                   <input
                     type="text"
-                    id="ingredient"
-                    name="ingredient"
+                    id="ingredient_dermal"
+                    name="ingredient_dermal"
                     placeholder="Enter ingredient"
-                    value={input.ingredient}
-                    onChange={(event) => handleFormChange(event, idx)}
+                    value={input.ingredient_dermal}
+                    onChange={(e) => handleFormChange(e, idx)}
                   />
                 </label>
               </td>
               <td>
-                <label htmlFor="WT">
+                <label htmlFor="weight_dermal">
                   <input
                     type="number"
                     min="0"
-                    id="WT"
-                    name="WT"
+                    step="0.01"
+                    id="weight_dermal"
+                    name="weight_dermal"
                     placeholder="Enter weight (%)"
-                    value={input.WT}
-                    onChange={(event) => handleFormChange(event, idx)}
+                    value={input.weight_dermal}
+                    onChange={(e) => handleFormChange(e, idx)}
                   />
                 </label>
               </td>
               <td>
-                <label htmlFor="LD50">
+                <label htmlFor="LD50_dermal">
                   <input
                     type="number"
                     min="0"
-                    id="LD50"
-                    name="LD50"
+                    step="0.01"
+                    id="LD50_dermal"
+                    name="LD50_dermal"
                     placeholder="Enter LD50 (mg/kg)"
-                    value={input.LD50}
-                    onChange={(event) => handleFormChange(event, idx)}
+                    value={input.LD50_dermal}
+                    onChange={(e) => handleFormChange(e, idx)}
                   />
                 </label>
               </td>
               <td>
-                <label htmlFor="limitDose">
+                <label htmlFor="limitdose_dermal">
                   <select
-                    name="limitDose"
-                    id="limitDose"
-                    value={input.limitDose}
-                    onChange={(event) => handleFormChange(event, idx)}
+                    name="limitdose_dermal"
+                    id="limitdose_dermal"
+                    value={input.limitdose_dermal}
+                    onChange={(e) => handleFormChange(e, idx)}
                   >
                     <option value="">Select Limit Dose</option>
                     <option>&le; 50</option>
@@ -86,12 +88,12 @@ const Input = ({
                 </label>
               </td>
               <td>
-                <label htmlFor="classification">
+                <label htmlFor="classification_dermal">
                   <select
-                    name="classification"
-                    id="classification"
-                    value={input.classification}
-                    onChange={(event) => handleFormChange(event, idx)}
+                    name="classification_dermal"
+                    id="classification_dermal"
+                    value={input.classification_dermal}
+                    onChange={(e) => handleFormChange(e, idx)}
                   >
                     <option value="">Select Classification</option>
                     <option>Category 1</option>
@@ -105,7 +107,7 @@ const Input = ({
               </td>
               <td>
                 {idx === 0 ? null : (
-                  <button type="button" onClick={() => removeRow(idx)}>
+                  <button type="button" onClick={(e) => removeRow(e, idx)}>
                     Remove
                   </button>
                 )}
@@ -119,7 +121,7 @@ const Input = ({
                 title='Sum of relevant ingredient(s) with unknown "route name" toxicity'
                 position="right"
               >
-                <label htmlFor="unknown" className="tooltip">
+                <label htmlFor="unknown_dermal" className="tooltip">
                   Sum Unknown Toxicity &#9432;
                 </label>
               </Tooltip>
@@ -128,10 +130,12 @@ const Input = ({
               <br />
               <input
                 type="number"
-                id="unknown"
-                name="unknown"
+                min="0"
+                step="0.01"
+                id="unknown_dermal"
+                name="unknown_dermal"
                 placeholder="Enter weight (%)"
-                onChange={(event) => handleUnknownChange(event)}
+                onChange={(e) => handleUnknownChange(e)}
               />
             </td>
           </tr>

@@ -1,16 +1,12 @@
 import React from 'react';
 
-//TODO: Remove Arrows/Spinners for number type input
-///* Chrome, Safari, Edge, Opera */
-/*input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}*/
-/* Firefox */
-/*input[type=number] {
-  -moz-appearance: textfield;
-}*/
+function Tooltip({ children, title, position }) {
+  return (
+    <div className={`tooltip`} data-position={position} data-tool-tip={title}>
+      {children}
+    </div>
+  );
+}
 
 const Input = ({
   inputFields,
@@ -19,53 +15,99 @@ const Input = ({
   removeRow,
 }) => {
   return (
-    <div id="tablewrapper">
+    <div className="tablewrapper">
       <table id="oral">
         <thead>
           <tr>
             <th>Ingredient</th>
             <th>WT%</th>
-            <th>Available Toxicity</th>
+            <th>LD50 (mg/kg)</th>
+            <th>Limit Dose (mg/kg)</th>
+            <th>Classification</th>
           </tr>
         </thead>
         <tbody>
-          {this.state.rows.map((input, idx) => (
+          {inputFields.map((input, idx) => (
             <tr key={idx}>
               <td>
-                <input
-                  type="text"
-                  name="ingredient"
-                  required="required"
-                  value={input.ingredient}
-                  onChange={(event) => handleFormChange(idx, event)}
-                />
+                <label htmlFor="ingredient_oral">
+                  <input
+                    type="text"
+                    id="ingredient_oral"
+                    name="ingredient_oral"
+                    placeholder="Enter ingredient"
+                    value={input.ingredient}
+                    onChange={(e) => handleFormChange(e, idx)}
+                  />
+                </label>
               </td>
               <td>
-                <input
-                  type="number"
-                  min="0"
-                  name="WT"
-                  required="required"
-                  value={input.WT}
-                  onChange={(event) => handleFormChange(idx, event)}
-                />
+                <label htmlFor="weight_oral">
+                  <input
+                    type="number"
+                    min="0"
+                    step="0.01"
+                    id="weight_oral"
+                    name="weight_oral"
+                    placeholder="Enter weight (%)"
+                    value={input.weight_oral}
+                    onChange={(e) => handleFormChange(e, idx)}
+                  />
+                </label>
               </td>
               <td>
-                <select
-                  name="toxicity"
-                  value={input.toxicity}
-                  onChange={(event) => handleFormChange(idx, event)}
-                >
-                  <option>0 &lt; Category 1 &le; 5</option>
-                  <option>5 &lt; Category 2 &le; 50</option>
-                  <option>50 &lt; Category 3 &le; 300</option>
-                  <option>300 &lt; Category 4 &le; 2,000</option>
-                  <option>2,000 &lt; Category 5 &le; 5,000</option>
-                </select>
+                <label htmlFor="LD50_oral">
+                  <input
+                    type="number"
+                    min="0"
+                    step="0.01"
+                    id="LD50_oral"
+                    name="LD50_oral"
+                    placeholder="Enter LD50 (mg/kg)"
+                    value={input.LD50_oral}
+                    onChange={(e) => handleFormChange(e, idx)}
+                  />
+                </label>
+              </td>
+              <td>
+                <label htmlFor="limitdose_oral">
+                  <select
+                    name="limitdose_oral"
+                    id="limitdose_oral"
+                    value={input.limitdose_oral}
+                    onChange={(e) => handleFormChange(e, idx)}
+                  >
+                    <option value="">Select Limit Dose</option>
+                    <option>&le; 5</option>
+                    <option>&gt; 5 - &le; 50</option>
+                    <option>&gt; 50 - &le; 300</option>
+                    <option>&gt; 300 - &le; 2,000</option>
+                    <option>&gt; 2,000 - &le; 5,000</option>
+                    <option>&gt; 2,000 (No signs of toxicity)</option>
+                  </select>
+                </label>
+              </td>
+              <td>
+                <label htmlFor="classification_oral">
+                  <select
+                    name="classification_oral"
+                    id="classification_oral"
+                    value={input.classification_oral}
+                    onChange={(e) => handleFormChange(e, idx)}
+                  >
+                    <option value="">Select Classification</option>
+                    <option>Category 1</option>
+                    <option>Category 2</option>
+                    <option>Category 3</option>
+                    <option>Category 4</option>
+                    <option>Category 5</option>
+                    <option>Not Classified (LD50 &gt; 5,000)</option>
+                  </select>
+                </label>
               </td>
               <td>
                 {idx === 0 ? null : (
-                  <button typ="button" onClick={() => removeRow(idx)}>
+                  <button typ="button" onClick={(e) => removeRow(e, idx)}>
                     Remove
                   </button>
                 )}
@@ -75,26 +117,30 @@ const Input = ({
           <tr>
             <td>
               <br />
-              <label htmlFor="unknown">
-                <b>Combined Unknown:</b>
-              </label>
+              <Tooltip
+                title='Sum of relevant ingredient(s) with unknown "route name" toxicity'
+                position="right"
+              >
+                <label htmlFor="unknown_oral" className="tooltip">
+                  Sum Unknown Toxicity &#9432;
+                </label>
+              </Tooltip>
             </td>
             <td>
               <br />
               <input
                 type="number"
-                id="unknown"
-                name="unknown"
+                min="0"
+                step="0.01"
+                id="unknown_oral"
+                name="unknown_oral"
                 placeholder="Enter weight (%)"
-                onChange={(event) => handleUnknownChange(event)}
+                onChange={(e) => handleUnknownChange(e)}
               />
             </td>
           </tr>
         </tbody>
       </table>
-      <br />
-      <div></div>
-      <br />
     </div>
   );
 };

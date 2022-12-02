@@ -1,9 +1,9 @@
 import React from 'react';
-//import { oralCategory } from './OralLookup';
+import { oralCategory } from './OralLookup';
 
 const OralResult = ({ oralResult }) => {
   //lookup result category
-  //let oralResultCat = oralCategory(oralResult);
+  let oralResultCat = oralCategory(oralResult);
   return (
     <div id="oralResult">
       <br />
@@ -11,10 +11,13 @@ const OralResult = ({ oralResult }) => {
       <h3>Oral Pathway Result</h3>
       <p>
         Oral ATE mix ={' '}
-        {/*{oralResult.toLocaleString('en-US') +
-          ' mg/kg (' +
-          //oralResultCat +
-  ')'} */}
+        {oralResult !== null
+          ? ' ' +
+            oralResult.toLocaleString('en-US') +
+            ' mg/kg (' +
+            oralResultCat +
+            ')'
+          : ' Not a Relevant Route of Exposure (Not Classified)'}
       </p>
     </div>
   );

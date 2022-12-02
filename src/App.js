@@ -6,22 +6,22 @@ import './App.css';
 const pathwaysList = [
   {
     id: 1,
-    title: '2.1 Enter Ingredients: Dermal Example',
+    title: '2.1 Enter Ingredients: Dermal',
     category: 'dermal',
   },
   {
     id: 2,
-    title: '2.2 Enter Ingredients: Oral Example',
+    title: '2.2 Enter Ingredients: Oral',
     category: 'oral',
   },
   {
     id: 3,
-    title: '2.3 Enter Ingredients: Inhalation - Gases Example',
+    title: '2.3 Enter Ingredients: Inhalation - Gases',
     category: 'inhalationGases',
   },
   {
     id: 4,
-    title: '2.4 Enter Ingredients: Inhalation - Vapors Example',
+    title: '2.4 Enter Ingredients: Inhalation - Vapors',
     category: 'inhalationVapors',
   },
   {
