@@ -15,26 +15,23 @@ const Dermal = ({ setDermalResult, setShowDermalResult }) => {
 
   let [unknown, setUnknown] = useState(null);
 
-  const handleFormChange = (event, idx) => {
+  const handleFormChange = (e, idx) => {
     let data = [...inputFields];
     //limit WT and LD50 input to 2 decimal places
-    if (
-      event.target.name === 'weight_dermal' ||
-      event.target.name === 'LD50_dermal'
-    ) {
-      data[idx][event.target.name] = event.target.value.replace(
+    if (e.target.name === 'weight_dermal' || e.target.name === 'LD50_dermal') {
+      data[idx][e.target.name] = e.target.value.replace(
         /(?<=\.[0-9]{2}).+/g,
         ''
       );
     } else {
-      data[idx][event.target.name] = event.target.value;
+      data[idx][e.target.name] = e.target.value;
     }
     setInputFields(data);
     //console.log(inputFields);
   };
 
-  const handleUnknownChange = (event) => {
-    setUnknown(event.target.value);
+  const handleUnknownChange = (e) => {
+    setUnknown(e.target.value);
   };
 
   const validateRows = (e) => {
@@ -98,7 +95,8 @@ const Dermal = ({ setDermalResult, setShowDermalResult }) => {
     setInputFields([...inputFields, newfield]);
   };
 
-  const removeRow = (idx) => {
+  const removeRow = (e, idx) => {
+    e.preventDefault();
     let data = [...inputFields];
     data.splice(idx, 1);
     setInputFields(data);

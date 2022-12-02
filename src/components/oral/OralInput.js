@@ -37,7 +37,7 @@ const Input = ({
                     name="ingredient_oral"
                     placeholder="Enter ingredient"
                     value={input.ingredient}
-                    onChange={(event) => handleFormChange(event, idx)}
+                    onChange={(e) => handleFormChange(e, idx)}
                   />
                 </label>
               </td>
@@ -46,41 +46,26 @@ const Input = ({
                   <input
                     type="number"
                     min="0"
+                    step="0.01"
                     id="weight_oral"
                     name="weight_oral"
                     placeholder="Enter weight (%)"
                     value={input.weight_oral}
-                    onChange={(event) => handleFormChange(event, idx)}
+                    onChange={(e) => handleFormChange(e, idx)}
                   />
                 </label>
               </td>
-              {/*<td>
-                <label htmlFor="toxicity">
-                  <select
-                    name="toxicity"
-                    id="toxicity"
-                    value={input.toxicity}
-                    onChange={(event) => handleOralFormChange(event, idx)}
-                  >
-                    <option value="">Select Available Toxicity</option>
-                    <option>0 &lt; Category 1 &le; 5</option>
-                    <option>5 &lt; Category 2 &le; 50</option>
-                    <option>50 &lt; Category 3 &le; 300</option>
-                    <option>300 &lt; Category 4 &le; 2,000</option>
-                    <option>2,000 &lt; Category 5 &le; 5,000</option>
-                  </select>
-                </label>
-          </td>*/}
               <td>
                 <label htmlFor="LD50_oral">
                   <input
                     type="number"
                     min="0"
+                    step="0.01"
                     id="LD50_oral"
                     name="LD50_oral"
                     placeholder="Enter LD50 (mg/kg)"
                     value={input.LD50_oral}
-                    onChange={(event) => handleFormChange(event, idx)}
+                    onChange={(e) => handleFormChange(e, idx)}
                   />
                 </label>
               </td>
@@ -90,7 +75,7 @@ const Input = ({
                     name="limitdose_oral"
                     id="limitdose_oral"
                     value={input.limitdose_oral}
-                    onChange={(event) => handleFormChange(event, idx)}
+                    onChange={(e) => handleFormChange(e, idx)}
                   >
                     <option value="">Select Limit Dose</option>
                     <option>&le; 5</option>
@@ -108,7 +93,7 @@ const Input = ({
                     name="classification_oral"
                     id="classification_oral"
                     value={input.classification_oral}
-                    onChange={(event) => handleFormChange(event, idx)}
+                    onChange={(e) => handleFormChange(e, idx)}
                   >
                     <option value="">Select Classification</option>
                     <option>Category 1</option>
@@ -122,7 +107,7 @@ const Input = ({
               </td>
               <td>
                 {idx === 0 ? null : (
-                  <button typ="button" onClick={() => removeRow(idx)}>
+                  <button typ="button" onClick={(e) => removeRow(e, idx)}>
                     Remove
                   </button>
                 )}
@@ -145,10 +130,12 @@ const Input = ({
               <br />
               <input
                 type="number"
+                min="0"
+                step="0.01"
                 id="unknown_oral"
                 name="unknown_oral"
                 placeholder="Enter weight (%)"
-                onChange={(event) => handleUnknownChange(event)}
+                onChange={(e) => handleUnknownChange(e)}
               />
             </td>
           </tr>

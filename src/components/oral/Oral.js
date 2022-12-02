@@ -15,25 +15,22 @@ const Oral = ({ setOralResult, setShowOralResult }) => {
 
   let [unknown, setUnknown] = useState(null);
 
-  const handleFormChange = (event, idx) => {
+  const handleFormChange = (e, idx) => {
     let data = [...inputFields];
     //limit WT input to 2 decimal places
-    if (
-      event.target.name === 'weight_oral' ||
-      event.target.name === 'LD50_oral'
-    ) {
-      data[idx][event.target.name] = event.target.value.replace(
+    if (e.target.name === 'weight_oral' || e.target.name === 'LD50_oral') {
+      data[idx][e.target.name] = e.target.value.replace(
         /(?<=\.[0-9]{2}).+/g,
         ''
       );
     } else {
-      data[idx][event.target.name] = event.target.value;
+      data[idx][e.target.name] = e.target.value;
     }
     setInputFields(data);
   };
 
-  const handleUnknownChange = (event) => {
-    setUnknown(event.target.value);
+  const handleUnknownChange = (e) => {
+    setUnknown(e.target.value);
   };
 
   const validateRows = (e) => {
@@ -93,7 +90,8 @@ const Oral = ({ setOralResult, setShowOralResult }) => {
     setInputFields([...inputFields, newfield]);
   };
 
-  const removeRow = (idx) => {
+  const removeRow = (e, idx) => {
+    e.preventDefault();
     let data = [...inputFields];
     data.splice(idx, 1);
     setInputFields(data);
