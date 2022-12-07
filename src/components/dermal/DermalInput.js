@@ -37,7 +37,7 @@ const Input = ({
                     name="ingredient_dermal"
                     placeholder="Enter ingredient"
                     value={input.ingredient_dermal}
-                    onChange={(event) => handleFormChange(event, idx)}
+                    onChange={(e) => handleFormChange(e, idx)}
                   />
                 </label>
               </td>
@@ -46,11 +46,12 @@ const Input = ({
                   <input
                     type="number"
                     min="0"
+                    step="0.01"
                     id="weight_dermal"
                     name="weight_dermal"
                     placeholder="Enter weight (%)"
                     value={input.weight_dermal}
-                    onChange={(event) => handleFormChange(event, idx)}
+                    onChange={(e) => handleFormChange(e, idx)}
                   />
                 </label>
               </td>
@@ -59,11 +60,12 @@ const Input = ({
                   <input
                     type="number"
                     min="0"
+                    step="0.01"
                     id="LD50_dermal"
                     name="LD50_dermal"
                     placeholder="Enter LD50 (mg/kg)"
                     value={input.LD50_dermal}
-                    onChange={(event) => handleFormChange(event, idx)}
+                    onChange={(e) => handleFormChange(e, idx)}
                   />
                 </label>
               </td>
@@ -73,7 +75,7 @@ const Input = ({
                     name="limitdose_dermal"
                     id="limitdose_dermal"
                     value={input.limitdose_dermal}
-                    onChange={(event) => handleFormChange(event, idx)}
+                    onChange={(e) => handleFormChange(e, idx)}
                   >
                     <option value="">Select Limit Dose</option>
                     <option>&le; 50</option>
@@ -91,7 +93,7 @@ const Input = ({
                     name="classification_dermal"
                     id="classification_dermal"
                     value={input.classification_dermal}
-                    onChange={(event) => handleFormChange(event, idx)}
+                    onChange={(e) => handleFormChange(e, idx)}
                   >
                     <option value="">Select Classification</option>
                     <option>Category 1</option>
@@ -105,7 +107,7 @@ const Input = ({
               </td>
               <td>
                 {idx === 0 ? null : (
-                  <button type="button" onClick={() => removeRow(idx)}>
+                  <button type="button" onClick={(e) => removeRow(e, idx)}>
                     Remove
                   </button>
                 )}
@@ -128,10 +130,12 @@ const Input = ({
               <br />
               <input
                 type="number"
+                min="0"
+                step="0.01"
                 id="unknown_dermal"
                 name="unknown_dermal"
                 placeholder="Enter weight (%)"
-                onChange={(event) => handleUnknownChange(event)}
+                onChange={(e) => handleUnknownChange(e)}
               />
             </td>
           </tr>
