@@ -20,7 +20,9 @@ const DermalResult = ({ dermalResult, category }) => {
             ' ' +
             dermalResultCat +
             ')'
-          : ' Not a Relevant Route of Exposure (Not Classified)'}
+          : ' Not a Relevant ' +
+            category +
+            ' Route of Exposure (Not Classified)'}
       </p>
     </div>
   );
