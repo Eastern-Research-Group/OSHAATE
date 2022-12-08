@@ -13,7 +13,7 @@ const Pathway = ({ title, category }) => {
     <>
       <br />
       <h3>{title}</h3>
-      {category === 'dermal' ? (
+      {category === 'Dermal' ? (
         <Dermal
           dermalResult={dermalResult}
           setDermalResult={setDermalResult}
@@ -21,7 +21,7 @@ const Pathway = ({ title, category }) => {
           setShowDermalResult={setShowDermalResult}
         />
       ) : null}
-      {category === 'oral' ? (
+      {category === 'Oral' ? (
         <Oral
           oralResult={oralResult}
           setOralResult={setOralResult}
@@ -30,22 +30,24 @@ const Pathway = ({ title, category }) => {
         />
       ) : null}
 
-      {category === 'dermal' ||
-      category === 'oral' ||
-      category === 'inhalationGases' ||
-      category === 'inhalationVapors' ||
-      category === 'inhalationDustsMists' ? (
+      {category === 'Dermal' ||
+      category === 'Oral' ||
+      category === 'Inhalation Gases' ||
+      category === 'Inhalation Vapors' ||
+      category === 'Inhalation Dusts Mists' ? (
         <div id="results">
-          {category === 'dermal' && showDermalResult ? (
+          {category === 'Dermal' && showDermalResult ? (
             <DermalResult
               dermalResult={dermalResult}
               showDermalResult={showDermalResult}
+              category={category}
             />
           ) : null}
-          {category === 'oral' && showOralResult ? (
+          {category === 'Oral' && showOralResult ? (
             <OralResult
               oralResult={oralResult}
               showOralResult={showOralResult}
+              category={category}
             />
           ) : null}
         </div>

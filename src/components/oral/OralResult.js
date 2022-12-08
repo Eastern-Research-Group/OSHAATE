@@ -1,7 +1,7 @@
 import React from 'react';
 import { oralCategory } from './OralLookup';
 
-const OralResult = ({ oralResult }) => {
+const OralResult = ({ oralResult, category }) => {
   //lookup result category
   let oralResultCat = oralCategory(oralResult);
   return (
@@ -15,6 +15,8 @@ const OralResult = ({ oralResult }) => {
           ? ' ' +
             oralResult.toLocaleString('en-US') +
             ' mg/kg (' +
+            category +
+            ' ' +
             oralResultCat +
             ')'
           : ' Not a Relevant Route of Exposure (Not Classified)'}

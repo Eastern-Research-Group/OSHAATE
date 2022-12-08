@@ -7,27 +7,27 @@ const pathwaysList = [
   {
     id: 1,
     title: '2.1 Enter Ingredients: Dermal',
-    category: 'dermal',
+    category: 'Dermal',
   },
   {
     id: 2,
     title: '2.2 Enter Ingredients: Oral',
-    category: 'oral',
+    category: 'Oral',
   },
   {
     id: 3,
     title: '2.3 Enter Ingredients: Inhalation - Gases',
-    category: 'inhalationGases',
+    category: 'Inhalation Gases',
   },
   {
     id: 4,
     title: '2.4 Enter Ingredients: Inhalation - Vapors',
-    category: 'inhalationVapors',
+    category: 'Inhalation Vapors',
   },
   {
     id: 5,
     title: '2.5 Enter Ingredients: Inhalation - Dusts/Mists',
-    category: 'inhalationDustsMists',
+    category: 'Inhalation Dusts Mists',
   },
 ];
 
@@ -35,11 +35,11 @@ export default class App extends Component {
   state = {
     pathways: pathwaysList,
     categories: {
-      dermal: false,
-      oral: false,
-      inhalationGases: false,
-      inhalationVapors: false,
-      inhalationDustsMists: false,
+      Dermal: false,
+      Oral: false,
+      'Inhalation Gases': false,
+      'Inhalation Vapors': false,
+      'Inhalation Dusts Mists': false,
     },
   };
 
@@ -77,37 +77,37 @@ export default class App extends Component {
           <Checkbox
             id="1"
             title="Dermal"
-            name="dermal"
-            checked={this.state.categories.dermal}
+            name="Dermal"
+            checked={this.state.categories.Dermal}
             handleChange={this.handleChange}
           />
           <Checkbox
             id="2"
             title="Oral"
-            name="oral"
+            name="Oral"
             handleChange={this.handleChange}
-            checked={this.state.categories.oral}
+            checked={this.state.categories.Oral}
           />
           <Checkbox
             id="3"
             title="Inhalation - Gases"
-            name="inhalationGases"
+            name="Inhalation Gases"
             handleChange={this.handleChange}
-            checked={this.state.categories.inhalationGases}
+            checked={this.state.categories['Inhalation Gases']}
           />
           <Checkbox
             id="4"
             title="Inhalation - Vapors"
-            name="inhalationVapors"
+            name="Inhalation Vapors"
             handleChange={this.handleChange}
-            checked={this.state.categories.inhalationVapors}
+            checked={this.state.categories['Inhalation Vapors']}
           />
           <Checkbox
             id="5"
             title="Inhalation - Dusts/Mists"
-            name="inhalationDustsMists"
+            name="Inhalation Dusts Mists"
             handleChange={this.handleChange}
-            checked={this.state.categories.inhalationDustsMists}
+            checked={this.state.categories['Inhalation Dusts Mists']}
           />
         </fieldset>
         <PathwayList

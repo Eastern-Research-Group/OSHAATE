@@ -1,7 +1,7 @@
 import React from 'react';
 import { dermalCategory } from './DermalLookup';
 
-const DermalResult = ({ dermalResult, showDermalResult }) => {
+const DermalResult = ({ dermalResult, category }) => {
   //console.log(dermalResult);
   //lookup result category
   let dermalResultCat = dermalCategory(dermalResult);
@@ -16,6 +16,8 @@ const DermalResult = ({ dermalResult, showDermalResult }) => {
           ? ' ' +
             dermalResult.toLocaleString('en-US') +
             ' mg/kg (' +
+            category +
+            ' ' +
             dermalResultCat +
             ')'
           : ' Not a Relevant Route of Exposure (Not Classified)'}
