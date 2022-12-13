@@ -6,7 +6,7 @@ const PathwayList = (props) => {
 
   const renderPathways = pathways.map(({ id, title, category }) => {
     return (
-      <div key={id}>
+      <div key={id} className="pathway-container">
         <Pathway title={title} category={category} />
       </div>
     );

@@ -11,7 +11,6 @@ const Pathway = ({ title, category }) => {
   let [showOralResult, setShowOralResult] = useState(false);
   return (
     <>
-      <br />
       <h3>{title}</h3>
       {category === 'Dermal' ? (
         <Dermal

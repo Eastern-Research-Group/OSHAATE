@@ -5,10 +5,8 @@ const OralResult = ({ oralResult, category }) => {
   //lookup result category
   let oralResultCat = oralCategory(oralResult);
   return (
-    <div id="oralResult">
-      <br />
-      <hr />
-      <h3>Oral Pathway Result</h3>
+    <div id="oralResult" className="results-container">
+      <h3>Oral Exposure Route Result</h3>
       <p>
         Oral ATE mix ={' '}
         {oralResult !== null

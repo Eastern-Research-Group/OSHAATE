@@ -71,9 +71,7 @@ export default class App extends Component {
         <hr />
         <h2>Data Input Section</h2>
         <fieldset>
-          <legend>
-            <h3>1. Choose Exposure Route(s):</h3>
-          </legend>
+          <legend>1. Choose Exposure Route(s):</legend>
           <Checkbox
             id="1"
             title="Dermal"

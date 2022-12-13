@@ -1,6 +1,20 @@
 .App {
-  margin: 8px;
+  margin: 1rem;
 }
+
+.pathway-container {
+  margin: 2rem 0 2rem 0;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #a9aeb1;
+}
+
+.results-container {
+  background-color: #d9e8f6;
+  padding: 0 1rem 0 1rem;
+  margin-top: 1rem;
+  display: inline-block;
+}
+
 div.tablewrapper {
   overflow-x: auto;
   text-align: left;
@@ -13,6 +27,14 @@ table td label {
 fieldset {
   border: 0;
   padding: 0;
+}
+fieldset legend {
+  font-size: 1.17em;
+  margin-block-start: 1em;
+  margin-block-end: 1em;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
+  font-weight: bold;
 }
 fieldset label {
   margin-right: 20px;
@@ -82,7 +104,7 @@ label.tooltip {
 @media only screen and (max-width: 760px) {
   fieldset label {
     display: block;
-    margin-bottom: 15px;
+    margin-bottom: 1rem;
   }
 }
 
