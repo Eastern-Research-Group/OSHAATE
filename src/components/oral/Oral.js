@@ -97,7 +97,6 @@ const Oral = ({ setOralResult, setShowOralResult }) => {
     setInputFields(data);
   };
 
-  //TODO: CUSTOMIZE FOR ORAL
   const calculate = (e) => {
     let data = [...inputFields];
     let results = data

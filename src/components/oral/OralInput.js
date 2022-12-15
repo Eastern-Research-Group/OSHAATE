@@ -22,7 +22,7 @@ const Input = ({
             <th>Ingredient</th>
             <th>WT%</th>
             <th>LD50 (mg/kg)</th>
-            <th>Limit Dose (mg/kg)</th>
+            <th>Limit Dose Data (mg/kg)</th>
             <th>Classification</th>
           </tr>
         </thead>
@@ -77,7 +77,7 @@ const Input = ({
                     value={input.limitdose_oral}
                     onChange={(e) => handleFormChange(e, idx)}
                   >
-                    <option value="">Select Limit Dose</option>
+                    <option value="">Select Limit Dose Data</option>
                     <option>&le; 5</option>
                     <option>&gt; 5 - &le; 50</option>
                     <option>&gt; 50 - &le; 300</option>
