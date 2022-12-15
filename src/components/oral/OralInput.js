@@ -36,7 +36,7 @@ const Input = ({
                     id="ingredient_oral"
                     name="ingredient_oral"
                     placeholder="Enter ingredient"
-                    value={input.ingredient}
+                    value={input.ingredient_oral}
                     onChange={(e) => handleFormChange(e, idx)}
                   />
                 </label>
