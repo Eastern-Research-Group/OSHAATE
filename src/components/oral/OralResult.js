@@ -6,7 +6,7 @@ const OralResult = ({ oralResult, category }) => {
   let oralResultCat = oralCategory(oralResult);
   return (
     <div id="oralResult" className="results-container">
-      <h3>Oral Exposure Route Result</h3>
+      <h4>Oral Exposure Route Result</h4>
       <p>
         Oral ATE mix ={' '}
         {oralResult !== null
@@ -17,9 +17,7 @@ const OralResult = ({ oralResult, category }) => {
             ' ' +
             oralResultCat +
             ')'
-          : ' Not a Relevant ' +
-            category +
-            '  Route of Exposure (Not Classified)'}
+          : ' Not a Relevant Route of Exposure (Not Classified)'}
       </p>
     </div>
   );

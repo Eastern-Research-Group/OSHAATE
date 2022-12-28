@@ -16,12 +16,12 @@ const Input = ({
 }) => {
   return (
     <div className="tablewrapper">
-      <table id="oral">
+      <table id="gases">
         <thead>
           <tr>
             <th>Ingredient</th>
             <th>WT%</th>
-            <th>LD50 (mg/kg)</th>
+            <th>LC50 (ppmV)</th>
             <th>Limit Dose Data (mg/kg)</th>
             <th>Classification</th>
           </tr>
@@ -30,69 +30,68 @@ const Input = ({
           {inputFields.map((input, idx) => (
             <tr key={idx}>
               <td>
-                <label htmlFor="ingredient_oral">
+                <label htmlFor="ingredient_gases">
                   <input
                     type="text"
-                    id="ingredient_oral"
-                    name="ingredient_oral"
+                    id="ingredient_gases"
+                    name="ingredient_gases"
                     placeholder="Enter ingredient"
-                    value={input.ingredient_oral}
+                    value={input.ingredient_gases}
                     onChange={(e) => handleFormChange(e, idx)}
                   />
                 </label>
               </td>
               <td>
-                <label htmlFor="weight_oral">
+                <label htmlFor="weight_gases">
                   <input
                     type="number"
                     min="0"
                     step="0.01"
-                    id="weight_oral"
-                    name="weight_oral"
+                    id="weight_gases"
+                    name="weight_gases"
                     placeholder="Enter weight (%)"
-                    value={input.weight_oral}
+                    value={input.weight_gases}
                     onChange={(e) => handleFormChange(e, idx)}
                   />
                 </label>
               </td>
               <td>
-                <label htmlFor="LD50_oral">
+                <label htmlFor="LC50_gases">
                   <input
                     type="number"
                     min="0"
                     step="0.01"
-                    id="LD50_oral"
-                    name="LD50_oral"
-                    placeholder="Enter LD50 (mg/kg)"
-                    value={input.LD50_oral}
+                    id="LC50_gases"
+                    name="LC50_gases"
+                    placeholder="Enter LC50 (ppmV)"
+                    value={input.LC50_gases}
                     onChange={(e) => handleFormChange(e, idx)}
                   />
                 </label>
               </td>
               <td>
-                <label htmlFor="limitdose_oral">
+                <label htmlFor="limitdose_gases">
                   <select
-                    name="limitdose_oral"
-                    id="limitdose_oral"
-                    value={input.limitdose_oral}
+                    name="limitdose_gases"
+                    id="limitdose_gases"
+                    value={input.limitdose_gases}
                     onChange={(e) => handleFormChange(e, idx)}
                   >
                     <option value="">Select Limit Dose Data</option>
-                    <option>&le; 5</option>
-                    <option>&gt; 5 - &le; 50</option>
-                    <option>&gt; 50 - &le; 300</option>
-                    <option>&gt; 300 - &le; 2,000</option>
-                    <option>&gt; 2,000 - &le; 5,000</option>
-                    <option>&gt; 2,000 (No signs of toxicity)</option>
+                    <option>&le; 100</option>
+                    <option>&gt; 100 - &le; 500</option>
+                    <option>&gt; 500 - &le; 2,500</option>
+                    <option>&gt; 2,500 - &le; 20,000</option>
+                    <option>&gt; 20,000 (No signs of toxicity)</option>
                   </select>
                 </label>
               </td>
               <td>
-                <label htmlFor="classification_oral">
+                <label htmlFor="classification_gases">
                   <select
-                    name="classification_oral"
-                    id="classification_oral"
-                    value={input.classification_oral}
+                    name="classification_gases"
+                    id="classification_gases"
+                    value={input.classification_gases}
                     onChange={(e) => handleFormChange(e, idx)}
                   >
                     <option value="">Select Classification</option>
@@ -100,8 +99,7 @@ const Input = ({
                     <option>Category 2</option>
                     <option>Category 3</option>
                     <option>Category 4</option>
-                    <option>Category 5</option>
-                    <option>Not Classified (LD50 &gt; 5,000)</option>
+                    <option>Not Classified (LC50 &gt; 20,000)</option>
                   </select>
                 </label>
               </td>
@@ -121,7 +119,7 @@ const Input = ({
                 title='Sum of relevant ingredient(s) with unknown "route name" toxicity'
                 position="right"
               >
-                <label htmlFor="unknown_oral" className="tooltip">
+                <label htmlFor="unknown_gases" className="tooltip">
                   Sum Unknown Toxicity &#9432;
                 </label>
               </Tooltip>
@@ -132,8 +130,8 @@ const Input = ({
                 type="number"
                 min="0"
                 step="0.01"
-                id="unknown_oral"
-                name="unknown_oral"
+                id="unknown_gases"
+                name="unknown_gases"
                 placeholder="Enter weight (%)"
                 onChange={(e) => handleUnknownChange(e)}
               />

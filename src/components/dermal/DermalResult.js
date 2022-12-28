@@ -6,7 +6,7 @@ const DermalResult = ({ dermalResult, category }) => {
   let dermalResultCat = dermalCategory(dermalResult);
   return (
     <div id="dermalResult" className="results-container">
-      <h3>Dermal Exposure Route Result</h3>
+      <h4>Dermal Exposure Route Result</h4>
       <p>
         Dermal ATE mix ={' '}
         {dermalResult !== null
@@ -17,9 +17,7 @@ const DermalResult = ({ dermalResult, category }) => {
             ' ' +
             dermalResultCat +
             ')'
-          : ' Not a Relevant ' +
-            category +
-            ' Route of Exposure (Not Classified)'}
+          : ' Not a Relevant Route of Exposure (Not Classified)'}
       </p>
     </div>
   );

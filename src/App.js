@@ -17,17 +17,17 @@ const pathwaysList = [
   {
     id: 3,
     title: '2.3 Enter Ingredients: Inhalation - Gases',
-    category: 'Inhalation Gases',
+    category: 'Gases',
   },
   {
     id: 4,
     title: '2.4 Enter Ingredients: Inhalation - Vapors',
-    category: 'Inhalation Vapors',
+    category: 'Vapors',
   },
   {
     id: 5,
     title: '2.5 Enter Ingredients: Inhalation - Dusts/Mists',
-    category: 'Inhalation Dusts Mists',
+    category: 'Dusts',
   },
 ];
 
@@ -37,9 +37,9 @@ export default class App extends Component {
     categories: {
       Dermal: false,
       Oral: false,
-      'Inhalation Gases': false,
-      'Inhalation Vapors': false,
-      'Inhalation Dusts Mists': false,
+      Gases: false,
+      Vapors: false,
+      Dusts: false,
     },
   };
 
@@ -89,23 +89,23 @@ export default class App extends Component {
           <Checkbox
             id="3"
             title="Inhalation - Gases"
-            name="Inhalation Gases"
+            name="Gases"
             handleChange={this.handleChange}
-            checked={this.state.categories['Inhalation Gases']}
+            checked={this.state.categories.Gases}
           />
           <Checkbox
             id="4"
             title="Inhalation - Vapors"
-            name="Inhalation Vapors"
+            name="Vapors"
             handleChange={this.handleChange}
-            checked={this.state.categories['Inhalation Vapors']}
+            checked={this.state.categories.Vapors}
           />
           <Checkbox
             id="5"
             title="Inhalation - Dusts/Mists"
-            name="Inhalation Dusts Mists"
+            name="Dusts"
             handleChange={this.handleChange}
-            checked={this.state.categories['Inhalation Dusts Mists']}
+            checked={this.state.categories.Dusts}
           />
         </fieldset>
         <PathwayList
