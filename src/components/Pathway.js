@@ -7,6 +7,8 @@ import Gases from './gases/Gases';
 import GasesResult from './gases/GasesResult';
 import Vapors from './vapors/Vapors';
 import VaporsResult from './vapors/VaporsResult';
+import Dusts from './dusts/Dusts';
+import DustsResult from './dusts/DustsResult';
 
 const Pathway = ({ title, category }) => {
   const [dermalResult, setDermalResult] = useState(null);
@@ -17,6 +19,8 @@ const Pathway = ({ title, category }) => {
   let [showGasesResult, setShowGasesResult] = useState(false);
   const [vaporsResult, setVaporsResult] = useState(null);
   let [showVaporsResult, setShowVaporsResult] = useState(false);
+  const [dustsResult, setDustsResult] = useState(null);
+  let [showDustsResult, setShowDustsResult] = useState(false);
   return (
     <>
       <h3>{title}</h3>
@@ -52,6 +56,14 @@ const Pathway = ({ title, category }) => {
           setShowVaporsResult={setShowVaporsResult}
         />
       ) : null}
+      {category === 'Dusts' ? (
+        <Dusts
+          dustsResult={dustsResult}
+          setDustsResult={setDustsResult}
+          showDustsResult={showDustsResult}
+          setShowDustsResult={setShowDustsResult}
+        />
+      ) : null}
 
       {category === 'Dermal' ||
       category === 'Oral' ||
@@ -84,6 +96,13 @@ const Pathway = ({ title, category }) => {
             <VaporsResult
               vaporsResult={vaporsResult}
               showVaporsResult={showVaporsResult}
+              category={category}
+            />
+          ) : null}
+          {category === 'Dusts' && showDustsResult ? (
+            <DustsResult
+              dustsResult={dustsResult}
+              showDustsResult={showDustsResult}
               category={category}
             />
           ) : null}
