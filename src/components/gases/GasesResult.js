@@ -12,7 +12,7 @@ const GasesResult = ({ gasesResult, category }) => {
         {gasesResult !== null
           ? ' ' +
             gasesResult.toLocaleString('en-US') +
-            ' ppmV (' +
+            ' ppmV (Inhalation - ' +
             category +
             ' ' +
             gasesResultCat +

@@ -5,6 +5,8 @@ import Oral from './oral/Oral';
 import OralResult from './oral/OralResult';
 import Gases from './gases/Gases';
 import GasesResult from './gases/GasesResult';
+import Vapors from './vapors/Vapors';
+import VaporsResult from './vapors/VaporsResult';
 
 const Pathway = ({ title, category }) => {
   const [dermalResult, setDermalResult] = useState(null);
@@ -13,6 +15,8 @@ const Pathway = ({ title, category }) => {
   let [showOralResult, setShowOralResult] = useState(false);
   const [gasesResult, setGasesResult] = useState(null);
   let [showGasesResult, setShowGasesResult] = useState(false);
+  const [vaporsResult, setVaporsResult] = useState(null);
+  let [showVaporsResult, setShowVaporsResult] = useState(false);
   return (
     <>
       <h3>{title}</h3>
@@ -32,13 +36,20 @@ const Pathway = ({ title, category }) => {
           setShowOralResult={setShowOralResult}
         />
       ) : null}
-
       {category === 'Gases' ? (
         <Gases
           gasesResult={gasesResult}
           setGasesResult={setGasesResult}
           showGasesResult={showGasesResult}
           setShowGasesResult={setShowGasesResult}
+        />
+      ) : null}
+      {category === 'Vapors' ? (
+        <Vapors
+          vaporsResult={vaporsResult}
+          setVaporsResult={setVaporsResult}
+          showVaporsResult={showVaporsResult}
+          setShowVaporsResult={setShowVaporsResult}
         />
       ) : null}
 
@@ -66,6 +77,13 @@ const Pathway = ({ title, category }) => {
             <GasesResult
               gasesResult={gasesResult}
               showGasesResult={showGasesResult}
+              category={category}
+            />
+          ) : null}
+          {category === 'Vapors' && showVaporsResult ? (
+            <VaporsResult
+              vaporsResult={vaporsResult}
+              showVaporsResult={showVaporsResult}
               category={category}
             />
           ) : null}
