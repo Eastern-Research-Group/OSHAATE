@@ -108,12 +108,9 @@ export default class App extends Component {
             checked={this.state.categories.Dusts}
           />
         </fieldset>
+        <hr />
         <PathwayList
-          pathways={
-            filteredPathways.length === 0
-              ? [] //this.state.products
-              : filteredPathways
-          }
+          pathways={filteredPathways.length === 0 ? [] : filteredPathways}
         />
       </div>
     );

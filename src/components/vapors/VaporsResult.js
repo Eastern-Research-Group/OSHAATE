@@ -12,7 +12,7 @@ const VaporsResult = ({ vaporsResult, category }) => {
         {vaporsResult !== null
           ? ' ' +
             vaporsResult.toLocaleString('en-US') +
-            ' mg/l (' +
+            ' mg/l (Inhalation - ' +
             category +
             ' ' +
             vaporsResultCat +
