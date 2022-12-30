@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
-import VaporsInput from './VaporsInput';
-import { vaporsPointEstimate } from './VaporsLookup';
+import DustsInput from './DustsInput';
+import { dustsPointEstimate } from './DustsLookup';
 
-const Vapors = ({ setVaporsResult, setShowVaporsResult }) => {
+const Dusts = ({ setDustsResult, setShowDustsResult }) => {
   const [inputFields, setInputFields] = useState([
     {
-      ingredient_vapors: '',
-      weight_vapors: '',
-      LC50_vapors: '',
-      limitdose_vapors: '',
-      classification_vapors: '',
+      ingredient_dusts: '',
+      weight_dusts: '',
+      LC50_dusts: '',
+      limitdose_dusts: '',
+      classification_dusts: '',
     },
   ]);
 
@@ -18,7 +18,7 @@ const Vapors = ({ setVaporsResult, setShowVaporsResult }) => {
   const handleFormChange = (e, idx) => {
     let data = [...inputFields];
     //limit WT input to 2 decimal places
-    if (e.target.name === 'weight_vapors' || e.target.name === 'LC50_vapors') {
+    if (e.target.name === 'weight_dusts' || e.target.name === 'LC50_dusts') {
       data[idx][e.target.name] = e.target.value.replace(
         /(?<=\.[0-9]{2}).+/g,
         ''
@@ -38,34 +38,34 @@ const Vapors = ({ setVaporsResult, setShowVaporsResult }) => {
     let data = [...inputFields];
     let formIsValid = true;
     data.forEach((item) => {
-      if (!item.ingredient_vapors) {
+      if (!item.ingredient_dusts) {
         formIsValid = false;
         alert('Ingredient is required in row.');
-      } else if (!item.weight_vapors) {
+      } else if (!item.weight_dusts) {
         formIsValid = false;
         alert('Weight (WT) is required in row.');
       } else if (
-        !item.LC50_vapors &&
-        !item.limitdose_vapors &&
-        !item.classification_vapors
+        !item.LC50_dusts &&
+        !item.limitdose_dusts &&
+        !item.classification_dusts
       ) {
         formIsValid = false;
         alert('LC50 or Limit Dose Data or Classification is required in row.');
       } else if (
         !(
-          item.LC50_vapors &&
-          !item.limitdose_vapors &&
-          !item.classification_vapors
+          item.LC50_dusts &&
+          !item.limitdose_dusts &&
+          !item.classification_dusts
         ) &&
         !(
-          !item.LC50_vapors &&
-          item.limitdose_vapors &&
-          !item.classification_vapors
+          !item.LC50_dusts &&
+          item.limitdose_dusts &&
+          !item.classification_dusts
         ) &&
         !(
-          !item.LC50_vapors &&
-          !item.limitdose_vapors &&
-          item.classification_vapors
+          !item.LC50_dusts &&
+          !item.limitdose_dusts &&
+          item.classification_dusts
         )
       ) {
         formIsValid = false;
@@ -85,11 +85,11 @@ const Vapors = ({ setVaporsResult, setShowVaporsResult }) => {
 
   const addRow = () => {
     let newfield = {
-      ingredient_vapors: '',
-      weight_vapors: '',
-      LC50_vapors: '',
-      limitdose_vapors: '',
-      classification_vapors: '',
+      ingredient_dusts: '',
+      weight_dusts: '',
+      LC50_dusts: '',
+      limitdose_dusts: '',
+      classification_dusts: '',
     };
     setInputFields([...inputFields, newfield]);
   };
@@ -106,34 +106,34 @@ const Vapors = ({ setVaporsResult, setShowVaporsResult }) => {
     let results = data
       .filter(
         (obj) =>
-          (obj.LC50_vapors !== '' && parseFloat(obj.LC50_vapors) <= 20) ||
-          (obj.limitdose_vapors !== '' &&
-            obj.limitdose_vapors !== '> 20.0 (No signs of toxicity)') ||
-          (obj.classification_vapors !== '' &&
-            obj.classification_vapors !== 'Not Classified (LC50 > 20.0)')
+          (obj.LC50_dusts !== '' && parseFloat(obj.LC50_dusts) <= 5) ||
+          (obj.limitdose_dusts !== '' &&
+            obj.limitdose_dusts !== '> 5.0 (No signs of toxicity)') ||
+          (obj.classification_dusts !== '' &&
+            obj.classification_dusts !== 'Not Classified (LC50 > 5.0)')
       )
       .map((obj) => {
-        if (obj.LC50_vapors !== '') {
+        if (obj.LC50_dusts !== '') {
           return {
             ...obj,
-            LC50_vapors:
-              parseFloat(obj.weight_vapors) / parseFloat(obj.LC50_vapors),
+            LC50_dusts:
+              parseFloat(obj.weight_dusts) / parseFloat(obj.LC50_dusts),
           };
         }
-        if (obj.limitdose_vapors !== '') {
+        if (obj.limitdose_dusts !== '') {
           return {
             ...obj,
-            limitdose_vapors:
-              parseFloat(obj.weight_vapors) /
-              vaporsPointEstimate('Limit Dose', obj.limitdose_vapors),
+            limitdose_dusts:
+              parseFloat(obj.weight_dusts) /
+              dustsPointEstimate('Limit Dose', obj.limitdose_dusts),
           };
         }
-        if (obj.classification_vapors !== '') {
+        if (obj.classification_dusts !== '') {
           return {
             ...obj,
-            classification_vapors:
-              parseFloat(obj.weight_vapors) /
-              vaporsPointEstimate('Classification', obj.classification_vapors),
+            classification_dusts:
+              parseFloat(obj.weight_dusts) /
+              dustsPointEstimate('Classification', obj.classification_dusts),
           };
         }
         return obj;
@@ -141,49 +141,49 @@ const Vapors = ({ setVaporsResult, setShowVaporsResult }) => {
 
     //console.log(results);
 
-    const totalWTPercentVapors = results.reduce((accumulator, object) => {
-      return accumulator + parseFloat(object.weight_vapors);
+    const totalWTPercentDusts = results.reduce((accumulator, object) => {
+      return accumulator + parseFloat(object.weight_dusts);
     }, 0);
     //validate weight total to be calculated (not greater than 100)
     if (
       !(
-        (!unknown && totalWTPercentVapors > 100) ||
-        (unknown !== null && totalWTPercentVapors + parseFloat(unknown) > 100)
+        (!unknown && totalWTPercentDusts > 100) ||
+        (unknown !== null && totalWTPercentDusts + parseFloat(unknown) > 100)
       )
     ) {
       //if results, sum
       let sum = 0;
       if (results.length) {
         results.forEach((item) => {
-          if (item.LC50_vapors !== '') {
-            sum += item.LC50_vapors;
+          if (item.LC50_dusts !== '') {
+            sum += item.LC50_dusts;
           }
-          if (item.limitdose_vapors !== '') {
-            sum += item.limitdose_vapors;
+          if (item.limitdose_dusts !== '') {
+            sum += item.limitdose_dusts;
           }
-          if (item.classification_vapors !== '') {
-            sum += item.classification_vapors;
+          if (item.classification_dusts !== '') {
+            sum += item.classification_dusts;
           }
         });
         //calculate result (round 1 decimal place)
         if (unknown !== null && unknown > 10) {
-          setVaporsResult(Math.round(((100 - unknown) / sum) * 10) / 10);
+          setDustsResult(Math.round(((100 - unknown) / sum) * 100) / 100);
         } else {
-          setVaporsResult(Math.round((100 / sum) * 10) / 10);
+          setDustsResult(Math.round((100 / sum) * 100) / 100);
         }
       } else {
-        setVaporsResult(null);
+        setDustsResult(null);
       }
-      setShowVaporsResult(true);
+      setShowDustsResult(true);
     } else {
       alert('Total weight to be calculated must not be greater than 100%.');
-      setShowVaporsResult(false);
+      setShowDustsResult(false);
     }
   };
 
   return (
     <form>
-      <VaporsInput
+      <DustsInput
         inputFields={inputFields}
         handleFormChange={handleFormChange}
         handleUnknownChange={handleUnknownChange}
@@ -201,4 +201,4 @@ const Vapors = ({ setVaporsResult, setShowVaporsResult }) => {
   );
 };
 
-export default Vapors;
+export default Dusts;
