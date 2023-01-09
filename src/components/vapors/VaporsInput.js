@@ -10,6 +10,7 @@ function Tooltip({ children, title, position }) {
 
 const Input = ({
   inputFields,
+  unknown,
   handleFormChange,
   handleUnknownChange,
   removeRow,
@@ -133,6 +134,7 @@ const Input = ({
                 id="unknown_vapors"
                 name="unknown_vapors"
                 placeholder="Enter weight (%)"
+                value={unknown}
                 onChange={(e) => handleUnknownChange(e)}
               />
             </td>

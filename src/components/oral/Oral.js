@@ -13,7 +13,7 @@ const Oral = ({ setOralResult, setShowOralResult }) => {
     },
   ]);
 
-  let [unknown, setUnknown] = useState(null);
+  let [unknown, setUnknown] = useState('');
 
   const handleFormChange = (e, idx) => {
     let data = [...inputFields];
@@ -95,6 +95,23 @@ const Oral = ({ setOralResult, setShowOralResult }) => {
     let data = [...inputFields];
     data.splice(idx, 1);
     setInputFields(data);
+  };
+
+  const reset = (e) => {
+    e.preventDefault();
+    let data = [...inputFields];
+    data.splice(1);
+    setInputFields([
+      {
+        ingredient_oral: '',
+        weight_oral: '',
+        LD50_oral: '',
+        limitdose_oral: '',
+        classification_oral: '',
+      },
+    ]);
+    setUnknown('');
+    setShowOralResult(false);
   };
 
   const calculate = (e) => {
@@ -180,6 +197,7 @@ const Oral = ({ setOralResult, setShowOralResult }) => {
     <form>
       <OralInput
         inputFields={inputFields}
+        unknown={unknown}
         handleFormChange={handleFormChange}
         handleUnknownChange={handleUnknownChange}
         removeRow={removeRow}
@@ -188,7 +206,9 @@ const Oral = ({ setOralResult, setShowOralResult }) => {
       <button type="button" id="add" onClick={validateRows}>
         Add Ingredient
       </button>{' '}
-      &nbsp;
+      <button type="button" id="reset" onClick={reset}>
+        Reset
+      </button>{' '}
       <button type="button" id="calculate" onClick={validateRows}>
         Calculate
       </button>

@@ -13,7 +13,7 @@ const Dermal = ({ setDermalResult, setShowDermalResult }) => {
     },
   ]);
 
-  let [unknown, setUnknown] = useState(null);
+  let [unknown, setUnknown] = useState('');
 
   const handleFormChange = (e, idx) => {
     let data = [...inputFields];
@@ -102,6 +102,23 @@ const Dermal = ({ setDermalResult, setShowDermalResult }) => {
     setInputFields(data);
   };
 
+  const reset = (e) => {
+    e.preventDefault();
+    let data = [...inputFields];
+    data.splice(1);
+    setInputFields([
+      {
+        ingredient_dermal: '',
+        weight_dermal: '',
+        LD50_dermal: '',
+        limitdose_dermal: '',
+        classification_dermal: '',
+      },
+    ]);
+    setUnknown('');
+    setShowDermalResult(false);
+  };
+
   const calculate = () => {
     let data = [...inputFields];
     let results = data
@@ -186,6 +203,7 @@ const Dermal = ({ setDermalResult, setShowDermalResult }) => {
     <form>
       <DermalInput
         inputFields={inputFields}
+        unknown={unknown}
         handleFormChange={handleFormChange}
         handleUnknownChange={handleUnknownChange}
         removeRow={removeRow}
@@ -194,7 +212,9 @@ const Dermal = ({ setDermalResult, setShowDermalResult }) => {
       <button type="button" id="add" onClick={validateRows}>
         Add Ingredient
       </button>{' '}
-      &nbsp;
+      <button type="button" id="reset" onClick={reset}>
+        Reset
+      </button>{' '}
       <button type="button" id="calculate" onClick={validateRows}>
         Calculate
       </button>

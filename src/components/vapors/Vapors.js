@@ -13,7 +13,7 @@ const Vapors = ({ setVaporsResult, setShowVaporsResult }) => {
     },
   ]);
 
-  let [unknown, setUnknown] = useState(null);
+  let [unknown, setUnknown] = useState('');
 
   const handleFormChange = (e, idx) => {
     let data = [...inputFields];
@@ -101,6 +101,23 @@ const Vapors = ({ setVaporsResult, setShowVaporsResult }) => {
     setInputFields(data);
   };
 
+  const reset = (e) => {
+    e.preventDefault();
+    let data = [...inputFields];
+    data.splice(1);
+    setInputFields([
+      {
+        ingredient_vapors: '',
+        weight_vapors: '',
+        LC50_vapors: '',
+        limitdose_vapors: '',
+        classification_vapors: '',
+      },
+    ]);
+    setUnknown('');
+    setShowVaporsResult(false);
+  };
+
   const calculate = (e) => {
     let data = [...inputFields];
     let results = data
@@ -185,6 +202,7 @@ const Vapors = ({ setVaporsResult, setShowVaporsResult }) => {
     <form>
       <VaporsInput
         inputFields={inputFields}
+        unknown={unknown}
         handleFormChange={handleFormChange}
         handleUnknownChange={handleUnknownChange}
         removeRow={removeRow}
@@ -193,7 +211,9 @@ const Vapors = ({ setVaporsResult, setShowVaporsResult }) => {
       <button type="button" id="add" onClick={validateRows}>
         Add Ingredient
       </button>{' '}
-      &nbsp;
+      <button type="button" id="reset" onClick={reset}>
+        Reset
+      </button>{' '}
       <button type="button" id="calculate" onClick={validateRows}>
         Calculate
       </button>
