@@ -16,15 +16,15 @@ div.tablewrapper {
   overflow-x: auto;
   text-align: left;
 }
-table th,
-table td label {
+div.tablewrapper table th,
+div.tablewrapper table td label {
   font-size: 0.9rem;
 }
-fieldset {
+.App fieldset {
   border: 0;
   padding: 0 0 1rem 0;
 }
-fieldset legend {
+.App fieldset legend {
   font-size: 1.17em;
   margin-block-start: 1em;
   margin-block-end: 1em;
@@ -32,10 +32,10 @@ fieldset legend {
   margin-inline-end: 0px;
   font-weight: bold;
 }
-fieldset label {
+.App fieldset label {
   margin-right: 20px;
 }
-table label {
+div.tablewrapper table label {
   margin-right: 10px;
 }
 label.tooltip {
@@ -92,8 +92,18 @@ label.tooltip {
 }
 
 @media only screen and (max-width: 760px) {
-  fieldset label {
+  .App fieldset label {
     display: block;
     margin-bottom: 1rem;
+  }
+}
+
+@media only print {
+  div.tablewrapper {
+    overflow-x: visible;
+  }
+  .pathway-container form button,
+  label.tooltip span {
+    display: none;
   }
 }

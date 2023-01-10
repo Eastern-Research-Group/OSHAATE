@@ -121,7 +121,7 @@ const Input = ({
                 position="right"
               >
                 <label htmlFor="unknown_gases" className="tooltip">
-                  Sum Unknown Toxicity &#9432;
+                  Sum Unknown Toxicity <span>&#9432;</span>
                 </label>
               </Tooltip>
             </td>
