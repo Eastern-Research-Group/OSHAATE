@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import VaporsInput from './VaporsInput';
 import { vaporsPointEstimate } from './VaporsLookup';
+import Buttons from '../Buttons';
 
 const Vapors = ({ setVaporsResult, setShowVaporsResult }) => {
   const [inputFields, setInputFields] = useState([
@@ -207,16 +208,7 @@ const Vapors = ({ setVaporsResult, setShowVaporsResult }) => {
         handleUnknownChange={handleUnknownChange}
         removeRow={removeRow}
       />
-      <br />
-      <button type="button" id="add" onClick={validateRows}>
-        Add Ingredient
-      </button>{' '}
-      <button type="button" id="reset" onClick={reset}>
-        Reset
-      </button>{' '}
-      <button type="button" id="calculate" onClick={validateRows}>
-        Calculate
-      </button>
+      <Buttons validateRows={validateRows} reset={reset} />
     </form>
   );
 };

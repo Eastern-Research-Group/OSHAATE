@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import OralInput from './OralInput';
 import { oralPointEstimate } from './OralLookup';
+import Buttons from '../Buttons';
 
 const Oral = ({ setOralResult, setShowOralResult }) => {
   const [inputFields, setInputFields] = useState([
@@ -202,16 +203,7 @@ const Oral = ({ setOralResult, setShowOralResult }) => {
         handleUnknownChange={handleUnknownChange}
         removeRow={removeRow}
       />
-      <br />
-      <button type="button" id="add" onClick={validateRows}>
-        Add Ingredient
-      </button>{' '}
-      <button type="button" id="reset" onClick={reset}>
-        Reset
-      </button>{' '}
-      <button type="button" id="calculate" onClick={validateRows}>
-        Calculate
-      </button>
+      <Buttons validateRows={validateRows} reset={reset} />
     </form>
   );
 };
