@@ -73,6 +73,7 @@ const Dusts = ({ setDustsResult, setShowDustsResult }) => {
         alert(
           'Enter only one of LC50, Limit Dose Data, or Classification in row.'
         );
+      } else {
       }
     });
 

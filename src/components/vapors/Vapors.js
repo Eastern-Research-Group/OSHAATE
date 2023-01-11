@@ -73,6 +73,7 @@ const Vapors = ({ setVaporsResult, setShowVaporsResult }) => {
         alert(
           'Enter only one of LC50, Limit Dose Data, or Classification in row.'
         );
+      } else {
       }
     });
 

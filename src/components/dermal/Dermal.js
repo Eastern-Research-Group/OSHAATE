@@ -74,6 +74,7 @@ const Dermal = ({ setDermalResult, setShowDermalResult }) => {
         alert(
           'Enter only one of LD50, Limit Dose Data, or Classification in row.'
         );
+      } else {
       }
     });
 
