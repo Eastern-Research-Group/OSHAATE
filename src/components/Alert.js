@@ -1,4 +1,4 @@
-export const Alert = ({ status, text, closePopup }) => {
+export const Alert = ({ text, closePopup }) => {
   return (
     <div className="alert-container">
       <div className="alert-body">
