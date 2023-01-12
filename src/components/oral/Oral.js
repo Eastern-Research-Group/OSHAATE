@@ -79,6 +79,8 @@ const Oral = ({ setOralResult, setShowOralResult }) => {
           'Enter only one of LD50, Limit Dose Data, or Classification in row.'
         );
       } else {
+        setOpenAlert(false);
+        setAlertText('');
       }
     });
 

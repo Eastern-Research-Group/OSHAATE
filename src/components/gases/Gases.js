@@ -83,6 +83,8 @@ const Gases = ({ setGasesResult, setShowGasesResult }) => {
           'Enter only one of LC50, Limit Dose Data, or Classification in row.'
         );
       } else {
+        setOpenAlert(false);
+        setAlertText('');
       }
     });
 
