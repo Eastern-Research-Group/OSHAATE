@@ -17,7 +17,7 @@ const VaporsResult = ({ vaporsResult, category }) => {
             ' ' +
             vaporsResultCat +
             ')'
-          : ' Not a Relevant Route of Exposure (Not Classified)'}
+          : ' Not a relevant route of exposure and no ATE calculation is performed'}
       </p>
     </div>
   );
