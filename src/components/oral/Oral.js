@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import OralInput from './OralInput';
 import { oralPointEstimate } from './OralLookup';
 import Buttons from '../Buttons';
+import { Alert } from '../Alert';
 
 const Oral = ({ setOralResult, setShowOralResult }) => {
   const [inputFields, setInputFields] = useState([
@@ -15,6 +16,8 @@ const Oral = ({ setOralResult, setShowOralResult }) => {
   ]);
 
   let [unknown, setUnknown] = useState('');
+  const [openAlert, setOpenAlert] = useState(false);
+  const [alertText, setAlertText] = useState('');
 
   const handleFormChange = (e, idx) => {
     let data = [...inputFields];
@@ -41,17 +44,22 @@ const Oral = ({ setOralResult, setShowOralResult }) => {
     data.forEach((item) => {
       if (!item.ingredient_oral) {
         formIsValid = false;
-        alert('Ingredient is required in row.');
+        setOpenAlert(true);
+        setAlertText('Ingredient is required in row.');
       } else if (!item.weight_oral) {
         formIsValid = false;
-        alert('Weight (WT) is required in row.');
+        setOpenAlert(true);
+        setAlertText('Weight (WT) is required in row.');
       } else if (
         !item.LD50_oral &&
         !item.limitdose_oral &&
         !item.classification_oral
       ) {
         formIsValid = false;
-        alert('LD50 or Limit Dose Data or Classification is required in row.');
+        setOpenAlert(true);
+        setAlertText(
+          'LD50 or Limit Dose Data or Classification is required in row.'
+        );
       } else if (
         !(
           item.LD50_oral &&
@@ -66,7 +74,8 @@ const Oral = ({ setOralResult, setShowOralResult }) => {
         !(!item.LD50_oral && !item.limitdose_oral && item.classification_oral)
       ) {
         formIsValid = false;
-        alert(
+        setOpenAlert(true);
+        setAlertText(
           'Enter only one of LD50, Limit Dose Data, or Classification in row.'
         );
       } else {
@@ -153,8 +162,6 @@ const Oral = ({ setOralResult, setShowOralResult }) => {
         return obj;
       });
 
-    //console.log(results);
-
     const totalWTPercentOral = results.reduce((accumulator, object) => {
       return accumulator + parseFloat(object.weight_oral);
     }, 0);
@@ -190,22 +197,30 @@ const Oral = ({ setOralResult, setShowOralResult }) => {
       }
       setShowOralResult(true);
     } else {
-      alert('Total weight to be calculated must not be greater than 100%.');
+      setOpenAlert(true);
+      setAlertText(
+        'Total weight to be calculated must not be greater than 100%.'
+      );
       setShowOralResult(false);
     }
   };
 
   return (
-    <form>
-      <OralInput
-        inputFields={inputFields}
-        unknown={unknown}
-        handleFormChange={handleFormChange}
-        handleUnknownChange={handleUnknownChange}
-        removeRow={removeRow}
-      />
-      <Buttons validateRows={validateRows} reset={reset} />
-    </form>
+    <>
+      {openAlert ? (
+        <Alert text={alertText} closePopup={() => setOpenAlert(false)} />
+      ) : null}
+      <form>
+        <OralInput
+          inputFields={inputFields}
+          unknown={unknown}
+          handleFormChange={handleFormChange}
+          handleUnknownChange={handleUnknownChange}
+          removeRow={removeRow}
+        />
+        <Buttons validateRows={validateRows} reset={reset} />
+      </form>
+    </>
   );
 };
 

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import DustsInput from './DustsInput';
 import { dustsPointEstimate } from './DustsLookup';
 import Buttons from '../Buttons';
+import { Alert } from '../Alert';
 
 const Dusts = ({ setDustsResult, setShowDustsResult }) => {
   const [inputFields, setInputFields] = useState([
@@ -15,10 +16,12 @@ const Dusts = ({ setDustsResult, setShowDustsResult }) => {
   ]);
 
   let [unknown, setUnknown] = useState('');
+  const [openAlert, setOpenAlert] = useState(false);
+  const [alertText, setAlertText] = useState('');
 
   const handleFormChange = (e, idx) => {
     let data = [...inputFields];
-    //limit WT input to 2 decimal places
+    //limit WT and LC50 input to 2 decimal places
     if (e.target.name === 'weight_dusts' || e.target.name === 'LC50_dusts') {
       data[idx][e.target.name] = e.target.value.replace(
         /(?<=\.[0-9]{2}).+/g,
@@ -41,17 +44,22 @@ const Dusts = ({ setDustsResult, setShowDustsResult }) => {
     data.forEach((item) => {
       if (!item.ingredient_dusts) {
         formIsValid = false;
-        alert('Ingredient is required in row.');
+        setOpenAlert(true);
+        setAlertText('Ingredient is required in row.');
       } else if (!item.weight_dusts) {
         formIsValid = false;
-        alert('Weight (WT) is required in row.');
+        setOpenAlert(true);
+        setAlertText('Weight (WT) is required in row.');
       } else if (
         !item.LC50_dusts &&
         !item.limitdose_dusts &&
         !item.classification_dusts
       ) {
         formIsValid = false;
-        alert('LC50 or Limit Dose Data or Classification is required in row.');
+        setOpenAlert(true);
+        setAlertText(
+          'LC50 or Limit Dose Data or Classification is required in row.'
+        );
       } else if (
         !(
           item.LC50_dusts &&
@@ -70,7 +78,8 @@ const Dusts = ({ setDustsResult, setShowDustsResult }) => {
         )
       ) {
         formIsValid = false;
-        alert(
+        setOpenAlert(true);
+        setAlertText(
           'Enter only one of LC50, Limit Dose Data, or Classification in row.'
         );
       } else {
@@ -158,8 +167,6 @@ const Dusts = ({ setDustsResult, setShowDustsResult }) => {
         return obj;
       });
 
-    //console.log(results);
-
     const totalWTPercentDusts = results.reduce((accumulator, object) => {
       return accumulator + parseFloat(object.weight_dusts);
     }, 0);
@@ -195,22 +202,30 @@ const Dusts = ({ setDustsResult, setShowDustsResult }) => {
       }
       setShowDustsResult(true);
     } else {
-      alert('Total weight to be calculated must not be greater than 100%.');
+      setOpenAlert(true);
+      setAlertText(
+        'Total weight to be calculated must not be greater than 100%.'
+      );
       setShowDustsResult(false);
     }
   };
 
   return (
-    <form>
-      <DustsInput
-        inputFields={inputFields}
-        unknown={unknown}
-        handleFormChange={handleFormChange}
-        handleUnknownChange={handleUnknownChange}
-        removeRow={removeRow}
-      />
-      <Buttons validateRows={validateRows} reset={reset} />
-    </form>
+    <>
+      {openAlert ? (
+        <Alert text={alertText} closePopup={() => setOpenAlert(false)} />
+      ) : null}
+      <form>
+        <DustsInput
+          inputFields={inputFields}
+          unknown={unknown}
+          handleFormChange={handleFormChange}
+          handleUnknownChange={handleUnknownChange}
+          removeRow={removeRow}
+        />
+        <Buttons validateRows={validateRows} reset={reset} />
+      </form>
+    </>
   );
 };
 

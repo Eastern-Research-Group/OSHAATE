@@ -95,11 +95,40 @@ label.tooltip {
   margin: auto 0;
 }
 
+/*Alert popup*/
+.alert-container {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+.alert-body {
+  position: absolute;
+  left: 30%;
+  right: 30%;
+  top: 20%;
+  padding: 15px;
+  text-align: center;
+  margin: auto;
+  color: darkred;
+  border-color: black;
+  background: white;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
 @media only screen and (max-width: 760px) {
   .App fieldset label {
     display: block;
     margin-bottom: 1rem;
   }
+  /*.alert-body {
+    left: 10%;
+    right: 10%;
+  }*/
 }
 
 @media only print {

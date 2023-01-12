@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import DermalInput from './DermalInput';
 import { dermalPointEstimate } from './DermalLookup';
 import Buttons from '../Buttons';
+import { Alert } from '../Alert';
 
 const Dermal = ({ setDermalResult, setShowDermalResult }) => {
   const [inputFields, setInputFields] = useState([
@@ -15,6 +16,8 @@ const Dermal = ({ setDermalResult, setShowDermalResult }) => {
   ]);
 
   let [unknown, setUnknown] = useState('');
+  const [openAlert, setOpenAlert] = useState(false);
+  const [alertText, setAlertText] = useState('');
 
   const handleFormChange = (e, idx) => {
     let data = [...inputFields];
@@ -28,7 +31,6 @@ const Dermal = ({ setDermalResult, setShowDermalResult }) => {
       data[idx][e.target.name] = e.target.value;
     }
     setInputFields(data);
-    //console.log(inputFields);
   };
 
   const handleUnknownChange = (e) => {
@@ -42,17 +44,22 @@ const Dermal = ({ setDermalResult, setShowDermalResult }) => {
     data.forEach((item) => {
       if (!item.ingredient_dermal) {
         formIsValid = false;
-        alert('Ingredient is required in row.');
+        setOpenAlert(true);
+        setAlertText('Ingredient is required in row.');
       } else if (!item.weight_dermal) {
         formIsValid = false;
-        alert('Weight (WT) is required in row.');
+        setOpenAlert(true);
+        setAlertText('Weight (WT) is required in row.');
       } else if (
         !item.LD50_dermal &&
         !item.limitdose_dermal &&
         !item.classification_dermal
       ) {
         formIsValid = false;
-        alert('LD50 or Limit Dose Data or Classification is required in row.');
+        setOpenAlert(true);
+        setAlertText(
+          'LD50 or Limit Dose Data or Classification is required in row.'
+        );
       } else if (
         !(
           item.LD50_dermal &&
@@ -71,10 +78,13 @@ const Dermal = ({ setDermalResult, setShowDermalResult }) => {
         )
       ) {
         formIsValid = false;
-        alert(
+        setOpenAlert(true);
+        setAlertText(
           'Enter only one of LD50, Limit Dose Data, or Classification in row.'
         );
       } else {
+        setOpenAlert(false);
+        setAlertText('');
       }
     });
 
@@ -159,8 +169,6 @@ const Dermal = ({ setDermalResult, setShowDermalResult }) => {
         return obj;
       });
 
-    //console.log(results);
-
     const totalWTPercentDermal = results.reduce((accumulator, object) => {
       return accumulator + parseFloat(object.weight_dermal);
     }, 0);
@@ -185,7 +193,7 @@ const Dermal = ({ setDermalResult, setShowDermalResult }) => {
             sum += item.classification_dermal;
           }
         });
-        //calculate result
+        //calculate result (round 1 decimal place)
         if (unknown !== null && unknown > 10) {
           setDermalResult(Math.round((100 - unknown) / sum));
         } else {
@@ -196,22 +204,30 @@ const Dermal = ({ setDermalResult, setShowDermalResult }) => {
       }
       setShowDermalResult(true);
     } else {
-      alert('Total weight to be calculated must not be greater than 100%.');
+      setOpenAlert(true);
+      setAlertText(
+        'Total weight to be calculated must not be greater than 100%.'
+      );
       setShowDermalResult(false);
     }
   };
 
   return (
-    <form>
-      <DermalInput
-        inputFields={inputFields}
-        unknown={unknown}
-        handleFormChange={handleFormChange}
-        handleUnknownChange={handleUnknownChange}
-        removeRow={removeRow}
-      />
-      <Buttons validateRows={validateRows} reset={reset} />
-    </form>
+    <>
+      {openAlert ? (
+        <Alert text={alertText} closePopup={() => setOpenAlert(false)} />
+      ) : null}
+      <form>
+        <DermalInput
+          inputFields={inputFields}
+          unknown={unknown}
+          handleFormChange={handleFormChange}
+          handleUnknownChange={handleUnknownChange}
+          removeRow={removeRow}
+        />
+        <Buttons validateRows={validateRows} reset={reset} />
+      </form>
+    </>
   );
 };
 

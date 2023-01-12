@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import VaporsInput from './VaporsInput';
 import { vaporsPointEstimate } from './VaporsLookup';
 import Buttons from '../Buttons';
+import { Alert } from '../Alert';
 
 const Vapors = ({ setVaporsResult, setShowVaporsResult }) => {
   const [inputFields, setInputFields] = useState([
@@ -15,6 +16,8 @@ const Vapors = ({ setVaporsResult, setShowVaporsResult }) => {
   ]);
 
   let [unknown, setUnknown] = useState('');
+  const [openAlert, setOpenAlert] = useState(false);
+  const [alertText, setAlertText] = useState('');
 
   const handleFormChange = (e, idx) => {
     let data = [...inputFields];
@@ -41,17 +44,22 @@ const Vapors = ({ setVaporsResult, setShowVaporsResult }) => {
     data.forEach((item) => {
       if (!item.ingredient_vapors) {
         formIsValid = false;
-        alert('Ingredient is required in row.');
+        setOpenAlert(true);
+        setAlertText('Ingredient is required in row.');
       } else if (!item.weight_vapors) {
         formIsValid = false;
-        alert('Weight (WT) is required in row.');
+        setOpenAlert(true);
+        setAlertText('Weight (WT) is required in row.');
       } else if (
         !item.LC50_vapors &&
         !item.limitdose_vapors &&
         !item.classification_vapors
       ) {
         formIsValid = false;
-        alert('LC50 or Limit Dose Data or Classification is required in row.');
+        setOpenAlert(true);
+        setAlertText(
+          'LC50 or Limit Dose Data or Classification is required in row.'
+        );
       } else if (
         !(
           item.LC50_vapors &&
@@ -70,7 +78,8 @@ const Vapors = ({ setVaporsResult, setShowVaporsResult }) => {
         )
       ) {
         formIsValid = false;
-        alert(
+        setOpenAlert(true);
+        setAlertText(
           'Enter only one of LC50, Limit Dose Data, or Classification in row.'
         );
       } else {
@@ -158,8 +167,6 @@ const Vapors = ({ setVaporsResult, setShowVaporsResult }) => {
         return obj;
       });
 
-    //console.log(results);
-
     const totalWTPercentVapors = results.reduce((accumulator, object) => {
       return accumulator + parseFloat(object.weight_vapors);
     }, 0);
@@ -195,22 +202,30 @@ const Vapors = ({ setVaporsResult, setShowVaporsResult }) => {
       }
       setShowVaporsResult(true);
     } else {
-      alert('Total weight to be calculated must not be greater than 100%.');
+      setOpenAlert(true);
+      setAlertText(
+        'Total weight to be calculated must not be greater than 100%.'
+      );
       setShowVaporsResult(false);
     }
   };
 
   return (
-    <form>
-      <VaporsInput
-        inputFields={inputFields}
-        unknown={unknown}
-        handleFormChange={handleFormChange}
-        handleUnknownChange={handleUnknownChange}
-        removeRow={removeRow}
-      />
-      <Buttons validateRows={validateRows} reset={reset} />
-    </form>
+    <>
+      {openAlert ? (
+        <Alert text={alertText} closePopup={() => setOpenAlert(false)} />
+      ) : null}
+      <form>
+        <VaporsInput
+          inputFields={inputFields}
+          unknown={unknown}
+          handleFormChange={handleFormChange}
+          handleUnknownChange={handleUnknownChange}
+          removeRow={removeRow}
+        />
+        <Buttons validateRows={validateRows} reset={reset} />
+      </form>
+    </>
   );
 };
 

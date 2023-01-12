@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import GasesInput from './GasesInput';
 import { gasesPointEstimate } from './GasesLookup';
 import Buttons from '../Buttons';
+import { Alert } from '../Alert';
 
 const Gases = ({ setGasesResult, setShowGasesResult }) => {
   const [inputFields, setInputFields] = useState([
@@ -15,6 +16,8 @@ const Gases = ({ setGasesResult, setShowGasesResult }) => {
   ]);
 
   let [unknown, setUnknown] = useState('');
+  const [openAlert, setOpenAlert] = useState(false);
+  const [alertText, setAlertText] = useState('');
 
   const handleFormChange = (e, idx) => {
     let data = [...inputFields];
@@ -41,17 +44,22 @@ const Gases = ({ setGasesResult, setShowGasesResult }) => {
     data.forEach((item) => {
       if (!item.ingredient_gases) {
         formIsValid = false;
-        alert('Ingredient is required in row.');
+        setOpenAlert(true);
+        setAlertText('Ingredient is required in row.');
       } else if (!item.weight_gases) {
         formIsValid = false;
-        alert('Weight (WT) is required in row.');
+        setOpenAlert(true);
+        setAlertText('Weight (WT) is required in row.');
       } else if (
         !item.LC50_gases &&
         !item.limitdose_gases &&
         !item.classification_gases
       ) {
         formIsValid = false;
-        alert('LC50 or Limit Dose Data or Classification is required in row.');
+        setOpenAlert(true);
+        setAlertText(
+          'LC50 or Limit Dose Data or Classification is required in row.'
+        );
       } else if (
         !(
           item.LC50_gases &&
@@ -70,7 +78,8 @@ const Gases = ({ setGasesResult, setShowGasesResult }) => {
         )
       ) {
         formIsValid = false;
-        alert(
+        setOpenAlert(true);
+        setAlertText(
           'Enter only one of LC50, Limit Dose Data, or Classification in row.'
         );
       } else {
@@ -158,8 +167,6 @@ const Gases = ({ setGasesResult, setShowGasesResult }) => {
         return obj;
       });
 
-    //console.log(results);
-
     const totalWTPercentGases = results.reduce((accumulator, object) => {
       return accumulator + parseFloat(object.weight_gases);
     }, 0);
@@ -195,22 +202,30 @@ const Gases = ({ setGasesResult, setShowGasesResult }) => {
       }
       setShowGasesResult(true);
     } else {
-      alert('Total weight to be calculated must not be greater than 100%.');
+      setOpenAlert(true);
+      setAlertText(
+        'Total weight to be calculated must not be greater than 100%.'
+      );
       setShowGasesResult(false);
     }
   };
 
   return (
-    <form>
-      <GasesInput
-        inputFields={inputFields}
-        unknown={unknown}
-        handleFormChange={handleFormChange}
-        handleUnknownChange={handleUnknownChange}
-        removeRow={removeRow}
-      />
-      <Buttons validateRows={validateRows} reset={reset} />
-    </form>
+    <>
+      {openAlert ? (
+        <Alert text={alertText} closePopup={() => setOpenAlert(false)} />
+      ) : null}
+      <form>
+        <GasesInput
+          inputFields={inputFields}
+          unknown={unknown}
+          handleFormChange={handleFormChange}
+          handleUnknownChange={handleUnknownChange}
+          removeRow={removeRow}
+        />
+        <Buttons validateRows={validateRows} reset={reset} />
+      </form>
+    </>
   );
 };
 
