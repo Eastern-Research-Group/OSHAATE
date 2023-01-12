@@ -22,7 +22,9 @@ const Input = ({
           <tr>
             <th>Ingredient</th>
             <th>WT%</th>
-            <th>LD50 (mg/kg)</th>
+            <th>
+              LD<sub>50</sub> (mg/kg)
+            </th>
             <th>Limit Dose Data (mg/kg)</th>
             <th>Classification</th>
           </tr>
