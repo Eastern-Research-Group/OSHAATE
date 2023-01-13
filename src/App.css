@@ -120,15 +120,22 @@ label.tooltip {
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
 
+/*remove arrows From number input Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
 @media only screen and (max-width: 760px) {
   .App fieldset label {
     display: block;
     margin-bottom: 1rem;
   }
-  /*.alert-body {
+  .alert-body {
     left: 10%;
     right: 10%;
-  }*/
+  }
 }
 
 @media only print {
