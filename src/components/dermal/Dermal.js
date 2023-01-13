@@ -23,10 +23,11 @@ const Dermal = ({ setDermalResult, setShowDermalResult }) => {
     let data = [...inputFields];
     //limit WT and LD50 input to 2 decimal places
     if (e.target.name === 'weight_dermal' || e.target.name === 'LD50_dermal') {
-      data[idx][e.target.name] = e.target.value.replace(
-        /(?<=\.[0-9]{2}).+/g,
-        ''
-      );
+      let t = e.target.value;
+      data[idx][e.target.name] =
+        t.indexOf('.') >= 0
+          ? t.substr(0, t.indexOf('.')) + t.substr(t.indexOf('.'), 3)
+          : t;
     } else {
       data[idx][e.target.name] = e.target.value;
     }
