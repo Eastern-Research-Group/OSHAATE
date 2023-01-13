@@ -21,7 +21,7 @@ const Gases = ({ setGasesResult, setShowGasesResult }) => {
 
   const handleFormChange = (e, idx) => {
     let data = [...inputFields];
-    //limit WT input to 2 decimal places
+    //limit WT and LC50 input to 2 decimal places
     if (e.target.name === 'weight_gases' || e.target.name === 'LC50_gases') {
       let t = e.target.value;
       data[idx][e.target.name] =

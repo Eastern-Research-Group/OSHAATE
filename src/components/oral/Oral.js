@@ -21,7 +21,7 @@ const Oral = ({ setOralResult, setShowOralResult }) => {
 
   const handleFormChange = (e, idx) => {
     let data = [...inputFields];
-    //limit WT input to 2 decimal places
+    //limit WT and LD50 input to 2 decimal places
     if (e.target.name === 'weight_oral' || e.target.name === 'LD50_oral') {
       let t = e.target.value;
       data[idx][e.target.name] =
