@@ -6,13 +6,13 @@ import './App.css';
 const pathwaysList = [
   {
     id: 1,
-    title: '2.1 Enter Ingredients: Dermal',
-    category: 'Dermal',
+    title: '2.1 Enter Ingredients: Oral',
+    category: 'Oral',
   },
   {
     id: 2,
-    title: '2.2 Enter Ingredients: Oral',
-    category: 'Oral',
+    title: '2.2 Enter Ingredients: Dermal',
+    category: 'Dermal',
   },
   {
     id: 3,
@@ -74,17 +74,17 @@ export default class App extends Component {
           <legend>1. Choose Exposure Route(s):</legend>
           <Checkbox
             id="1"
-            title="Dermal"
-            name="Dermal"
-            checked={this.state.categories.Dermal}
-            handleChange={this.handleChange}
-          />
-          <Checkbox
-            id="2"
             title="Oral"
             name="Oral"
             handleChange={this.handleChange}
             checked={this.state.categories.Oral}
+          />
+          <Checkbox
+            id="2"
+            title="Dermal"
+            name="Dermal"
+            checked={this.state.categories.Dermal}
+            handleChange={this.handleChange}
           />
           <Checkbox
             id="3"
