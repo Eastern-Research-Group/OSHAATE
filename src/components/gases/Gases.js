@@ -41,14 +41,14 @@ const Gases = ({ setGasesResult, setShowGasesResult }) => {
   const validateRows = (e) => {
     e.preventDefault();
     let data = [...inputFields];
-    let formIsValid = true;
+    let validArray = [];
     data.forEach((item) => {
       if (!item.ingredient_gases) {
-        formIsValid = false;
+        validArray.push(false);
         setOpenAlert(true);
         setAlertText('Ingredient is required in row.');
       } else if (!item.weight_gases) {
-        formIsValid = false;
+        validArray.push(false);
         setOpenAlert(true);
         setAlertText('Weight (WT) is required in row.');
       } else if (
@@ -56,7 +56,7 @@ const Gases = ({ setGasesResult, setShowGasesResult }) => {
         !item.limitdose_gases &&
         !item.classification_gases
       ) {
-        formIsValid = false;
+        validArray.push(false);
         setOpenAlert(true);
         setAlertText(
           'LC50 or Limit Dose Data or Classification is required in row.'
@@ -78,21 +78,21 @@ const Gases = ({ setGasesResult, setShowGasesResult }) => {
           item.classification_gases
         )
       ) {
-        formIsValid = false;
+        validArray.push(false);
         setOpenAlert(true);
         setAlertText(
           'Enter only one of LC50, Limit Dose Data, or Classification in row.'
         );
       } else {
-        setOpenAlert(false);
-        setAlertText('');
+        validArray.push(true);
       }
     });
 
-    if (formIsValid && e.target.id === 'add') {
+    //if valid data proceed to add rows or calculate
+    if (!validArray.includes(false) && e.target.id === 'add') {
       addRow();
     }
-    if (formIsValid && e.target.id === 'calculate') {
+    if (!validArray.includes(false) && e.target.id === 'calculate') {
       calculate();
     }
   };
@@ -194,7 +194,7 @@ const Gases = ({ setGasesResult, setShowGasesResult }) => {
             sum += item.classification_gases;
           }
         });
-        //calculate result
+        //calculate result (round 1 decimal place)
         if (unknown !== null && unknown > 10) {
           setGasesResult(Math.round((100 - unknown) / sum));
         } else {

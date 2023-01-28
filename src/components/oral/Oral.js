@@ -41,14 +41,14 @@ const Oral = ({ setOralResult, setShowOralResult }) => {
   const validateRows = (e) => {
     e.preventDefault();
     let data = [...inputFields];
-    let formIsValid = true;
+    let validArray = [];
     data.forEach((item) => {
       if (!item.ingredient_oral) {
-        formIsValid = false;
+        validArray.push(false);
         setOpenAlert(true);
         setAlertText('Ingredient is required in row.');
       } else if (!item.weight_oral) {
-        formIsValid = false;
+        validArray.push(false);
         setOpenAlert(true);
         setAlertText('Weight (WT) is required in row.');
       } else if (
@@ -56,7 +56,7 @@ const Oral = ({ setOralResult, setShowOralResult }) => {
         !item.limitdose_oral &&
         !item.classification_oral
       ) {
-        formIsValid = false;
+        validArray.push(false);
         setOpenAlert(true);
         setAlertText(
           'LD50 or Limit Dose Data or Classification is required in row.'
@@ -74,21 +74,21 @@ const Oral = ({ setOralResult, setShowOralResult }) => {
         ) &&
         !(!item.LD50_oral && !item.limitdose_oral && item.classification_oral)
       ) {
-        formIsValid = false;
+        validArray.push(false);
         setOpenAlert(true);
         setAlertText(
           'Enter only one of LD50, Limit Dose Data, or Classification in row.'
         );
       } else {
-        setOpenAlert(false);
-        setAlertText('');
+        validArray.push(true);
       }
     });
 
-    if (formIsValid && e.target.id === 'add') {
+    //if valid data proceed to add rows or calculate
+    if (!validArray.includes(false) && e.target.id === 'add') {
       addRow();
     }
-    if (formIsValid && e.target.id === 'calculate') {
+    if (!validArray.includes(false) && e.target.id === 'calculate') {
       calculate();
     }
   };
@@ -189,7 +189,7 @@ const Oral = ({ setOralResult, setShowOralResult }) => {
             sum += item.classification_oral;
           }
         });
-        //calculate result
+        //calculate result (round 1 decimal place)
         if (unknown !== null && unknown > 10) {
           setOralResult(Math.round((100 - unknown) / sum));
         } else {

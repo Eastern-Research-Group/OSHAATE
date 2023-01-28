@@ -41,14 +41,14 @@ const Dusts = ({ setDustsResult, setShowDustsResult }) => {
   const validateRows = (e) => {
     e.preventDefault();
     let data = [...inputFields];
-    let formIsValid = true;
+    let validArray = [];
     data.forEach((item) => {
       if (!item.ingredient_dusts) {
-        formIsValid = false;
+        validArray.push(false);
         setOpenAlert(true);
         setAlertText('Ingredient is required in row.');
       } else if (!item.weight_dusts) {
-        formIsValid = false;
+        validArray.push(false);
         setOpenAlert(true);
         setAlertText('Weight (WT) is required in row.');
       } else if (
@@ -56,7 +56,7 @@ const Dusts = ({ setDustsResult, setShowDustsResult }) => {
         !item.limitdose_dusts &&
         !item.classification_dusts
       ) {
-        formIsValid = false;
+        validArray.push(false);
         setOpenAlert(true);
         setAlertText(
           'LC50 or Limit Dose Data or Classification is required in row.'
@@ -78,21 +78,21 @@ const Dusts = ({ setDustsResult, setShowDustsResult }) => {
           item.classification_dusts
         )
       ) {
-        formIsValid = false;
+        validArray.push(false);
         setOpenAlert(true);
         setAlertText(
           'Enter only one of LC50, Limit Dose Data, or Classification in row.'
         );
       } else {
-        setOpenAlert(false);
-        setAlertText('');
+        validArray.push(true);
       }
     });
 
-    if (formIsValid && e.target.id === 'add') {
+    //if valid data proceed to add rows or calculate
+    if (!validArray.includes(false) && e.target.id === 'add') {
       addRow();
     }
-    if (formIsValid && e.target.id === 'calculate') {
+    if (!validArray.includes(false) && e.target.id === 'calculate') {
       calculate();
     }
   };
