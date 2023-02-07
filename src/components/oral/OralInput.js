@@ -31,7 +31,7 @@ const Input = ({
         </thead>
         <tbody>
           {inputFields.map((input, idx) => (
-            <tr key={idx}>
+            <tr key={idx} className={`row${idx}`}>
               <td>
                 <label htmlFor="ingredient_oral">
                   <input

@@ -20,9 +20,19 @@ div.tablewrapper {
   text-align: left;
   margin-bottom: 1rem;
 }
+div.tablewrapper table {
+  border-collapse: collapse;
+}
+div.tablewrapper table label {
+  margin-right: 10px;
+}
 div.tablewrapper table th,
 div.tablewrapper table td label {
   font-size: 0.9rem;
+}
+.usa-alert--error {
+  background-color: #f4e3db;
+  border-left: 4px solid #d54309;
 }
 .App fieldset {
   border: 0;
@@ -39,9 +49,7 @@ div.tablewrapper table td label {
 .App fieldset label {
   margin-right: 20px;
 }
-div.tablewrapper table label {
-  margin-right: 10px;
-}
+
 label.tooltip {
   font-weight: bold;
   cursor: pointer;

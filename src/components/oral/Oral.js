@@ -84,6 +84,19 @@ const Oral = ({ setOralResult, setShowOralResult }) => {
       }
     });
 
+    //highlight invalid rows
+    validArray.forEach((item, index) => {
+      if (item === false) {
+        document
+          .querySelector('table#oral tbody tr.row' + index)
+          .classList.add('usa-alert--error');
+      } else {
+        document
+          .querySelector('table#oral tbody tr.row' + index)
+          .classList.remove('usa-alert--error');
+      }
+    });
+
     //if valid data proceed to add rows or calculate
     if (!validArray.includes(false) && e.target.id === 'add') {
       addRow();
