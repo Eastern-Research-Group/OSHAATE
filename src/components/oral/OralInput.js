@@ -1,12 +1,5 @@
 import React from 'react';
-
-function Tooltip({ children, title, position }) {
-  return (
-    <div className={`tooltip`} data-position={position} data-tool-tip={title}>
-      {children}
-    </div>
-  );
-}
+import { Tooltip } from '../Tooltip';
 
 const Input = ({
   inputFields,
@@ -122,7 +115,7 @@ const Input = ({
               <br />
               <Tooltip
                 title='Sum of relevant ingredient(s) with unknown "route name" toxicity'
-                position="right"
+                position="top"
               >
                 <label htmlFor="unknown_oral" className="tooltip">
                   Sum Unknown Toxicity <span>&#9432;</span>
