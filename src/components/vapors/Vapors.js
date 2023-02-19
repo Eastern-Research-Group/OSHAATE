@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import VaporsInput from './VaporsInput';
 import { vaporsPointEstimate } from './VaporsLookup';
-import Buttons from '../Buttons';
+import { Buttons } from '../Buttons'; //TODO: 2/19 change this from class to function component on main branch
 import { Alert } from '../Alert';
 
 const Vapors = ({ setVaporsResult, setShowVaporsResult }) => {

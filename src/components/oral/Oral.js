@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import OralInput from './OralInput';
 import { oralPointEstimate } from './OralLookup';
-import Buttons from '../Buttons';
+import { Buttons } from '../Buttons'; //TODO: 2/19 change this from class to function component on main branch
 import { Alert } from '../Alert';
 
 const Oral = ({ setOralResult, setShowOralResult }) => {

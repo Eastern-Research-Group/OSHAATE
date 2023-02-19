@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
+//import Common from './Common';
 import Dermal from './dermal/Dermal';
 import DermalResult from './dermal/DermalResult';
-import Oral from './oral/Oral';
+import OralRefactor from './oral/Oral';
 import OralResult from './oral/OralResult';
 import Gases from './gases/Gases';
 import GasesResult from './gases/GasesResult';
@@ -21,9 +22,11 @@ const Pathway = ({ title, category }) => {
   let [showVaporsResult, setShowVaporsResult] = useState(false);
   const [dustsResult, setDustsResult] = useState(null);
   let [showDustsResult, setShowDustsResult] = useState(false);
+
   return (
     <>
       <h3>{title}</h3>
+
       {category === 'Dermal' ? (
         <Dermal
           dermalResult={dermalResult}
@@ -33,7 +36,7 @@ const Pathway = ({ title, category }) => {
         />
       ) : null}
       {category === 'Oral' ? (
-        <Oral
+        <OralRefactor
           oralResult={oralResult}
           setOralResult={setOralResult}
           showOralResult={showOralResult}
@@ -64,6 +67,57 @@ const Pathway = ({ title, category }) => {
           setShowDustsResult={setShowDustsResult}
         />
       ) : null}
+
+      {/*{category === 'Dermal' ? (
+        <Common
+          category={category}
+          obj={obj}
+          dermalResult={dermalResult}
+          setResult={setDermalResult}
+          showResult={showDermalResult}
+          setShowResult={setShowDermalResult}
+        />
+      ) : null}
+      {category === 'Oral' ? (
+        <Common
+          category={category}
+          obj={obj}
+          oralResult={oralResult}
+          setResult={setOralResult}
+          showResult={showOralResult}
+          setShowResult={setShowOralResult}
+        />
+      ) : null}
+      {category === 'Gases' ? (
+        <Common
+          category={category}
+          obj={obj}
+          gasesResult={gasesResult}
+          setResult={setGasesResult}
+          showResult={showGasesResult}
+          setShowResult={setShowGasesResult}
+        />
+      ) : null}
+      {category === 'Vapors' ? (
+        <Common
+          category={category}
+          obj={obj}
+          vaporsResult={vaporsResult}
+          setResult={setVaporsResult}
+          showResult={showVaporsResult}
+          setShowResult={setShowVaporsResult}
+        />
+      ) : null}
+      {category === 'Dusts' ? (
+        <Common
+          category={category}
+          obj={obj}
+          dustsResult={dustsResult}
+          setResult={setDustsResult}
+          showResult={showDustsResult}
+          setShowResult={setShowDustsResult}
+        />
+      ) : null}*/}
 
       {category === 'Dermal' ||
       category === 'Oral' ||

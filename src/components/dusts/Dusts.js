@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import DustsInput from './DustsInput';
 import { dustsPointEstimate } from './DustsLookup';
-import Buttons from '../Buttons';
+import { Buttons } from '../Buttons'; //TODO: 2/19 change this from class to function component on main branch
 import { Alert } from '../Alert';
 
 const Dusts = ({ setDustsResult, setShowDustsResult }) => {
