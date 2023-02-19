@@ -1,9 +1,9 @@
 import React from 'react';
-import { oralCategory } from './OralLookup';
+import { OralCategory } from './OralLookup';
 
 const OralResult = ({ oralResult, category }) => {
   //lookup result category
-  let oralResultCat = oralCategory(oralResult);
+  let oralResultCat = OralCategory(oralResult);
   return (
     <div id="oralResult" className="results-container">
       <h4>Oral Exposure Route Result</h4>

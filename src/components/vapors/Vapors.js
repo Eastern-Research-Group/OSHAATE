@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import VaporsInput from './VaporsInput';
-import { vaporsPointEstimate } from './VaporsLookup';
-import Buttons from '../Buttons';
+import { VaporsPointEstimate } from './VaporsLookup';
+import { Buttons } from '../Buttons';
 import { Alert } from '../Alert';
 
 const Vapors = ({ setVaporsResult, setShowVaporsResult }) => {
@@ -169,7 +169,7 @@ const Vapors = ({ setVaporsResult, setShowVaporsResult }) => {
             ...obj,
             limitdose_vapors:
               parseFloat(obj.weight_vapors) /
-              vaporsPointEstimate('Limit Dose', obj.limitdose_vapors),
+              VaporsPointEstimate('Limit Dose', obj.limitdose_vapors),
           };
         }
         if (obj.classification_vapors !== '') {
@@ -177,7 +177,7 @@ const Vapors = ({ setVaporsResult, setShowVaporsResult }) => {
             ...obj,
             classification_vapors:
               parseFloat(obj.weight_vapors) /
-              vaporsPointEstimate('Classification', obj.classification_vapors),
+              VaporsPointEstimate('Classification', obj.classification_vapors),
           };
         }
         return obj;

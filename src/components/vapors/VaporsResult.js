@@ -1,9 +1,9 @@
 import React from 'react';
-import { vaporsCategory } from './VaporsLookup';
+import { VaporsCategory } from './VaporsLookup';
 
 const VaporsResult = ({ vaporsResult, category }) => {
   //lookup result category
-  let vaporsResultCat = vaporsCategory(vaporsResult);
+  let vaporsResultCat = VaporsCategory(vaporsResult);
   return (
     <div id="vaporsResult" className="results-container">
       <h4>Inhalation - Vapors Exposure Route Result</h4>

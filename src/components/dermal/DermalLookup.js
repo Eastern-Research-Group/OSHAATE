@@ -42,13 +42,13 @@ let dermalLookup = [
   },
 ];
 
-export const dermalPointEstimate = (key, val) => {
+export const DermalPointEstimate = (key, val) => {
   return dermalLookup
     .filter((item) => item[key] === val)
     .map((item) => item['Point Estimate']);
 };
 
-export const dermalCategory = (val) => {
+export const DermalCategory = (val) => {
   if (val > 5000) {
     return 'Not Classified (LD50 > 5,000)';
   } else {

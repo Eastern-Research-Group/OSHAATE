@@ -35,13 +35,13 @@ let vaporsLookup = [
   },
 ];
 
-export const vaporsPointEstimate = (key, val) => {
+export const VaporsPointEstimate = (key, val) => {
   return vaporsLookup
     .filter((item) => item[key] === val)
     .map((item) => item['Point Estimate']);
 };
 
-export const vaporsCategory = (val) => {
+export const VaporsCategory = (val) => {
   if (val > 20) {
     return 'Not Classified (LC50 > 20.0)';
   } else {

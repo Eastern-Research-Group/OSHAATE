@@ -35,13 +35,13 @@ let dustsLookup = [
   },
 ];
 
-export const dustsPointEstimate = (key, val) => {
+export const DustsPointEstimate = (key, val) => {
   return dustsLookup
     .filter((item) => item[key] === val)
     .map((item) => item['Point Estimate']);
 };
 
-export const dustsCategory = (val) => {
+export const DustsCategory = (val) => {
   if (val > 5) {
     return 'Not Classified (LC50 > 5.0)';
   } else {

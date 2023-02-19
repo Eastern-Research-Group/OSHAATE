@@ -42,13 +42,13 @@ let oralLookup = [
   },
 ];
 
-export const oralPointEstimate = (key, val) => {
+export const OralPointEstimate = (key, val) => {
   return oralLookup
     .filter((item) => item[key] === val)
     .map((item) => item['Point Estimate']);
 };
 
-export const oralCategory = (val) => {
+export const OralCategory = (val) => {
   if (val > 5000) {
     return 'Not Classified (LD50 > 5,000)';
   } else {
