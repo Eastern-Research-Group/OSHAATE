@@ -4,12 +4,12 @@ import DermalInput from './dermal/DermalInput';
 import GasesInput from './gases/GasesInput';
 import VaporsInput from './vapors/VaporsInput';
 import DustsInput from './dusts/DustsInput';
-import { oralPointEstimate } from './oral/OralLookup';
-import { dermalPointEstimate } from './dermal/DermalLookup';
-import { gasesPointEstimate } from './gases/GasesLookup';
-import { vaporsPointEstimate } from './vapors/VaporsLookup';
-import { dustsPointEstimate } from './dusts/DustsLookup';
-import Buttons from './Buttons';
+import { OralPointEstimate } from './oral/OralLookup';
+import { DermalPointEstimate } from './dermal/DermalLookup';
+import { GasesPointEstimate } from './gases/GasesLookup';
+import { VaporsPointEstimate } from './vapors/VaporsLookup';
+import { DustsPointEstimate } from './dusts/DustsLookup';
+import { Buttons } from './Buttons';
 import { Alert } from './Alert';
 
 const Common = ({ category, obj, setResult, setShowResult }) => {
@@ -195,31 +195,31 @@ const Common = ({ category, obj, setResult, setShowResult }) => {
           //TODO: how to make generic?
 
           if (category === 'Oral') {
-            limitdose = oralPointEstimate(
+            limitdose = OralPointEstimate(
               'Limit Dose',
               obj[`limitdose_` + category]
             );
           }
           if (category === 'Dermal') {
-            limitdose = dermalPointEstimate(
+            limitdose = DermalPointEstimate(
               'Limit Dose',
               obj[`limitdose_` + category]
             );
           }
           if (category === 'Gases') {
-            limitdose = gasesPointEstimate(
+            limitdose = GasesPointEstimate(
               'Limit Dose',
               obj[`limitdose_` + category]
             );
           }
           if (category === 'Vapors') {
-            limitdose = vaporsPointEstimate(
+            limitdose = VaporsPointEstimate(
               'Limit Dose',
               obj[`limitdose_` + category]
             );
           }
           if (category === 'Dusts') {
-            limitdose = dustsPointEstimate(
+            limitdose = DustsPointEstimate(
               'Limit Dose',
               obj[`limitdose_` + category]
             );
@@ -234,32 +234,32 @@ const Common = ({ category, obj, setResult, setShowResult }) => {
         }
         if (obj[`classification_` + category] !== '') {
           if (category === 'Oral') {
-            classification = oralPointEstimate(
+            classification = OralPointEstimate(
               'Classification',
               obj[`classification_` + category]
             );
           }
 
           if (category === 'Dermal') {
-            classification = dermalPointEstimate(
+            classification = DermalPointEstimate(
               'Classification',
               obj[`classification_` + category]
             );
           }
           if (category === 'Gases') {
-            classification = gasesPointEstimate(
+            classification = GasesPointEstimate(
               'Classification',
               obj[`classification_` + category]
             );
           }
           if (category === 'Vapors') {
-            classification = vaporsPointEstimate(
+            classification = VaporsPointEstimate(
               'Classification',
               obj[`classification_` + category]
             );
           }
           if (category === 'Dusts') {
-            classification = dustsPointEstimate(
+            classification = DustsPointEstimate(
               'Classification',
               obj[`classification_` + category]
             );

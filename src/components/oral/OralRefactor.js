@@ -1,15 +1,10 @@
 import React, { useState } from 'react';
-import OralInput from './OralInput';
-import { oralPointEstimate } from './OralLookup';
-import Buttons from '../Buttons';
+import OralInputRefactor from './OralInputRefactor';
+import { Buttons } from '../Buttons';
 import { Alert } from '../Alert';
-//Then in your components that you want to use the util functions, import the specific functions that are needed. 
-//You don't have to import everything
-//import {doSomethingWithInput, justAnAlert} from './path/to/Utils.js'
+import { HandleFormChange, HandleUnknownChange, ValidateRows } from '../Utils';
 
-//import HandleUnknownChange from '../Utils';
-
-const Oral = ({ setOralResult, setShowOralResult }) => {
+const OralRefactor = ({ category, RemoveRow, Reset }) => {
   const [inputFields, setInputFields] = useState([
     {
       ingredient_oral: '',
@@ -24,7 +19,7 @@ const Oral = ({ setOralResult, setShowOralResult }) => {
   const [openAlert, setOpenAlert] = useState(false);
   const [alertText, setAlertText] = useState('');
 
-  const handleFormChange = (e, idx) => {
+  /*const handleFormChange = (e, idx) => {
     let data = [...inputFields];
     //limit WT and LD50 input to 2 decimal places
     if (e.target.name === 'weight_oral' || e.target.name === 'LD50_oral') {
@@ -37,13 +32,13 @@ const Oral = ({ setOralResult, setShowOralResult }) => {
       data[idx][e.target.name] = e.target.value;
     }
     setInputFields(data);
-  };
+  };*/
 
-  const handleUnknownChange = (e) => {
+  /*const handleUnknownChange = (e) => {
     setUnknown(e.target.value);
-  };
+  };*/
 
-  const validateRows = (e) => {
+  /*const validateRows = (e) => {
     e.preventDefault();
     let data = [...inputFields];
     let validArray = [];
@@ -109,9 +104,9 @@ const Oral = ({ setOralResult, setShowOralResult }) => {
     if (!validArray.includes(false) && e.target.id === 'calculate') {
       calculate();
     }
-  };
+  };*/
 
-  const addRow = () => {
+  /*const addRow = () => {
     let newfield = {
       ingredient_oral: '',
       weight_oral: '',
@@ -127,9 +122,9 @@ const Oral = ({ setOralResult, setShowOralResult }) => {
     let data = [...inputFields];
     data.splice(idx, 1);
     setInputFields(data);
-  };
+  };*/
 
-  const reset = (e) => {
+  /*const reset = (e) => {
     e.preventDefault();
     let data = [...inputFields];
     data.splice(1);
@@ -169,7 +164,7 @@ const Oral = ({ setOralResult, setShowOralResult }) => {
             ...obj,
             limitdose_oral:
               parseFloat(obj.weight_oral) /
-              oralPointEstimate('Limit Dose', obj.limitdose_oral),
+              OralPointEstimate('Limit Dose', obj.limitdose_oral),
           };
         }
         if (obj.classification_oral !== '') {
@@ -177,7 +172,7 @@ const Oral = ({ setOralResult, setShowOralResult }) => {
             ...obj,
             classification_oral:
               parseFloat(obj.weight_oral) /
-              oralPointEstimate('Classification', obj.classification_oral),
+              OralPointEstimate('Classification', obj.classification_oral),
           };
         }
         return obj;
@@ -224,7 +219,7 @@ const Oral = ({ setOralResult, setShowOralResult }) => {
       );
       setShowOralResult(false);
     }
-  };
+  };*/
 
   return (
     <>
@@ -232,17 +227,29 @@ const Oral = ({ setOralResult, setShowOralResult }) => {
         <Alert text={alertText} closePopup={() => setOpenAlert(false)} />
       ) : null}
       <form>
-        <OralInput
+        <OralInputRefactor
+          category={category}
           inputFields={inputFields}
+          setInputFields={setInputFields}
           unknown={unknown}
-          handleFormChange={handleFormChange}
-          handleUnknownChange={handleUnknownChange}
-          removeRow={removeRow}
+          setUnknown={setUnknown}
+          HandleFormChange={HandleFormChange}
+          HandleUnknownChange={HandleUnknownChange}
+          setAlertText={setAlertText}
         />
-        <Buttons validateRows={validateRows} reset={reset} />
+        <Buttons
+          category={category}
+          ValidateRows={ValidateRows}
+          Reset={Reset}
+          inputFields={inputFields}
+          setInputFields={setInputFields}
+          setOpenAlert={setOpenAlert}
+          setAlertText={setAlertText}
+          RemoveRow={RemoveRow}
+        />
       </form>
     </>
   );
 };
 
-export default Oral;
+export default OralRefactor;

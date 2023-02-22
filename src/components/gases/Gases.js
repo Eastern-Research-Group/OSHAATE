@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import GasesInput from './GasesInput';
-import { gasesPointEstimate } from './GasesLookup';
-import { Buttons } from '../Buttons'; //TODO: 2/19 change this from class to function component on main branch
+import { GasesPointEstimate } from './GasesLookup';
+import { Buttons } from '../Buttons';
 import { Alert } from '../Alert';
 
 const Gases = ({ setGasesResult, setShowGasesResult }) => {
@@ -169,7 +169,7 @@ const Gases = ({ setGasesResult, setShowGasesResult }) => {
             ...obj,
             limitdose_gases:
               parseFloat(obj.weight_gases) /
-              gasesPointEstimate('Limit Dose', obj.limitdose_gases),
+              GasesPointEstimate('Limit Dose', obj.limitdose_gases),
           };
         }
         if (obj.classification_gases !== '') {
@@ -177,7 +177,7 @@ const Gases = ({ setGasesResult, setShowGasesResult }) => {
             ...obj,
             classification_gases:
               parseFloat(obj.weight_gases) /
-              gasesPointEstimate('Classification', obj.classification_gases),
+              GasesPointEstimate('Classification', obj.classification_gases),
           };
         }
         return obj;

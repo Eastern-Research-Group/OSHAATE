@@ -35,13 +35,13 @@ let gasesLookup = [
   },
 ];
 
-export const gasesPointEstimate = (key, val) => {
+export const GasesPointEstimate = (key, val) => {
   return gasesLookup
     .filter((item) => item[key] === val)
     .map((item) => item['Point Estimate']);
 };
 
-export const gasesCategory = (val) => {
+export const GasesCategory = (val) => {
   if (val > 20000) {
     return 'Not Classified (LC50 > 20,000)';
   } else {

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import DermalInput from './DermalInput';
-import { dermalPointEstimate } from './DermalLookup';
-import { Buttons } from '../Buttons'; //TODO: 2/19 change this from class to function component on main branch
+import { DermalPointEstimate } from './DermalLookup';
+import { Buttons } from '../Buttons';
 import { Alert } from '../Alert';
 
 const Dermal = ({ setDermalResult, setShowDermalResult }) => {
@@ -169,7 +169,7 @@ const Dermal = ({ setDermalResult, setShowDermalResult }) => {
             ...obj,
             limitdose_dermal:
               parseFloat(obj.weight_dermal) /
-              dermalPointEstimate('Limit Dose', obj.limitdose_dermal),
+              DermalPointEstimate('Limit Dose', obj.limitdose_dermal),
           };
         }
         if (obj.classification_dermal !== '') {
@@ -177,7 +177,7 @@ const Dermal = ({ setDermalResult, setShowDermalResult }) => {
             ...obj,
             classification_dermal:
               parseFloat(obj.weight_dermal) /
-              dermalPointEstimate('Classification', obj.classification_dermal),
+              DermalPointEstimate('Classification', obj.classification_dermal),
           };
         }
         return obj;

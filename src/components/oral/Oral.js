@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import OralInput from './OralInput';
-import { oralPointEstimate } from './OralLookup';
-import { Buttons } from '../Buttons'; //TODO: 2/19 change this from class to function component on main branch
+import { OralPointEstimate } from './OralLookup';
+import { Buttons } from '../Buttons';
 import { Alert } from '../Alert';
 
 const Oral = ({ setOralResult, setShowOralResult }) => {
@@ -164,7 +164,7 @@ const Oral = ({ setOralResult, setShowOralResult }) => {
             ...obj,
             limitdose_oral:
               parseFloat(obj.weight_oral) /
-              oralPointEstimate('Limit Dose', obj.limitdose_oral),
+              OralPointEstimate('Limit Dose', obj.limitdose_oral),
           };
         }
         if (obj.classification_oral !== '') {
@@ -172,7 +172,7 @@ const Oral = ({ setOralResult, setShowOralResult }) => {
             ...obj,
             classification_oral:
               parseFloat(obj.weight_oral) /
-              oralPointEstimate('Classification', obj.classification_oral),
+              OralPointEstimate('Classification', obj.classification_oral),
           };
         }
         return obj;

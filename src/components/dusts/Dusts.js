@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import DustsInput from './DustsInput';
-import { dustsPointEstimate } from './DustsLookup';
-import { Buttons } from '../Buttons'; //TODO: 2/19 change this from class to function component on main branch
+import { DustsPointEstimate } from './DustsLookup';
+import { Buttons } from '../Buttons';
 import { Alert } from '../Alert';
 
 const Dusts = ({ setDustsResult, setShowDustsResult }) => {
@@ -169,7 +169,7 @@ const Dusts = ({ setDustsResult, setShowDustsResult }) => {
             ...obj,
             limitdose_dusts:
               parseFloat(obj.weight_dusts) /
-              dustsPointEstimate('Limit Dose', obj.limitdose_dusts),
+              DustsPointEstimate('Limit Dose', obj.limitdose_dusts),
           };
         }
         if (obj.classification_dusts !== '') {
@@ -177,7 +177,7 @@ const Dusts = ({ setDustsResult, setShowDustsResult }) => {
             ...obj,
             classification_dusts:
               parseFloat(obj.weight_dusts) /
-              dustsPointEstimate('Classification', obj.classification_dusts),
+              DustsPointEstimate('Classification', obj.classification_dusts),
           };
         }
         return obj;

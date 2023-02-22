@@ -9,7 +9,7 @@ const Input = ({
   HandleFormChange,
   HandleUnknownChange,
   //RemoveRow,
-  Reset,
+  //Reset,
   setInputFields,
   category,
 }) => {

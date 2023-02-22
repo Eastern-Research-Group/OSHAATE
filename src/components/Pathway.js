@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 //import Common from './Common';
 import Dermal from './dermal/Dermal';
 import DermalResult from './dermal/DermalResult';
-import OralRefactor from './oral/Oral';
+//import Oral from './oral/Oral';
+import OralRefactor from './oral/OralRefactor';
 import OralResult from './oral/OralResult';
 import Gases from './gases/Gases';
 import GasesResult from './gases/GasesResult';
@@ -12,6 +13,7 @@ import Dusts from './dusts/Dusts';
 import DustsResult from './dusts/DustsResult';
 
 const Pathway = ({ title, category }) => {
+  //, inputFields
   const [dermalResult, setDermalResult] = useState(null);
   let [showDermalResult, setShowDermalResult] = useState(false);
   const [oralResult, setOralResult] = useState(null);
@@ -37,6 +39,8 @@ const Pathway = ({ title, category }) => {
       ) : null}
       {category === 'Oral' ? (
         <OralRefactor
+          category={category}
+          //inputFields={inputFields}
           oralResult={oralResult}
           setOralResult={setOralResult}
           showOralResult={showOralResult}

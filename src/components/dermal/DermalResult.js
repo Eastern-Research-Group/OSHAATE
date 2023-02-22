@@ -1,9 +1,9 @@
 import React from 'react';
-import { dermalCategory } from './DermalLookup';
+import { DermalCategory } from './DermalLookup';
 
 const DermalResult = ({ dermalResult, category }) => {
   //lookup result category
-  let dermalResultCat = dermalCategory(dermalResult);
+  let dermalResultCat = DermalCategory(dermalResult);
   return (
     <div id="dermalResult" className="results-container">
       <h4>Dermal Exposure Route Result</h4>

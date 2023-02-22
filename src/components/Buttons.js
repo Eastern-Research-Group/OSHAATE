@@ -1,17 +1,47 @@
-//import React, { Component } from 'react'; //TODO: 2/19 change this from class to function component on main branch
-//export default class Buttons extends Component {
-//render() {
-//const { validateRows, reset } = this.props;
-export const Buttons = ({ validateRows, reset }) => {
+export const Buttons = ({
+  ValidateRows,
+  inputFields,
+  setInputFields,
+  setOpenAlert,
+  setAlertText,
+  Reset,
+  category,
+}) => {
   return (
     <>
-      <button type="button" id="add" onClick={validateRows}>
+      <button
+        type="button"
+        id="add"
+        onClick={(e) =>
+          ValidateRows(
+            e,
+            inputFields,
+            setInputFields,
+            setOpenAlert,
+            setAlertText,
+            category
+          )
+        }
+      >
         Add Ingredient
       </button>
-      <button type="button" id="reset" onClick={reset}>
+      <button type="button" id="reset" onClick={Reset}>
         Reset
       </button>
-      <button type="button" id="calculate" onClick={validateRows}>
+      <button
+        type="button"
+        id="calculate"
+        onClick={(e) =>
+          ValidateRows(
+            e,
+            inputFields,
+            setInputFields,
+            setOpenAlert,
+            setAlertText,
+            category
+          )
+        }
+      >
         Calculate
       </button>
     </>
