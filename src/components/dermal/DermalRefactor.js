@@ -53,7 +53,7 @@ const DermalRefactor = ({
           setAlertText={setAlertText}
           RemoveRow={RemoveRow}
           setDermalResult={setDermalResult}
-          setDermalOralResult={setShowDermalResult}
+          setShowDermalResult={setShowDermalResult}
         />
       </form>
     </>
