@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 //import Common from './Common';
-import Dermal from './dermal/Dermal';
+//import Dermal from './dermal/Dermal';
+import DermalRefactor from './dermal/DermalRefactor';
 import DermalResult from './dermal/DermalResult';
 //import Oral from './oral/Oral';
 import OralRefactor from './oral/OralRefactor';
@@ -13,24 +14,24 @@ import Dusts from './dusts/Dusts';
 import DustsResult from './dusts/DustsResult';
 
 const Pathway = ({ title, category }) => {
-  //, inputFields
-  const [dermalResult, setDermalResult] = useState(null);
-  let [showDermalResult, setShowDermalResult] = useState(false);
   const [oralResult, setOralResult] = useState(null);
-  let [showOralResult, setShowOralResult] = useState(false);
+  const [showOralResult, setShowOralResult] = useState(false);
+  const [dermalResult, setDermalResult] = useState(null);
+  const [showDermalResult, setShowDermalResult] = useState(false);
   const [gasesResult, setGasesResult] = useState(null);
-  let [showGasesResult, setShowGasesResult] = useState(false);
+  const [showGasesResult, setShowGasesResult] = useState(false);
   const [vaporsResult, setVaporsResult] = useState(null);
-  let [showVaporsResult, setShowVaporsResult] = useState(false);
+  const [showVaporsResult, setShowVaporsResult] = useState(false);
   const [dustsResult, setDustsResult] = useState(null);
-  let [showDustsResult, setShowDustsResult] = useState(false);
+  const [showDustsResult, setShowDustsResult] = useState(false);
 
   return (
     <>
       <h3>{title}</h3>
 
       {category === 'Dermal' ? (
-        <Dermal
+        <DermalRefactor
+          category={category}
           dermalResult={dermalResult}
           setDermalResult={setDermalResult}
           showDermalResult={showDermalResult}
@@ -40,7 +41,6 @@ const Pathway = ({ title, category }) => {
       {category === 'Oral' ? (
         <OralRefactor
           category={category}
-          //inputFields={inputFields}
           oralResult={oralResult}
           setOralResult={setOralResult}
           showOralResult={showOralResult}
@@ -71,57 +71,6 @@ const Pathway = ({ title, category }) => {
           setShowDustsResult={setShowDustsResult}
         />
       ) : null}
-
-      {/*{category === 'Dermal' ? (
-        <Common
-          category={category}
-          obj={obj}
-          dermalResult={dermalResult}
-          setResult={setDermalResult}
-          showResult={showDermalResult}
-          setShowResult={setShowDermalResult}
-        />
-      ) : null}
-      {category === 'Oral' ? (
-        <Common
-          category={category}
-          obj={obj}
-          oralResult={oralResult}
-          setResult={setOralResult}
-          showResult={showOralResult}
-          setShowResult={setShowOralResult}
-        />
-      ) : null}
-      {category === 'Gases' ? (
-        <Common
-          category={category}
-          obj={obj}
-          gasesResult={gasesResult}
-          setResult={setGasesResult}
-          showResult={showGasesResult}
-          setShowResult={setShowGasesResult}
-        />
-      ) : null}
-      {category === 'Vapors' ? (
-        <Common
-          category={category}
-          obj={obj}
-          vaporsResult={vaporsResult}
-          setResult={setVaporsResult}
-          showResult={showVaporsResult}
-          setShowResult={setShowVaporsResult}
-        />
-      ) : null}
-      {category === 'Dusts' ? (
-        <Common
-          category={category}
-          obj={obj}
-          dustsResult={dustsResult}
-          setResult={setDustsResult}
-          showResult={showDustsResult}
-          setShowResult={setShowDustsResult}
-        />
-      ) : null}*/}
 
       {category === 'Dermal' ||
       category === 'Oral' ||

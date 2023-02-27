@@ -13,7 +13,7 @@ const Input = ({
 }) => {
   return (
     <div className="tablewrapper">
-      <table id="oral">
+      <table id="dermal">
         <thead>
           <tr>
             <th>Ingredient</th>
@@ -29,13 +29,13 @@ const Input = ({
           {inputFields.map((input, idx) => (
             <tr key={idx} className={`row${idx}`}>
               <td>
-                <label htmlFor="ingredient_oral">
+                <label htmlFor="ingredient_dermal">
                   <input
                     type="text"
-                    id="ingredient_oral"
-                    name="ingredient_oral"
+                    id="ingredient_dermal"
+                    name="ingredient_dermal"
                     placeholder="Enter ingredient"
-                    value={input.ingredient_oral}
+                    value={input.ingredient_dermal}
                     onChange={(e) =>
                       HandleFormChange(
                         e,
@@ -49,15 +49,15 @@ const Input = ({
                 </label>
               </td>
               <td>
-                <label htmlFor="weight_oral">
+                <label htmlFor="weight_dermal">
                   <input
                     type="number"
                     min="0"
                     step="0.01"
-                    id="weight_oral"
-                    name="weight_oral"
+                    id="weight_dermal"
+                    name="weight_dermal"
                     placeholder="Enter weight (%)"
-                    value={input.weight_oral}
+                    value={input.weight_dermal}
                     onChange={(e) =>
                       HandleFormChange(
                         e,
@@ -71,15 +71,15 @@ const Input = ({
                 </label>
               </td>
               <td>
-                <label htmlFor="LDLC50_oral">
+                <label htmlFor="LD50_dermal">
                   <input
                     type="number"
                     min="0"
                     step="0.01"
-                    id="LDLC50_oral"
-                    name="LDLC50_oral"
+                    id="LDLC50_dermal"
+                    name="LDLC50_dermal"
                     placeholder="Enter LD50 (mg/kg)"
-                    value={input.LDLC50_oral}
+                    value={input.LDLC50_dermal}
                     onChange={(e) =>
                       HandleFormChange(
                         e,
@@ -93,11 +93,11 @@ const Input = ({
                 </label>
               </td>
               <td>
-                <label htmlFor="limitdose_oral">
+                <label htmlFor="limitdose_dermal">
                   <select
-                    name="limitdose_oral"
-                    id="limitdose_oral"
-                    value={input.limitdose_oral}
+                    name="limitdose_dermal"
+                    id="limitdose_dermal"
+                    value={input.limitdose_dermal}
                     onChange={(e) =>
                       HandleFormChange(
                         e,
@@ -109,21 +109,21 @@ const Input = ({
                     }
                   >
                     <option value="">Select Limit Dose Data</option>
-                    <option>&le; 5</option>
-                    <option>&gt; 5 - &le; 50</option>
-                    <option>&gt; 50 - &le; 300</option>
-                    <option>&gt; 300 - &le; 2,000</option>
+                    <option>&le; 50</option>
+                    <option>&gt; 50 - &le; 200</option>
+                    <option>&gt; 200 - &le; 1,000</option>
+                    <option>&gt; 1,000 - &le; 2,000</option>
                     <option>&gt; 2,000 - &le; 5,000</option>
                     <option>&gt; 2,000 (No signs of toxicity)</option>
                   </select>
                 </label>
               </td>
               <td>
-                <label htmlFor="classification_oral">
+                <label htmlFor="classification_dermal">
                   <select
-                    name="classification_oral"
-                    id="classification_oral"
-                    value={input.classification_oral}
+                    name="classification_dermal"
+                    id="classification_dermal"
+                    value={input.classification_dermal}
                     onChange={(e) =>
                       HandleFormChange(
                         e,
@@ -147,7 +147,7 @@ const Input = ({
               <td>
                 {idx === 0 ? null : (
                   <button
-                    typ="button"
+                    type="button"
                     onClick={(e) =>
                       RemoveRow(e, idx, inputFields, setInputFields)
                     }
@@ -165,7 +165,7 @@ const Input = ({
                 title='Sum of relevant ingredient(s) with unknown "route name" toxicity'
                 position="top"
               >
-                <label htmlFor="unknown_oral" className="tooltip">
+                <label htmlFor="unknown_dermal" className="tooltip">
                   Sum Unknown Toxicity <span>&#9432;</span>
                 </label>
               </Tooltip>
@@ -176,8 +176,8 @@ const Input = ({
                 type="number"
                 min="0"
                 step="0.01"
-                id="unknown_oral"
-                name="unknown_oral"
+                id="unknown_dermal"
+                name="unknown_dermal"
                 placeholder="Enter weight (%)"
                 value={unknown}
                 onChange={(e) => HandleUnknownChange(e, setUnknown)}

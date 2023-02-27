@@ -4,8 +4,16 @@ export const Buttons = ({
   setInputFields,
   setOpenAlert,
   setAlertText,
-  Reset,
   category,
+  unknown,
+  setOralResult,
+  setShowOralResult,
+  setDermalResult,
+  setShowDermalResult,
+  /*setGasesResult,
+  setVaporsResult,
+  setDustsResult,*/
+  Reset,
 }) => {
   return (
     <>
@@ -38,7 +46,15 @@ export const Buttons = ({
             setInputFields,
             setOpenAlert,
             setAlertText,
-            category
+            category,
+            unknown,
+            setOralResult,
+            setShowOralResult,
+            setDermalResult,
+            setShowDermalResult
+            /*setGasesResult,
+            setVaporsResult,
+            setDustsResult,*/
           )
         }
       >

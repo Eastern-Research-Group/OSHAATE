@@ -4,12 +4,18 @@ import { Buttons } from '../Buttons';
 import { Alert } from '../Alert';
 import { HandleFormChange, HandleUnknownChange, ValidateRows } from '../Utils';
 
-const OralRefactor = ({ category, RemoveRow, Reset }) => {
+const OralRefactor = ({
+  category,
+  RemoveRow,
+  Reset,
+  setOralResult,
+  setShowOralResult,
+}) => {
   const [inputFields, setInputFields] = useState([
     {
       ingredient_oral: '',
       weight_oral: '',
-      LD50_oral: '',
+      LDLC50_oral: '',
       limitdose_oral: '',
       classification_oral: '',
     },
@@ -236,6 +242,7 @@ const OralRefactor = ({ category, RemoveRow, Reset }) => {
           HandleFormChange={HandleFormChange}
           HandleUnknownChange={HandleUnknownChange}
           setAlertText={setAlertText}
+          RemoveRow={RemoveRow}
         />
         <Buttons
           category={category}
@@ -246,6 +253,8 @@ const OralRefactor = ({ category, RemoveRow, Reset }) => {
           setOpenAlert={setOpenAlert}
           setAlertText={setAlertText}
           RemoveRow={RemoveRow}
+          setOralResult={setOralResult}
+          setShowOralResult={setShowOralResult}
         />
       </form>
     </>
