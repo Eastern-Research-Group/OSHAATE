@@ -1,18 +1,17 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Tooltip } from '../Tooltip';
-import { RemoveRow } from '../Utils';
+import { HandleUnknownChange, RemoveRow } from '../Utils';
 
 const Input = ({
   inputFields,
-  unknown,
-  setUnknown,
   HandleFormChange,
-  HandleUnknownChange,
-  //RemoveRow,
-  Reset,
   setInputFields,
   category,
+  //unknown,
+  //setUnknown,
+  //HandleUnknownChange,
 }) => {
+  let [unknown, setUnknown] = useState('');
   return (
     <div className="tablewrapper">
       <table id="oral">
@@ -73,13 +72,13 @@ const Input = ({
                 </label>
               </td>
               <td>
-                <label htmlFor="LD50_oral">
+                <label htmlFor="LDLC50_oral">
                   <input
                     type="number"
                     min="0"
                     step="0.01"
-                    id="LD50_oral"
-                    name="LD50_oral"
+                    id="LDLC50_oral"
+                    name="LDLC50_oral"
                     placeholder="Enter LD50 (mg/kg)"
                     value={input.LD50_oral}
                     onChange={(e) =>
@@ -149,7 +148,7 @@ const Input = ({
               <td>
                 {idx === 0 ? null : (
                   <button
-                    typ="button"
+                    type="button"
                     onClick={(e) =>
                       RemoveRow(e, idx, inputFields, setInputFields)
                     }
@@ -163,14 +162,12 @@ const Input = ({
           <tr>
             <td>
               <br />
-              <Tooltip
-                title='Sum of relevant ingredient(s) with unknown "route name" toxicity'
-                position="top"
-              >
-                <label htmlFor="unknown_oral" className="tooltip">
-                  Sum Unknown Toxicity <span>&#9432;</span>
-                </label>
-              </Tooltip>
+              <label htmlFor="unknown_oral" className="tooltip">
+                Sum Unknown Toxicity{' '}
+                <span>
+                  <Tooltip>&#9432;</Tooltip>
+                </span>
+              </label>
             </td>
             <td>
               <br />
@@ -182,7 +179,9 @@ const Input = ({
                 name="unknown_oral"
                 placeholder="Enter weight (%)"
                 value={unknown}
-                onChange={(e) => HandleUnknownChange(e, setUnknown)}
+                onChange={(e) =>
+                  HandleUnknownChange(e, category, unknown, setUnknown)
+                }
               />
             </td>
           </tr>

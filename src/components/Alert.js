@@ -5,7 +5,13 @@ export const Alert = ({ text, closePopup }) => {
         <p>
           <strong> {text}</strong>
         </p>
-        <button onClick={closePopup}>OK</button>
+        <button
+          className="usa-button usa-button--secondary"
+          type="button"
+          onClick={closePopup}
+        >
+          OK
+        </button>
       </div>
     </div>
   );

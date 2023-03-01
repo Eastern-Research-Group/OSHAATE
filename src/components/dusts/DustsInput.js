@@ -1,13 +1,17 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Tooltip } from '../Tooltip';
+import { HandleUnknownChange, RemoveRow } from '../Utils';
 
 const Input = ({
   inputFields,
-  unknown,
-  handleFormChange,
-  handleUnknownChange,
-  removeRow,
+  HandleFormChange,
+  setInputFields,
+  category,
+  //unknown,
+  //setUnknown,
+  //HandleUnknownChange,
 }) => {
+  let [unknown, setUnknown] = useState('');
   return (
     <div className="tablewrapper">
       <table id="dusts">
@@ -33,7 +37,15 @@ const Input = ({
                     name="ingredient_dusts"
                     placeholder="Enter ingredient"
                     value={input.ingredient_dusts}
-                    onChange={(e) => handleFormChange(e, idx)}
+                    onChange={(e) =>
+                      HandleFormChange(
+                        e,
+                        idx,
+                        inputFields,
+                        setInputFields,
+                        category
+                      )
+                    }
                   />
                 </label>
               </td>
@@ -47,21 +59,37 @@ const Input = ({
                     name="weight_dusts"
                     placeholder="Enter weight (%)"
                     value={input.weight_dusts}
-                    onChange={(e) => handleFormChange(e, idx)}
+                    onChange={(e) =>
+                      HandleFormChange(
+                        e,
+                        idx,
+                        inputFields,
+                        setInputFields,
+                        category
+                      )
+                    }
                   />
                 </label>
               </td>
               <td>
-                <label htmlFor="LC50_dusts">
+                <label htmlFor="LDLC50_dusts">
                   <input
                     type="number"
                     min="0"
                     step="0.01"
-                    id="LC50_dusts"
-                    name="LC50_dusts"
+                    id="LDLC50_dusts"
+                    name="LDLC50_dusts"
                     placeholder="Enter LC50 (mg/l)"
-                    value={input.LC50_dusts}
-                    onChange={(e) => handleFormChange(e, idx)}
+                    value={input.LDLC50_dusts}
+                    onChange={(e) =>
+                      HandleFormChange(
+                        e,
+                        idx,
+                        inputFields,
+                        setInputFields,
+                        category
+                      )
+                    }
                   />
                 </label>
               </td>
@@ -71,7 +99,15 @@ const Input = ({
                     name="limitdose_dusts"
                     id="limitdose_dusts"
                     value={input.limitdose_dusts}
-                    onChange={(e) => handleFormChange(e, idx)}
+                    onChange={(e) =>
+                      HandleFormChange(
+                        e,
+                        idx,
+                        inputFields,
+                        setInputFields,
+                        category
+                      )
+                    }
                   >
                     <option value="">Select Limit Dose Data</option>
                     <option>&le; 0.05</option>
@@ -88,7 +124,15 @@ const Input = ({
                     name="classification_dusts"
                     id="classification_dusts"
                     value={input.classification_dusts}
-                    onChange={(e) => handleFormChange(e, idx)}
+                    onChange={(e) =>
+                      HandleFormChange(
+                        e,
+                        idx,
+                        inputFields,
+                        setInputFields,
+                        category
+                      )
+                    }
                   >
                     <option value="">Select Classification</option>
                     <option>Category 1</option>
@@ -101,7 +145,12 @@ const Input = ({
               </td>
               <td>
                 {idx === 0 ? null : (
-                  <button typ="button" onClick={(e) => removeRow(e, idx)}>
+                  <button
+                    type="button"
+                    onClick={(e) =>
+                      RemoveRow(e, idx, inputFields, setInputFields)
+                    }
+                  >
                     Remove
                   </button>
                 )}
@@ -111,14 +160,12 @@ const Input = ({
           <tr>
             <td>
               <br />
-              <Tooltip
-                title='Sum of relevant ingredient(s) with unknown "route name" toxicity'
-                position="top"
-              >
-                <label htmlFor="unknown_dusts" className="tooltip">
-                  Sum Unknown Toxicity <span>&#9432;</span>
-                </label>
-              </Tooltip>
+              <label htmlFor="unknown_dusts" className="tooltip">
+                Sum Unknown Toxicity{' '}
+                <span>
+                  <Tooltip>&#9432;</Tooltip>
+                </span>
+              </label>
             </td>
             <td>
               <br />
@@ -130,7 +177,9 @@ const Input = ({
                 name="unknown_dusts"
                 placeholder="Enter weight (%)"
                 value={unknown}
-                onChange={(e) => handleUnknownChange(e)}
+                onChange={(e) =>
+                  HandleUnknownChange(e, category, unknown, setUnknown)
+                }
               />
             </td>
           </tr>

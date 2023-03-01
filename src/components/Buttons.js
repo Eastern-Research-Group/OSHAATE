@@ -6,18 +6,23 @@ export const Buttons = ({
   setAlertText,
   category,
   unknown,
+  setUnknown,
   setOralResult,
   setShowOralResult,
   setDermalResult,
   setShowDermalResult,
-  /*setGasesResult,
+  setGasesResult,
+  setShowGasesResult,
   setVaporsResult,
-  setDustsResult,*/
+  setShowVaporsResult,
+  setDustsResult,
+  setShowDustsResult,
   Reset,
 }) => {
   return (
     <>
       <button
+        className="usa-button usa-button--outline"
         type="button"
         id="add"
         onClick={(e) =>
@@ -33,10 +38,29 @@ export const Buttons = ({
       >
         Add Ingredient
       </button>
-      <button type="button" id="reset" onClick={Reset}>
+      <button
+        className="usa-button usa-button--outline"
+        type="button"
+        id="reset"
+        onClick={(e) =>
+          Reset(
+            e,
+            inputFields,
+            setInputFields,
+            setUnknown,
+            setShowOralResult,
+            setShowDermalResult,
+            setShowGasesResult,
+            setShowVaporsResult,
+            setShowDustsResult,
+            category
+          )
+        }
+      >
         Reset
       </button>
       <button
+        className="usa-button"
         type="button"
         id="calculate"
         onClick={(e) =>
@@ -51,10 +75,13 @@ export const Buttons = ({
             setOralResult,
             setShowOralResult,
             setDermalResult,
-            setShowDermalResult
-            /*setGasesResult,
+            setShowDermalResult,
+            setGasesResult,
+            setShowGasesResult,
             setVaporsResult,
-            setDustsResult,*/
+            setShowVaporsResult,
+            setDustsResult,
+            setShowDustsResult
           )
         }
       >

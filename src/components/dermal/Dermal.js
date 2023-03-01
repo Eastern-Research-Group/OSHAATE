@@ -1,230 +1,33 @@
 import React, { useState } from 'react';
 import DermalInput from './DermalInput';
-import { DermalPointEstimate } from './DermalLookup';
 import { Buttons } from '../Buttons';
 import { Alert } from '../Alert';
+import {
+  HandleFormChange,
+  ValidateRows,
+  Reset,
+  //HandleUnknownChange,
+} from '../Utils';
 
-const Dermal = ({ setDermalResult, setShowDermalResult }) => {
+const Dermal = ({
+  category,
+  RemoveRow,
+  setDermalResult,
+  setShowDermalResult,
+}) => {
   const [inputFields, setInputFields] = useState([
     {
       ingredient_dermal: '',
       weight_dermal: '',
-      LD50_dermal: '',
+      LDLC50_dermal: '',
       limitdose_dermal: '',
       classification_dermal: '',
     },
   ]);
 
-  let [unknown, setUnknown] = useState('');
+  //let [unknown, setUnknown] = useState('');
   const [openAlert, setOpenAlert] = useState(false);
   const [alertText, setAlertText] = useState('');
-
-  const handleFormChange = (e, idx) => {
-    let data = [...inputFields];
-    //limit WT and LD50 input to 2 decimal places
-    if (e.target.name === 'weight_dermal' || e.target.name === 'LD50_dermal') {
-      let t = e.target.value;
-      data[idx][e.target.name] =
-        t.indexOf('.') >= 0
-          ? t.substr(0, t.indexOf('.')) + t.substr(t.indexOf('.'), 3)
-          : t;
-    } else {
-      data[idx][e.target.name] = e.target.value;
-    }
-    setInputFields(data);
-  };
-
-  const handleUnknownChange = (e) => {
-    setUnknown(e.target.value);
-  };
-
-  const validateRows = (e) => {
-    e.preventDefault();
-    let data = [...inputFields];
-    let validArray = [];
-    data.forEach((item) => {
-      if (!item.ingredient_dermal) {
-        validArray.push(false);
-        setOpenAlert(true);
-        setAlertText('Ingredient is required in row.');
-      } else if (!item.weight_dermal) {
-        validArray.push(false);
-        setOpenAlert(true);
-        setAlertText('Weight (WT) is required in row.');
-      } else if (
-        !item.LD50_dermal &&
-        !item.limitdose_dermal &&
-        !item.classification_dermal
-      ) {
-        validArray.push(false);
-        setOpenAlert(true);
-        setAlertText(
-          'LD50 or Limit Dose Data or Classification is required in row.'
-        );
-      } else if (
-        !(
-          item.LD50_dermal &&
-          !item.limitdose_dermal &&
-          !item.classification_dermal
-        ) &&
-        !(
-          !item.LD50_dermal &&
-          item.limitdose_dermal &&
-          !item.classification_dermal
-        ) &&
-        !(
-          !item.LD50_dermal &&
-          !item.limitdose_dermal &&
-          item.classification_dermal
-        )
-      ) {
-        validArray.push(false);
-        setOpenAlert(true);
-        setAlertText(
-          'Enter only one of LD50, Limit Dose Data, or Classification in row.'
-        );
-      } else {
-        validArray.push(true);
-      }
-    });
-
-    //highlight invalid rows
-    validArray.forEach((item, index) => {
-      if (item === false) {
-        document
-          .querySelector('table#dermal tbody tr.row' + index)
-          .classList.add('usa-alert--error');
-      } else {
-        document
-          .querySelector('table#dermal tbody tr.row' + index)
-          .classList.remove('usa-alert--error');
-      }
-    });
-
-    //if valid data proceed to add rows or calculate
-    if (!validArray.includes(false) && e.target.id === 'add') {
-      addRow();
-    }
-    if (!validArray.includes(false) && e.target.id === 'calculate') {
-      calculate();
-    }
-  };
-
-  const addRow = () => {
-    let newfield = {
-      ingredient_dermal: '',
-      weight_dermal: '',
-      LD50_dermal: '',
-      limitdose_dermal: '',
-      classification_dermal: '',
-    };
-    setInputFields([...inputFields, newfield]);
-  };
-
-  const removeRow = (e, idx) => {
-    e.preventDefault();
-    let data = [...inputFields];
-    data.splice(idx, 1);
-    setInputFields(data);
-  };
-
-  const reset = (e) => {
-    e.preventDefault();
-    let data = [...inputFields];
-    data.splice(1);
-    setInputFields([
-      {
-        ingredient_dermal: '',
-        weight_dermal: '',
-        LD50_dermal: '',
-        limitdose_dermal: '',
-        classification_dermal: '',
-      },
-    ]);
-    setUnknown('');
-    setShowDermalResult(false);
-  };
-
-  const calculate = () => {
-    let data = [...inputFields];
-    let results = data
-      .filter(
-        (obj) =>
-          (obj.LD50_dermal !== '' && parseFloat(obj.LD50_dermal) <= 5000) ||
-          (obj.limitdose_dermal !== '' &&
-            obj.limitdose_dermal !== '> 2,000 (No signs of toxicity)') ||
-          (obj.classification_dermal !== '' &&
-            obj.classification_dermal !== 'Not Classified (LD50 > 5,000)')
-      )
-      .map((obj) => {
-        if (obj.LD50_dermal !== '') {
-          return {
-            ...obj,
-            LD50_dermal:
-              parseFloat(obj.weight_dermal) / parseFloat(obj.LD50_dermal),
-          };
-        }
-        if (obj.limitdose_dermal !== '') {
-          return {
-            ...obj,
-            limitdose_dermal:
-              parseFloat(obj.weight_dermal) /
-              DermalPointEstimate('Limit Dose', obj.limitdose_dermal),
-          };
-        }
-        if (obj.classification_dermal !== '') {
-          return {
-            ...obj,
-            classification_dermal:
-              parseFloat(obj.weight_dermal) /
-              DermalPointEstimate('Classification', obj.classification_dermal),
-          };
-        }
-        return obj;
-      });
-
-    const totalWTPercentDermal = results.reduce((accumulator, object) => {
-      return accumulator + parseFloat(object.weight_dermal);
-    }, 0);
-    //validate weight total to be calculated (not greater than 100)
-    if (
-      !(
-        (!unknown && totalWTPercentDermal > 100) ||
-        (unknown !== null && totalWTPercentDermal + parseFloat(unknown) > 100)
-      )
-    ) {
-      //if results, sum
-      let sum = 0;
-      if (results.length) {
-        results.forEach((item) => {
-          if (item.LD50_dermal !== '') {
-            sum += item.LD50_dermal;
-          }
-          if (item.limitdose_dermal !== '') {
-            sum += item.limitdose_dermal;
-          }
-          if (item.classification_dermal !== '') {
-            sum += item.classification_dermal;
-          }
-        });
-        //calculate result (round 1 decimal place)
-        if (unknown !== null && unknown > 10) {
-          setDermalResult(Math.round((100 - unknown) / sum));
-        } else {
-          setDermalResult(Math.round(100 / sum));
-        }
-      } else {
-        setDermalResult(null);
-      }
-      setShowDermalResult(true);
-    } else {
-      setOpenAlert(true);
-      setAlertText(
-        'Total weight to be calculated must not be greater than 100%.'
-      );
-      setShowDermalResult(false);
-    }
-  };
 
   return (
     <>
@@ -233,13 +36,28 @@ const Dermal = ({ setDermalResult, setShowDermalResult }) => {
       ) : null}
       <form>
         <DermalInput
+          category={category}
           inputFields={inputFields}
-          unknown={unknown}
-          handleFormChange={handleFormChange}
-          handleUnknownChange={handleUnknownChange}
-          removeRow={removeRow}
+          setInputFields={setInputFields}
+          HandleFormChange={HandleFormChange}
+          setAlertText={setAlertText}
+          RemoveRow={RemoveRow}
+          //unknown={unknown}
+          //setUnknown={setUnknown}
+          //HandleUnknownChange={HandleUnknownChange}
         />
-        <Buttons validateRows={validateRows} reset={reset} />
+        <Buttons
+          category={category}
+          ValidateRows={ValidateRows}
+          Reset={Reset}
+          inputFields={inputFields}
+          setInputFields={setInputFields}
+          setOpenAlert={setOpenAlert}
+          setAlertText={setAlertText}
+          RemoveRow={RemoveRow}
+          setDermalResult={setDermalResult}
+          setShowDermalResult={setShowDermalResult}
+        />
       </form>
     </>
   );

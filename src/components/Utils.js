@@ -4,11 +4,7 @@ import { GasesPointEstimate } from './gases/GasesLookup';
 import { VaporsPointEstimate } from './vapors/VaporsLookup';
 import { DustsPointEstimate } from './dusts/DustsLookup';
 
-/*ingredient_oral: '',
-      weight_oral: '',
-      LDLC50_oral: '',
-      limitdose_oral: '',
-      classification_oral: '',*/
+let unknown_dermal = null;
 
 //Function to handle input changes
 export const HandleFormChange = (
@@ -34,12 +30,21 @@ export const HandleFormChange = (
     data[idx][e.target.name] = e.target.value;
   }
   setInputFields(data);
+  /*if (e.target.name === `unknown_${category.toLowerCase()}`) {
+    setUnknown(e.target.value);
+  }*/
 };
 
-//Function to handle unknown input change
-export const HandleUnknownChange = (e, setUnknown) => {
+//Function to handle unknown input change -- TODO: handle unknown for all
+export const HandleUnknownChange = (e, category, unknown, setUnknown) => {
   setUnknown(e.target.value);
+  let cat = category.toLowercase();
+  if (cat === 'dermal') {
+    unknown_dermal = e.target.value;
+  }
 };
+
+console.log(unknown_dermal);
 
 //Function to validate rows on Add ingredient or Calculate
 export const ValidateRows = (
@@ -138,9 +143,9 @@ export const ValidateRows = (
     }
   });
 
-  //if valid data proceed to add rows or calculate
+  //if valid data, proceed to Add ingredient row or Calculate
   if (!validArray.includes(false) && e.target.id === 'add') {
-    //Add new ingredient row
+    //Add Ingredient
     let newfield = {
       [`ingredient_` + cat]: '',
       [`weight_` + cat]: '',
@@ -151,8 +156,7 @@ export const ValidateRows = (
     setInputFields([...inputFields, newfield]);
   }
   if (!validArray.includes(false) && e.target.id === 'calculate') {
-    //calculate();
-    console.log(cat); //TODO: fix, on Dermal "Add ingredient" (validate), after Oral entry, cat is still resulting in oral
+    //Calculate
     let LDLC50max = 0,
       limitdosemax = '',
       classificationmax = '';
@@ -176,12 +180,8 @@ export const ValidateRows = (
       limitdosemax = '> 5.0 (No signs of toxicity)';
       classificationmax = 'Not Classified (LC50 > 5.0)';
     }
-
-    //console.log(LDLC50max);
-    //console.log(limitdosemax);
-    //console.log(classificationmax);
-
     let data = [...inputFields];
+
     let results = data
       .filter(
         (obj) =>
@@ -193,53 +193,83 @@ export const ValidateRows = (
             obj[[`classification_` + cat]] !== classificationmax)
       )
       .map((obj) => {
+        let weight = parseFloat(obj[[`weight_` + cat]]);
+        let LDLC50 = parseFloat(obj[[`LDLC50_` + cat]]);
+        let oralPointEstimate_limitdose = OralPointEstimate(
+          'Limit Dose',
+          obj[[`limitdose_` + cat]]
+        );
+        let oralPointEstimate_classification = OralPointEstimate(
+          'Classification',
+          obj[[`classification_` + cat]]
+        );
+        let dermalPointEstimate_limitdose = DermalPointEstimate(
+          'Limit Dose',
+          obj[[`limitdose_` + cat]]
+        );
+        let dermalPointEstimate_classification = DermalPointEstimate(
+          'Classification',
+          obj[[`classification_` + cat]]
+        );
+        let gasesPointEstimate_limitdose = GasesPointEstimate(
+          'Limit Dose',
+          obj[[`limitdose_` + cat]]
+        );
+        let gasesPointEstimate_classification = GasesPointEstimate(
+          'Classification',
+          obj[[`classification_` + cat]]
+        );
+        let vaporsPointEstimate_limitdose = VaporsPointEstimate(
+          'Limit Dose',
+          obj[[`limitdose_` + cat]]
+        );
+        let vaporsPointEstimate_classification = VaporsPointEstimate(
+          'Classification',
+          obj[[`classification_` + cat]]
+        );
+        let dustsPointEstimate_limitdose = DustsPointEstimate(
+          'Limit Dose',
+          obj[[`limitdose_` + cat]]
+        );
+        let dustsPointEstimate_classification = DustsPointEstimate(
+          'Classification',
+          obj[[`classification_` + cat]]
+        );
         if (obj[[`LDLC50_` + cat]] !== '') {
           return {
             ...obj,
-            [`LDLC50_` + cat]:
-              parseFloat(obj[[`weight_` + cat]]) /
-              parseFloat(obj[[`LDLC50_` + cat]]),
+            [`LDLC50_` + cat]: weight / LDLC50,
           };
         }
         if (obj[[`limitdose_` + cat]] !== '') {
           if (cat === 'oral') {
             return {
               ...obj,
-              [`limitdose_` + cat]:
-                parseFloat(obj[[`weight_` + cat]]) /
-                OralPointEstimate('Limit Dose', obj[[`limitdose_` + cat]]),
+              [`limitdose_` + cat]: weight / oralPointEstimate_limitdose,
             };
           }
           if (cat === 'dermal') {
             return {
               ...obj,
-              [`limitdose_` + cat]:
-                parseFloat(obj[[`weight_` + cat]]) /
-                DermalPointEstimate('Limit Dose', obj[[`limitdose_` + cat]]),
+              [`limitdose_` + cat]: weight / dermalPointEstimate_limitdose,
             };
           }
           if (cat === 'gases') {
             return {
               ...obj,
-              [`limitdose_` + cat]:
-                parseFloat(obj[[`weight_` + cat]]) /
-                GasesPointEstimate('Limit Dose', obj[[`limitdose_` + cat]]),
+              [`limitdose_` + cat]: weight / gasesPointEstimate_limitdose,
             };
           }
           if (cat === 'vapors') {
             return {
               ...obj,
-              [`limitdose_` + cat]:
-                parseFloat(obj[[`weight_` + cat]]) /
-                VaporsPointEstimate('Limit Dose', obj[[`limitdose_` + cat]]),
+              [`limitdose_` + cat]: weight / vaporsPointEstimate_limitdose,
             };
           }
           if (cat === 'dusts') {
             return {
               ...obj,
-              [`limitdose_` + cat]:
-                parseFloat(obj[[`weight_` + cat]]) /
-                DustsPointEstimate('Limit Dose', obj[[`limitdose_` + cat]]),
+              [`limitdose_` + cat]: weight / dustsPointEstimate_limitdose,
             };
           }
         }
@@ -248,65 +278,47 @@ export const ValidateRows = (
             return {
               ...obj,
               [`classification_` + cat]:
-                parseFloat(obj[[`weight_` + cat]]) /
-                OralPointEstimate(
-                  'Classification',
-                  obj[[`classification_` + cat]]
-                ),
+                weight / oralPointEstimate_classification,
             };
           }
           if (cat === 'dermal') {
             return {
               ...obj,
               [`classification_` + cat]:
-                parseFloat(obj[[`weight_` + cat]]) /
-                DermalPointEstimate(
-                  'Classification',
-                  obj[[`classification_` + cat]]
-                ),
+                weight / dermalPointEstimate_classification,
             };
           }
           if (cat === 'gases') {
             return {
               ...obj,
               [`classification_` + cat]:
-                parseFloat(obj[[`weight_` + cat]]) /
-                GasesPointEstimate(
-                  'Classification',
-                  obj[[`classification_` + cat]]
-                ),
+                weight / gasesPointEstimate_classification,
             };
           }
           if (cat === 'vapors') {
             return {
               ...obj,
               [`classification_` + cat]:
-                parseFloat(obj[[`weight_` + cat]]) /
-                VaporsPointEstimate(
-                  'Classification',
-                  obj[[`classification_` + cat]]
-                ),
+                weight / vaporsPointEstimate_classification,
             };
           }
           if (cat === 'dusts') {
             return {
               ...obj,
               [`classification_` + cat]:
-                parseFloat(obj[[`weight_` + cat]]) /
-                DustsPointEstimate(
-                  'Classification',
-                  obj[[`classification_` + cat]]
-                ),
+                weight / dustsPointEstimate_classification,
             };
           }
         }
-
         return obj;
       });
 
+    //TODO: NEED TO HANDLE UNKNOWN AND TOTAL LOGIC FOR ALL 5
     const totalWTPercentOral = results.reduce((accumulator, object) => {
       return accumulator + parseFloat(object.weight_oral);
     }, 0);
+    console.log(unknown); //TODO: undefined
+    console.log(totalWTPercentOral); //TODO: NaN
     //validate weight total to be calculated (not greater than 100) - TODO: can this be shared by all 5?
     if (
       !(
@@ -348,7 +360,7 @@ export const ValidateRows = (
           }
         } else {
           if (cat === 'oral') {
-            setOralResult(Math.round(100 / sum)); //TODO: fix ERROR: setOralResult is not a function ?
+            setOralResult(Math.round(100 / sum));
           }
           if (cat === 'dermal') {
             setDermalResult(Math.round(100 / sum));
@@ -419,286 +431,7 @@ export const ValidateRows = (
   }
 };
 
-//Function to Calculate input
-/*const calculate = (
-  cat,
-  inputFields,
-  unknown,
-  setOpenAlert,
-  setAlertText,
-  setOralResult,
-  setShowOralResult,
-  setDermalResult,
-  setShowDermalResult,
-  setGasesResult,
-  setShowGasesResult,
-  setVaporsResult,
-  setShowVaporsResult,
-  setDustsResult,
-  setShowDustsResult
-) => {
-  //console.log(typeof setOralResult); //TODO: error: is undefined - is not a function
-  let data = [...inputFields];
-  let LDLC50max = 0,
-    limitdosemax = '',
-    classificationmax = '';
-  if (cat === 'oral' || cat === 'dermal') {
-    LDLC50max = 5000;
-    limitdosemax = '> 2,000 (No signs of toxicity)';
-    classificationmax = 'Not Classified (LD50 > 5,000)';
-  }
-  if (cat === 'gases') {
-    LDLC50max = 20000;
-    limitdosemax = '> 20,000 (No signs of toxicity)';
-    classificationmax = 'Not Classified (LC50 > 20,000)';
-  }
-  if (cat === 'vapors') {
-    LDLC50max = 20;
-    limitdosemax = '> 20.0 (No signs of toxicity)';
-    classificationmax = 'Not Classified (LC50 > 20.0)';
-  }
-  if (cat === 'dusts') {
-    LDLC50max = 5;
-    limitdosemax = '> 5.0 (No signs of toxicity)';
-    classificationmax = 'Not Classified (LC50 > 5.0)';
-  }
-
-  let results = data
-    .filter(
-      (obj) =>
-        (obj[[`LDLC50_` + cat]] !== '' &&
-          parseFloat(obj[[`LDLC50_` + cat]]) <= LDLC50max) ||
-        (obj[[`limitdose_` + cat]] !== '' &&
-          obj[[`limitdose_` + cat]] !== limitdosemax) ||
-        (obj[[`classification_` + cat]] !== '' &&
-          obj[[`classification_` + cat]] !== classificationmax)
-    )
-    .map((obj) => {
-      if (obj[[`LDLC50_` + cat]] !== '') {
-        return {
-          ...obj,
-          [`LDLC50_` + cat]:
-            parseFloat(obj[[`weight_` + cat]]) /
-            parseFloat(obj[[`LDLC50_` + cat]]),
-        };
-      }
-      if (obj[[`limitdose_` + cat]] !== '') {
-        if (cat === 'oral') {
-          return {
-            ...obj,
-            [`limitdose_` + cat]:
-              parseFloat(obj[[`weight_` + cat]]) /
-              OralPointEstimate('Limit Dose', obj[[`limitdose_` + cat]]),
-          };
-        }
-        if (cat === 'dermal') {
-          return {
-            ...obj,
-            [`limitdose_` + cat]:
-              parseFloat(obj[[`weight_` + cat]]) /
-              DermalPointEstimate('Limit Dose', obj[[`limitdose_` + cat]]),
-          };
-        }
-        if (cat === 'gases') {
-          return {
-            ...obj,
-            [`limitdose_` + cat]:
-              parseFloat(obj[[`weight_` + cat]]) /
-              GasesPointEstimate('Limit Dose', obj[[`limitdose_` + cat]]),
-          };
-        }
-        if (cat === 'vapors') {
-          return {
-            ...obj,
-            [`limitdose_` + cat]:
-              parseFloat(obj[[`weight_` + cat]]) /
-              VaporsPointEstimate('Limit Dose', obj[[`limitdose_` + cat]]),
-          };
-        }
-        if (cat === 'dusts') {
-          return {
-            ...obj,
-            [`limitdose_` + cat]:
-              parseFloat(obj[[`weight_` + cat]]) /
-              DustsPointEstimate('Limit Dose', obj[[`limitdose_` + cat]]),
-          };
-        }
-      }
-      if (obj[[`classification_` + cat]] !== '') {
-        if (cat === 'oral') {
-          return {
-            ...obj,
-            [`classification_` + cat]:
-              parseFloat(obj[[`weight_` + cat]]) /
-              OralPointEstimate(
-                'Classification',
-                obj[[`classification_` + cat]]
-              ),
-          };
-        }
-        if (cat === 'dermal') {
-          return {
-            ...obj,
-            [`classification_` + cat]:
-              parseFloat(obj[[`weight_` + cat]]) /
-              DermalPointEstimate(
-                'Classification',
-                obj[[`classification_` + cat]]
-              ),
-          };
-        }
-        if (cat === 'gases') {
-          return {
-            ...obj,
-            [`classification_` + cat]:
-              parseFloat(obj[[`weight_` + cat]]) /
-              GasesPointEstimate(
-                'Classification',
-                obj[[`classification_` + cat]]
-              ),
-          };
-        }
-        if (cat === 'vapors') {
-          return {
-            ...obj,
-            [`classification_` + cat]:
-              parseFloat(obj[[`weight_` + cat]]) /
-              VaporsPointEstimate(
-                'Classification',
-                obj[[`classification_` + cat]]
-              ),
-          };
-        }
-        if (cat === 'dusts') {
-          return {
-            ...obj,
-            [`classification_` + cat]:
-              parseFloat(obj[[`weight_` + cat]]) /
-              DustsPointEstimate(
-                'Classification',
-                obj[[`classification_` + cat]]
-              ),
-          };
-        }
-      }
-
-      return obj;
-    });
-
-  const totalWTPercentOral = results.reduce((accumulator, object) => {
-    return accumulator + parseFloat(object.weight_oral);
-  }, 0);
-  //validate weight total to be calculated (not greater than 100) - TODO: can this be shared by all 5?
-  if (
-    !(
-      (!unknown && totalWTPercentOral > 100) ||
-      (unknown !== null && totalWTPercentOral + parseFloat(unknown) > 100)
-    )
-  ) {
-    //if results, sum
-    let sum = 0;
-    if (results.length) {
-      results.forEach((item) => {
-        if (item[[`LDLC50_` + cat]] !== '') {
-          sum += item[[`LDLC50_` + cat]];
-        }
-        if (item[[`limitdose_` + cat]] !== '') {
-          sum += item[[`limitdose_` + cat]];
-        }
-        if (item[[`classification_` + cat]] !== '') {
-          sum += item[[`classification_` + cat]];
-        }
-      });
-
-      //calculate result (round 1 decimal place)
-      if (unknown !== null && unknown > 10) {
-        if (cat === 'oral') {
-          setOralResult(Math.round((100 - unknown) / sum));
-        }
-        if (cat === 'dermal') {
-          setDermalResult(Math.round((100 - unknown) / sum));
-        }
-        if (cat === 'dusts') {
-          setDustsResult(Math.round(((100 - unknown) / sum) * 100) / 100);
-        }
-        if (cat === 'gases') {
-          setGasesResult(Math.round((100 - unknown) / sum));
-        }
-        if (cat === 'vapors') {
-          setVaporsResult(Math.round(((100 - unknown) / sum) * 10) / 10);
-        }
-      } else {
-        if (cat === 'oral') {
-          setOralResult(Math.round(100 / sum));
-        }
-        if (cat === 'dermal') {
-          setDermalResult(Math.round(100 / sum));
-        }
-        if (cat === 'dusts') {
-          setDustsResult(Math.round((100 / sum) * 100) / 100);
-        }
-        if (cat === 'gases') {
-          setGasesResult(Math.round(100 / sum));
-        }
-        if (cat === 'vapors') {
-          setVaporsResult(Math.round((100 / sum) * 10) / 10);
-        }
-      }
-    } else {
-      if (cat === 'oral') {
-        setOralResult(null);
-      }
-      if (cat === 'dermal') {
-        setDermalResult(null);
-      }
-      if (cat === 'gases') {
-        setGasesResult(null);
-      }
-      if (cat === 'vapors') {
-        setVaporsResult(null);
-      }
-      if (cat === 'dusts') {
-        setDustsResult(null);
-      }
-    }
-    if (cat === 'oral') {
-      setShowOralResult(true);
-    }
-    if (cat === 'dermal') {
-      setShowDermalResult(true);
-    }
-    if (cat === 'gases') {
-      setShowGasesResult(true);
-    }
-    if (cat === 'vapors') {
-      setShowVaporsResult(true);
-    }
-    if (cat === 'dusts') {
-      setShowDustsResult(true);
-    }
-  } else {
-    setOpenAlert(true);
-    setAlertText(
-      'Total weight to be calculated must not be greater than 100%.'
-    );
-    if (cat === 'oral') {
-      setShowOralResult(false);
-    }
-    if (cat === 'dermal') {
-      setShowDermalResult(false);
-    }
-    if (cat === 'gases') {
-      setShowGasesResult(false);
-    }
-    if (cat === 'vapors') {
-      setShowVaporsResult(false);
-    }
-    if (cat === 'dusts') {
-      setShowDustsResult(false);
-    }
-  }
-};*/
-
+//Function to remove row
 export const RemoveRow = (e, idx, inputFields, setInputFields) => {
   e.preventDefault();
   let data = [...inputFields];
@@ -706,6 +439,7 @@ export const RemoveRow = (e, idx, inputFields, setInputFields) => {
   setInputFields(data);
 };
 
+//Function to reset form
 export const Reset = (
   e,
   inputFields,
@@ -719,7 +453,7 @@ export const Reset = (
   category
 ) => {
   e.preventDefault();
-  let cat = category.lowerCase();
+  let cat = category.toLowerCase();
   let data = [...inputFields];
   data.splice(1);
   setInputFields([

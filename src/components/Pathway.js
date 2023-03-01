@@ -1,10 +1,7 @@
 import React, { useState } from 'react';
-//import Common from './Common';
-//import Dermal from './dermal/Dermal';
-import DermalRefactor from './dermal/DermalRefactor';
+import Dermal from './dermal/Dermal';
 import DermalResult from './dermal/DermalResult';
-//import Oral from './oral/Oral';
-import OralRefactor from './oral/OralRefactor';
+import Oral from './oral/Oral';
 import OralResult from './oral/OralResult';
 import Gases from './gases/Gases';
 import GasesResult from './gases/GasesResult';
@@ -30,7 +27,7 @@ const Pathway = ({ title, category }) => {
       <h3>{title}</h3>
 
       {category === 'Dermal' ? (
-        <DermalRefactor
+        <Dermal
           category={category}
           dermalResult={dermalResult}
           setDermalResult={setDermalResult}
@@ -39,7 +36,7 @@ const Pathway = ({ title, category }) => {
         />
       ) : null}
       {category === 'Oral' ? (
-        <OralRefactor
+        <Oral
           category={category}
           oralResult={oralResult}
           setOralResult={setOralResult}
@@ -49,6 +46,7 @@ const Pathway = ({ title, category }) => {
       ) : null}
       {category === 'Gases' ? (
         <Gases
+          category={category}
           gasesResult={gasesResult}
           setGasesResult={setGasesResult}
           showGasesResult={showGasesResult}
@@ -57,6 +55,7 @@ const Pathway = ({ title, category }) => {
       ) : null}
       {category === 'Vapors' ? (
         <Vapors
+          category={category}
           vaporsResult={vaporsResult}
           setVaporsResult={setVaporsResult}
           showVaporsResult={showVaporsResult}
@@ -65,6 +64,7 @@ const Pathway = ({ title, category }) => {
       ) : null}
       {category === 'Dusts' ? (
         <Dusts
+          category={category}
           dustsResult={dustsResult}
           setDustsResult={setDustsResult}
           showDustsResult={showDustsResult}

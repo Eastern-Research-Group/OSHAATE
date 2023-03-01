@@ -1,230 +1,28 @@
 import React, { useState } from 'react';
 import GasesInput from './GasesInput';
-import { GasesPointEstimate } from './GasesLookup';
 import { Buttons } from '../Buttons';
 import { Alert } from '../Alert';
+import {
+  HandleFormChange,
+  ValidateRows,
+  Reset,
+  //HandleUnknownChange,
+} from '../Utils';
 
-const Gases = ({ setGasesResult, setShowGasesResult }) => {
+const Gases = ({ category, RemoveRow, setGasesResult, setShowGasesResult }) => {
   const [inputFields, setInputFields] = useState([
     {
       ingredient_gases: '',
       weight_gases: '',
-      LC50_gases: '',
+      LDLC50_gases: '',
       limitdose_gases: '',
       classification_gases: '',
     },
   ]);
 
-  let [unknown, setUnknown] = useState('');
+  //let [unknown, setUnknown] = useState('');
   const [openAlert, setOpenAlert] = useState(false);
   const [alertText, setAlertText] = useState('');
-
-  const handleFormChange = (e, idx) => {
-    let data = [...inputFields];
-    //limit WT and LC50 input to 2 decimal places
-    if (e.target.name === 'weight_gases' || e.target.name === 'LC50_gases') {
-      let t = e.target.value;
-      data[idx][e.target.name] =
-        t.indexOf('.') >= 0
-          ? t.substr(0, t.indexOf('.')) + t.substr(t.indexOf('.'), 3)
-          : t;
-    } else {
-      data[idx][e.target.name] = e.target.value;
-    }
-    setInputFields(data);
-  };
-
-  const handleUnknownChange = (e) => {
-    setUnknown(e.target.value);
-  };
-
-  const validateRows = (e) => {
-    e.preventDefault();
-    let data = [...inputFields];
-    let validArray = [];
-    data.forEach((item) => {
-      if (!item.ingredient_gases) {
-        validArray.push(false);
-        setOpenAlert(true);
-        setAlertText('Ingredient is required in row.');
-      } else if (!item.weight_gases) {
-        validArray.push(false);
-        setOpenAlert(true);
-        setAlertText('Weight (WT) is required in row.');
-      } else if (
-        !item.LC50_gases &&
-        !item.limitdose_gases &&
-        !item.classification_gases
-      ) {
-        validArray.push(false);
-        setOpenAlert(true);
-        setAlertText(
-          'LC50 or Limit Dose Data or Classification is required in row.'
-        );
-      } else if (
-        !(
-          item.LC50_gases &&
-          !item.limitdose_gases &&
-          !item.classification_gases
-        ) &&
-        !(
-          !item.LC50_gases &&
-          item.limitdose_gases &&
-          !item.classification_gases
-        ) &&
-        !(
-          !item.LC50_gases &&
-          !item.limitdose_gases &&
-          item.classification_gases
-        )
-      ) {
-        validArray.push(false);
-        setOpenAlert(true);
-        setAlertText(
-          'Enter only one of LC50, Limit Dose Data, or Classification in row.'
-        );
-      } else {
-        validArray.push(true);
-      }
-    });
-
-    //highlight invalid rows
-    validArray.forEach((item, index) => {
-      if (item === false) {
-        document
-          .querySelector('table#gases tbody tr.row' + index)
-          .classList.add('usa-alert--error');
-      } else {
-        document
-          .querySelector('table#gases tbody tr.row' + index)
-          .classList.remove('usa-alert--error');
-      }
-    });
-
-    //if valid data proceed to add rows or calculate
-    if (!validArray.includes(false) && e.target.id === 'add') {
-      addRow();
-    }
-    if (!validArray.includes(false) && e.target.id === 'calculate') {
-      calculate();
-    }
-  };
-
-  const addRow = () => {
-    let newfield = {
-      ingredient_gases: '',
-      weight_gases: '',
-      LC50_gases: '',
-      limitdose_gases: '',
-      classification_gases: '',
-    };
-    setInputFields([...inputFields, newfield]);
-  };
-
-  const removeRow = (e, idx) => {
-    e.preventDefault();
-    let data = [...inputFields];
-    data.splice(idx, 1);
-    setInputFields(data);
-  };
-
-  const reset = (e) => {
-    e.preventDefault();
-    let data = [...inputFields];
-    data.splice(1);
-    setInputFields([
-      {
-        ingredient_gases: '',
-        weight_gases: '',
-        LC50_gases: '',
-        limitdose_gases: '',
-        classification_gases: '',
-      },
-    ]);
-    setUnknown('');
-    setShowGasesResult(false);
-  };
-
-  const calculate = (e) => {
-    let data = [...inputFields];
-    let results = data
-      .filter(
-        (obj) =>
-          (obj.LC50_gases !== '' && parseFloat(obj.LC50_gases) <= 20000) ||
-          (obj.limitdose_gases !== '' &&
-            obj.limitdose_gases !== '> 20,000 (No signs of toxicity)') ||
-          (obj.classification_gases !== '' &&
-            obj.classification_gases !== 'Not Classified (LC50 > 20,000)')
-      )
-      .map((obj) => {
-        if (obj.LC50_gases !== '') {
-          return {
-            ...obj,
-            LC50_gases:
-              parseFloat(obj.weight_gases) / parseFloat(obj.LC50_gases),
-          };
-        }
-        if (obj.limitdose_gases !== '') {
-          return {
-            ...obj,
-            limitdose_gases:
-              parseFloat(obj.weight_gases) /
-              GasesPointEstimate('Limit Dose', obj.limitdose_gases),
-          };
-        }
-        if (obj.classification_gases !== '') {
-          return {
-            ...obj,
-            classification_gases:
-              parseFloat(obj.weight_gases) /
-              GasesPointEstimate('Classification', obj.classification_gases),
-          };
-        }
-        return obj;
-      });
-
-    const totalWTPercentGases = results.reduce((accumulator, object) => {
-      return accumulator + parseFloat(object.weight_gases);
-    }, 0);
-    //validate weight total to be calculated (not greater than 100)
-    if (
-      !(
-        (!unknown && totalWTPercentGases > 100) ||
-        (unknown !== null && totalWTPercentGases + parseFloat(unknown) > 100)
-      )
-    ) {
-      //if results, sum
-      let sum = 0;
-      if (results.length) {
-        results.forEach((item) => {
-          if (item.LC50_gases !== '') {
-            sum += item.LC50_gases;
-          }
-          if (item.limitdose_gases !== '') {
-            sum += item.limitdose_gases;
-          }
-          if (item.classification_gases !== '') {
-            sum += item.classification_gases;
-          }
-        });
-        //calculate result (round 1 decimal place)
-        if (unknown !== null && unknown > 10) {
-          setGasesResult(Math.round((100 - unknown) / sum));
-        } else {
-          setGasesResult(Math.round(100 / sum));
-        }
-      } else {
-        setGasesResult(null);
-      }
-      setShowGasesResult(true);
-    } else {
-      setOpenAlert(true);
-      setAlertText(
-        'Total weight to be calculated must not be greater than 100%.'
-      );
-      setShowGasesResult(false);
-    }
-  };
 
   return (
     <>
@@ -233,13 +31,28 @@ const Gases = ({ setGasesResult, setShowGasesResult }) => {
       ) : null}
       <form>
         <GasesInput
+          category={category}
           inputFields={inputFields}
-          unknown={unknown}
-          handleFormChange={handleFormChange}
-          handleUnknownChange={handleUnknownChange}
-          removeRow={removeRow}
+          setInputFields={setInputFields}
+          HandleFormChange={HandleFormChange}
+          setAlertText={setAlertText}
+          RemoveRow={RemoveRow}
+          //unknown={unknown}
+          //setUnknown={setUnknown}
+          //HandleUnknownChange={HandleUnknownChange}
         />
-        <Buttons validateRows={validateRows} reset={reset} />
+        <Buttons
+          category={category}
+          ValidateRows={ValidateRows}
+          Reset={Reset}
+          inputFields={inputFields}
+          setInputFields={setInputFields}
+          setOpenAlert={setOpenAlert}
+          setAlertText={setAlertText}
+          RemoveRow={RemoveRow}
+          setGasesResult={setGasesResult}
+          setShowGasesResult={setShowGasesResult}
+        />
       </form>
     </>
   );
