@@ -2,12 +2,7 @@ import React, { useState } from 'react';
 import GasesInput from './GasesInput';
 import { Buttons } from '../Buttons';
 import { Alert } from '../Alert';
-import {
-  HandleFormChange,
-  ValidateRows,
-  Reset,
-  //HandleUnknownChange,
-} from '../Utils';
+import { HandleFormChange, ValidateRows, Reset } from '../Utils';
 
 const Gases = ({ category, RemoveRow, setGasesResult, setShowGasesResult }) => {
   const [inputFields, setInputFields] = useState([
@@ -20,9 +15,13 @@ const Gases = ({ category, RemoveRow, setGasesResult, setShowGasesResult }) => {
     },
   ]);
 
-  //let [unknown, setUnknown] = useState('');
+  let [unknown, setUnknown] = useState('');
   const [openAlert, setOpenAlert] = useState(false);
   const [alertText, setAlertText] = useState('');
+
+  const handleUnknownChange = (e, setUnknown) => {
+    setUnknown(e.target.value);
+  };
 
   return (
     <>
@@ -37,9 +36,9 @@ const Gases = ({ category, RemoveRow, setGasesResult, setShowGasesResult }) => {
           HandleFormChange={HandleFormChange}
           setAlertText={setAlertText}
           RemoveRow={RemoveRow}
-          //unknown={unknown}
-          //setUnknown={setUnknown}
-          //HandleUnknownChange={HandleUnknownChange}
+          unknown={unknown}
+          setUnknown={setUnknown}
+          handleUnknownChange={handleUnknownChange}
         />
         <Buttons
           category={category}
@@ -52,6 +51,9 @@ const Gases = ({ category, RemoveRow, setGasesResult, setShowGasesResult }) => {
           RemoveRow={RemoveRow}
           setGasesResult={setGasesResult}
           setShowGasesResult={setShowGasesResult}
+          unknown={unknown}
+          setUnknown={setUnknown}
+          handleUnknownChange={handleUnknownChange}
         />
       </form>
     </>

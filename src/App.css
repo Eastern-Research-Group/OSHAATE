@@ -151,9 +151,8 @@
   top: 20%;
   padding: 15px;
   margin: auto;
-  color: black;
-  border-left: 0.4rem solid #d54309;
-  background: #f4e3db;
+  color: #d54309;
+  background: white;
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
 

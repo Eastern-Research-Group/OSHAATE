@@ -4,8 +4,6 @@ import { GasesPointEstimate } from './gases/GasesLookup';
 import { VaporsPointEstimate } from './vapors/VaporsLookup';
 import { DustsPointEstimate } from './dusts/DustsLookup';
 
-let unknown_dermal = null;
-
 //Function to handle input changes
 export const HandleFormChange = (
   e,
@@ -30,21 +28,12 @@ export const HandleFormChange = (
     data[idx][e.target.name] = e.target.value;
   }
   setInputFields(data);
-  /*if (e.target.name === `unknown_${category.toLowerCase()}`) {
-    setUnknown(e.target.value);
-  }*/
 };
 
 //Function to handle unknown input change -- TODO: handle unknown for all
-export const HandleUnknownChange = (e, category, unknown, setUnknown) => {
+export const HandleUnknownChange = (e, setUnknown) => {
   setUnknown(e.target.value);
-  let cat = category.toLowercase();
-  if (cat === 'dermal') {
-    unknown_dermal = e.target.value;
-  }
 };
-
-console.log(unknown_dermal);
 
 //Function to validate rows on Add ingredient or Calculate
 export const ValidateRows = (
@@ -314,16 +303,22 @@ export const ValidateRows = (
       });
 
     //TODO: NEED TO HANDLE UNKNOWN AND TOTAL LOGIC FOR ALL 5
-    const totalWTPercentOral = results.reduce((accumulator, object) => {
-      return accumulator + parseFloat(object.weight_oral);
+    let unknownWT = parseFloat(unknown);
+
+    const totalWT = results.reduce((accumulator, obj) => {
+      let weight = parseFloat(obj[[`weight_` + cat]]);
+      return accumulator + weight;
     }, 0);
-    console.log(unknown); //TODO: undefined
-    console.log(totalWTPercentOral); //TODO: NaN
-    //validate weight total to be calculated (not greater than 100) - TODO: can this be shared by all 5?
+
+    console.log(totalWT + unknownWT);
+
+    //validate weight total to be calculated (not greater than 100)
     if (
       !(
-        (!unknown && totalWTPercentOral > 100) ||
-        (unknown !== null && totalWTPercentOral + parseFloat(unknown) > 100)
+        (
+          (!unknown && totalWT > 100) ||
+          (unknown !== '' && totalWT + unknownWT > 100)
+        ) //TODO: change in main branch to check on empty not null!
       )
     ) {
       //if results, sum
@@ -342,21 +337,22 @@ export const ValidateRows = (
         });
 
         //calculate result (round 1 decimal place)
-        if (unknown !== null && unknown > 10) {
+        if (unknown !== '' && unknownWT > 10) {
+          //TODO: change in main branch to check on empty not null!
           if (cat === 'oral') {
-            setOralResult(Math.round((100 - unknown) / sum));
+            setOralResult(Math.round((100 - unknownWT) / sum));
           }
           if (cat === 'dermal') {
-            setDermalResult(Math.round((100 - unknown) / sum));
+            setDermalResult(Math.round((100 - unknownWT) / sum));
           }
           if (cat === 'dusts') {
-            setDustsResult(Math.round(((100 - unknown) / sum) * 100) / 100);
+            setDustsResult(Math.round(((100 - unknownWT) / sum) * 100) / 100);
           }
           if (cat === 'gases') {
-            setGasesResult(Math.round((100 - unknown) / sum));
+            setGasesResult(Math.round((100 - unknownWT) / sum));
           }
           if (cat === 'vapors') {
-            setVaporsResult(Math.round(((100 - unknown) / sum) * 10) / 10);
+            setVaporsResult(Math.round(((100 - unknownWT) / sum) * 10) / 10);
           }
         } else {
           if (cat === 'oral') {

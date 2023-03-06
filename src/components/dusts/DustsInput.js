@@ -1,17 +1,16 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Tooltip } from '../Tooltip';
-import { HandleUnknownChange, RemoveRow } from '../Utils';
+import { RemoveRow } from '../Utils';
 
 const Input = ({
   inputFields,
   HandleFormChange,
   setInputFields,
   category,
-  //unknown,
-  //setUnknown,
-  //HandleUnknownChange,
+  unknown,
+  setUnknown,
+  handleUnknownChange,
 }) => {
-  let [unknown, setUnknown] = useState('');
   return (
     <div className="tablewrapper">
       <table id="dusts">
@@ -177,9 +176,7 @@ const Input = ({
                 name="unknown_dusts"
                 placeholder="Enter weight (%)"
                 value={unknown}
-                onChange={(e) =>
-                  HandleUnknownChange(e, category, unknown, setUnknown)
-                }
+                onChange={(e) => handleUnknownChange(e, setUnknown)}
               />
             </td>
           </tr>

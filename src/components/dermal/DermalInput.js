@@ -1,18 +1,16 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Tooltip } from '../Tooltip';
-import { HandleUnknownChange, RemoveRow } from '../Utils';
-//import { HandleUnknownDermal, RemoveRow } from '../Utils';
+import { RemoveRow } from '../Utils';
 
 const Input = ({
   inputFields,
   HandleFormChange,
   setInputFields,
   category,
-  //HandleUnknownChange,
+  unknown,
+  setUnknown,
+  handleUnknownChange,
 }) => {
-  let [unknown, setUnknown] = useState('');
-  //let [unknownDermal, setUnknownDermal] = useState('');
-
   return (
     <div className="tablewrapper">
       <table id="dermal">
@@ -181,10 +179,7 @@ const Input = ({
                 name="unknown_dermal"
                 placeholder="Enter weight (%)"
                 value={unknown}
-                //onChange={(e) => HandleUnknownDermal(e, setUnknownDermal)}
-                onChange={(e) =>
-                  HandleUnknownChange(e, category, unknown, setUnknown)
-                }
+                onChange={(e) => handleUnknownChange(e, setUnknown)}
               />
             </td>
           </tr>
