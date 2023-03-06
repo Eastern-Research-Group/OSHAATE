@@ -1,43 +1,91 @@
 .App {
   margin: 1rem;
 }
-.pathway-container {
+.App .pathway-container {
   margin: 2rem 0 2rem 0;
   padding-bottom: 1rem;
   border-bottom: 1px solid #a9aeb1;
 }
-.pathway-container form button {
+.App .pathway-container form button {
   margin-right: 10px;
 }
-.results-container {
+.App .results-container {
   background-color: #d9e8f6;
   padding: 0 1rem 0 1rem;
   margin-top: 1rem;
   display: inline-block;
 }
-div.tablewrapper {
+.App .tablewrapper {
   overflow-x: auto;
   text-align: left;
   margin-bottom: 1rem;
 }
-div.tablewrapper table {
+.App .tablewrapper table {
   border-collapse: collapse;
 }
-div.tablewrapper table label {
+.App .tablewrapper table label {
   margin-right: 10px;
+  font-weight: bold;
 }
 
-div.tablewrapper table tbody tr td input[type='text'],
-div.tablewrapper table tbody tr td input[type='number'],
-div.tablewrapper table tbody tr td select,
-div.tablewrapper table tbody tr td button {
-  font-size: 16px;
+.App .tablewrapper table tbody tr td input[type='text'],
+.App .tablewrapper table tbody tr td input[type='number'],
+.App .tablewrapper table tbody tr td select,
+.App .tablewrapper table tbody tr td button {
+  font-size: 1rem;
 }
 
-.usa-alert--error {
-  background-color: #f4e3db;
-  border-left: 4px solid #d54309;
+.App .tablewrapper table tbody tr td input::-webkit-outer-spin-button,
+.App .tablewrapper table tbody tr td input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
+
+.App .usa-button {
+  font-size: 1rem;
+  line-height: 0.9;
+  color: #fff;
+  background-color: #005ea2;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  border: 0;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  display: inline-block;
+  font-weight: 700;
+  margin-right: 0.5rem;
+  padding: 0.75rem 1.25rem;
+  text-align: center;
+  text-decoration: none;
+  width: auto;
+}
+.App .usa-button:hover {
+  color: #fff;
+  background-color: #1a4480;
+  border-bottom: 0;
+  text-decoration: none;
+}
+
+.App .usa-button--outline {
+  background-color: transparent;
+  box-shadow: inset 0 0 0 2px #005ea2;
+  color: #005ea2;
+}
+.App .usa-button--outline:hover {
+  background-color: transparent;
+  box-shadow: inset 0 0 0 2px #1a4480;
+  color: #1a4480;
+}
+.App .usa-button--secondary {
+  color: #fff;
+  background-color: #d83933;
+}
+.App .usa-button--secondary:hover {
+  color: #fff;
+  background-color: #b50909;
+}
+
 .App fieldset {
   border: 0;
   padding: 0 0 1rem 0;
@@ -54,27 +102,20 @@ div.tablewrapper table tbody tr td button {
   margin-right: 20px;
 }
 
-label.tooltip {
-  font-weight: bold;
+.App .tooltip[data-tool-tip] {
+  position: relative;
+  display: inline;
   cursor: pointer;
 }
-
-/* Tooltip*/
-.tooltip[data-tool-tip] {
-  position: relative;
-}
-.tooltip[data-tool-tip]:hover::before {
+.App .tooltip[data-tool-tip]:hover::before {
   visibility: visible;
   opacity: 1;
 }
-.tooltip[data-tool-tip]::before {
+.App .tooltip[data-tool-tip]::before {
   text-align: left;
   content: attr(data-tool-tip);
   visibility: hidden;
   opacity: 0;
-  /*min-width: 100%;*/
-  /*width: max-content;
-  height: max-content;*/
   position: absolute;
   box-sizing: border-box;
   display: block;
@@ -84,31 +125,16 @@ label.tooltip {
   color: white;
   border-radius: 4px;
   font-size: 0.8em;
-  font-weight: 500;
-  /*white-space: nowrap;*/
   transition: opacity ease-out 150ms, bottom ease-out 150ms;
-}
-.tooltip[data-position='top']::before {
   bottom: 100%;
 }
-.tooltip[data-position='right']::before {
-  left: 100%;
-  top: 0;
-  bottom: 0;
-  margin: auto 0;
-}
-.tooltip[data-position='bottom']::before {
-  top: 100%;
-}
-.tooltip[data-position='left']::before {
-  right: 100%;
-  top: 0;
-  bottom: 0;
-  margin: auto 0;
+
+.App .usa-alert--error {
+  background-color: #f4e3db;
+  border-left: 0.4rem solid #d54309;
 }
 
-/*Alert popup*/
-.alert-container {
+.App .alert-container {
   position: fixed;
   width: 100%;
   height: 100%;
@@ -118,24 +144,16 @@ label.tooltip {
   bottom: 0;
   background-color: rgba(0, 0, 0, 0.5);
 }
-.alert-body {
+.App .alert-body {
   position: absolute;
   left: 30%;
   right: 30%;
   top: 20%;
   padding: 15px;
   margin: auto;
-  color: darkred;
-  border-color: black;
+  color: #d54309;
   background: white;
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-}
-
-/*remove arrows From number input Chrome, Safari, Edge, Opera */
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
 }
 
 @media only screen and (max-width: 760px) {
@@ -143,18 +161,18 @@ input::-webkit-inner-spin-button {
     display: block;
     margin-bottom: 1rem;
   }
-  .alert-body {
+  .App .alert-body {
     left: 10%;
     right: 10%;
   }
 }
 
 @media only print {
-  div.tablewrapper {
+  .App tablewrapper {
     overflow-x: visible;
   }
-  .pathway-container form button,
-  label.tooltip span {
+  .App .pathway-container form button,
+  .App label.tooltip span {
     display: none;
   }
 }

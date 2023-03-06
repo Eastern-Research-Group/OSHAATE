@@ -111,14 +111,12 @@ const Input = ({
           <tr>
             <td>
               <br />
-              <Tooltip
-                title='Sum of relevant ingredient(s) with unknown "route name" toxicity'
-                position="top"
-              >
-                <label htmlFor="unknown_gases" className="tooltip">
-                  Sum Unknown Toxicity <span>&#9432;</span>
-                </label>
-              </Tooltip>
+              <label htmlFor="unknown_gases" className="tooltip">
+                Sum Unknown Toxicity{' '}
+                <span>
+                  <Tooltip>&#9432;</Tooltip>
+                </span>
+              </label>
             </td>
             <td>
               <br />

@@ -1,6 +1,9 @@
-export const Tooltip = ({ children, title, position }) => {
+export const Tooltip = ({ children }) => {
   return (
-    <div className={`tooltip`} data-position={position} data-tool-tip={title}>
+    <div
+      className={`tooltip`}
+      data-tool-tip={`Sum of relevant ingredient(s) with unknown "route name" toxicity.`}
+    >
       {children}
     </div>
   );
