@@ -103,7 +103,7 @@ const Input = ({
               </td>
               <td>
                 {idx === 0 ? null : (
-                  <button typ="button" onClick={(e) => removeRow(e, idx)}>
+                  <button type="button" onClick={(e) => removeRow(e, idx)}>
                     Remove
                   </button>
                 )}
