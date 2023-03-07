@@ -45,6 +45,6 @@ export const GasesCategory = (val) => {
   if (val > 20000) {
     return 'Not Classified (LC50 > 20,000)';
   } else {
-    return gasesLookup.find((o) => val >= o.min && val <= o.max).Classification;
+    return gasesLookup.find((o) => val >= o.min && val < o.max).Classification;
   }
 };

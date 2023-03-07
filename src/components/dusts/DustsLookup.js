@@ -45,6 +45,6 @@ export const DustsCategory = (val) => {
   if (val > 5) {
     return 'Not Classified (LC50 > 5.0)';
   } else {
-    return dustsLookup.find((o) => val >= o.min && val <= o.max).Classification;
+    return dustsLookup.find((o) => val >= o.min && val < o.max).Classification;
   }
 };
