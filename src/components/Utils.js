@@ -4,7 +4,7 @@ import { GasesPointEstimate } from './gases/GasesLookup';
 import { VaporsPointEstimate } from './vapors/VaporsLookup';
 import { DustsPointEstimate } from './dusts/DustsLookup';
 
-//Function to handle input changes
+//Function to handle row input changes
 export const HandleFormChange = (
   e,
   idx,
@@ -28,11 +28,6 @@ export const HandleFormChange = (
     data[idx][e.target.name] = e.target.value;
   }
   setInputFields(data);
-};
-
-//Function to handle unknown input change -- TODO: handle unknown for all
-export const HandleUnknownChange = (e, setUnknown) => {
-  setUnknown(e.target.value);
 };
 
 //Function to validate rows on Add ingredient or Calculate
@@ -132,7 +127,7 @@ export const ValidateRows = (
     }
   });
 
-  //if valid data, proceed to Add ingredient row or Calculate
+  //if valid data, proceed to Add ingredient or Calculate
   if (!validArray.includes(false) && e.target.id === 'add') {
     //Add Ingredient
     let newfield = {
@@ -302,23 +297,17 @@ export const ValidateRows = (
         return obj;
       });
 
-    //TODO: NEED TO HANDLE UNKNOWN AND TOTAL LOGIC FOR ALL 5
+    //validate weight total to be calculated (not greater than 100)
     let unknownWT = parseFloat(unknown);
-
     const totalWT = results.reduce((accumulator, obj) => {
       let weight = parseFloat(obj[[`weight_` + cat]]);
       return accumulator + weight;
     }, 0);
 
-    console.log(totalWT + unknownWT);
-
-    //validate weight total to be calculated (not greater than 100)
     if (
       !(
-        (
-          (!unknown && totalWT > 100) ||
-          (unknown !== '' && totalWT + unknownWT > 100)
-        ) //TODO: change in main branch to check on empty not null!
+        (!unknown && totalWT > 100) ||
+        (unknown !== '' && totalWT + unknownWT > 100)
       )
     ) {
       //if results, sum
@@ -338,7 +327,6 @@ export const ValidateRows = (
 
         //calculate result (round 1 decimal place)
         if (unknown !== '' && unknownWT > 10) {
-          //TODO: change in main branch to check on empty not null!
           if (cat === 'oral') {
             setOralResult(Math.round((100 - unknownWT) / sum));
           }
@@ -427,7 +415,7 @@ export const ValidateRows = (
   }
 };
 
-//Function to remove row
+//Function to Remove row
 export const RemoveRow = (e, idx, inputFields, setInputFields) => {
   e.preventDefault();
   let data = [...inputFields];
@@ -435,7 +423,7 @@ export const RemoveRow = (e, idx, inputFields, setInputFields) => {
   setInputFields(data);
 };
 
-//Function to reset form
+//Function to Reset rows
 export const Reset = (
   e,
   inputFields,
