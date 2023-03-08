@@ -52,7 +52,6 @@ export const DermalCategory = (val) => {
   if (val > 5000) {
     return 'Not Classified (LD50 > 5,000)';
   } else {
-    return dermalLookup.find((o) => val >= o.min && val <= o.max)
-      .Classification;
+    return dermalLookup.find((o) => val >= o.min && val < o.max).Classification;
   }
 };

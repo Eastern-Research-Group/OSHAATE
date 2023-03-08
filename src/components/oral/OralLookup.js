@@ -52,6 +52,6 @@ export const OralCategory = (val) => {
   if (val > 5000) {
     return 'Not Classified (LD50 > 5,000)';
   } else {
-    return oralLookup.find((o) => val >= o.min && val <= o.max).Classification;
+    return oralLookup.find((o) => val >= o.min && val < o.max).Classification;
   }
 };

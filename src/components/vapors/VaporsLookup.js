@@ -45,7 +45,6 @@ export const VaporsCategory = (val) => {
   if (val > 20) {
     return 'Not Classified (LC50 > 20.0)';
   } else {
-    return vaporsLookup.find((o) => val >= o.min && val <= o.max)
-      .Classification;
+    return vaporsLookup.find((o) => val >= o.min && val < o.max).Classification;
   }
 };
