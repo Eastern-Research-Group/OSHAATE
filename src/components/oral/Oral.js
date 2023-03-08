@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import OralInput from './OralInput';
 import { Buttons } from '../Buttons';
 import { Alert } from '../Alert';
-import { HandleFormChange, ValidateRows, Reset } from '../Utils';
+import { Validate } from '../ValidateCalculate';
+import { HandleFormChange, Reset } from '../Utils';
 
 const Oral = ({ category, RemoveRow, setOralResult, setShowOralResult }) => {
   const [inputFields, setInputFields] = useState([
@@ -42,7 +43,7 @@ const Oral = ({ category, RemoveRow, setOralResult, setShowOralResult }) => {
         />
         <Buttons
           category={category}
-          ValidateRows={ValidateRows}
+          Validate={Validate}
           Reset={Reset}
           inputFields={inputFields}
           setInputFields={setInputFields}

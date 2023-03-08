@@ -1,5 +1,5 @@
 export const Buttons = ({
-  ValidateRows,
+  Validate,
   inputFields,
   setInputFields,
   setOpenAlert,
@@ -26,7 +26,7 @@ export const Buttons = ({
         type="button"
         id="add"
         onClick={(e) =>
-          ValidateRows(
+          Validate(
             e,
             inputFields,
             setInputFields,
@@ -64,7 +64,7 @@ export const Buttons = ({
         type="button"
         id="calculate"
         onClick={(e) =>
-          ValidateRows(
+          Validate(
             e,
             inputFields,
             setInputFields,

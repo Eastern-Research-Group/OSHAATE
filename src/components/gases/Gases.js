@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import GasesInput from './GasesInput';
 import { Buttons } from '../Buttons';
 import { Alert } from '../Alert';
-import { HandleFormChange, ValidateRows, Reset } from '../Utils';
+import { Validate } from '../ValidateCalculate';
+import { HandleFormChange, Reset } from '../Utils';
 
 const Gases = ({ category, RemoveRow, setGasesResult, setShowGasesResult }) => {
   const [inputFields, setInputFields] = useState([
@@ -42,7 +43,7 @@ const Gases = ({ category, RemoveRow, setGasesResult, setShowGasesResult }) => {
         />
         <Buttons
           category={category}
-          ValidateRows={ValidateRows}
+          Validate={Validate}
           Reset={Reset}
           inputFields={inputFields}
           setInputFields={setInputFields}

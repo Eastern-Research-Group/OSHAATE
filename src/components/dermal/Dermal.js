@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import DermalInput from './DermalInput';
 import { Buttons } from '../Buttons';
 import { Alert } from '../Alert';
-import { HandleFormChange, ValidateRows, Reset } from '../Utils';
+import { Validate } from '../ValidateCalculate';
+import { HandleFormChange, Reset } from '../Utils';
 
 const Dermal = ({
   category,
@@ -47,7 +48,7 @@ const Dermal = ({
         />
         <Buttons
           category={category}
-          ValidateRows={ValidateRows}
+          Validate={Validate}
           Reset={Reset}
           inputFields={inputFields}
           setInputFields={setInputFields}

@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import DustsInput from './DustsInput';
 import { Buttons } from '../Buttons';
 import { Alert } from '../Alert';
-import { HandleFormChange, ValidateRows, Reset } from '../Utils';
+import { Validate } from '../ValidateCalculate';
+import { HandleFormChange, Reset } from '../Utils';
 
 const Dusts = ({ category, RemoveRow, setDustsResult, setShowDustsResult }) => {
   const [inputFields, setInputFields] = useState([
@@ -42,7 +43,7 @@ const Dusts = ({ category, RemoveRow, setDustsResult, setShowDustsResult }) => {
         />
         <Buttons
           category={category}
-          ValidateRows={ValidateRows}
+          Validate={Validate}
           Reset={Reset}
           inputFields={inputFields}
           setInputFields={setInputFields}
