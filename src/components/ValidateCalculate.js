@@ -138,7 +138,6 @@ export const Validate = (
       limitdosemax = '> 5.0 (No signs of toxicity)';
       classificationmax = 'Not Classified (LC50 > 5.0)';
     }
-    let data = [...inputFields];
 
     let results = data
       .filter(
@@ -271,15 +270,10 @@ export const Validate = (
         return obj;
       });
 
-    console.log(results);
-
     //validate weight total to be calculated (not greater than 100)
     let WT = results.reduce((accumulator, obj) => {
-      console.log(parseFloat(obj[[`weight_` + cat]]));
       return accumulator + parseFloat(obj[[`weight_` + cat]]);
     }, 0);
-
-    console.log(WT);
 
     let unknownWT;
     if (!unknown) {
@@ -288,10 +282,7 @@ export const Validate = (
       unknownWT = parseFloat(unknown);
     }
 
-    console.log(unknownWT);
-
     let totalWT = WT + unknownWT;
-    console.log(totalWT);
 
     if (!(totalWT > 100)) {
       //if results, sum
@@ -311,7 +302,6 @@ export const Validate = (
 
         //calculate result (round 1 decimal place)
         if (unknownWT > 10) {
-          console.log('unknownWT is > 10');
           if (cat === 'oral') {
             setOralResult(Math.round((100 - unknownWT) / sum));
           }
