@@ -161,7 +161,6 @@ const Input = ({
           <tr>
             <td>
               <br />
-
               <label htmlFor="unknown_dermal" className="tooltip">
                 Sum Unknown Toxicity{' '}
                 <span>
