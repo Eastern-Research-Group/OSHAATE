@@ -168,7 +168,7 @@
 }
 
 @media only print {
-  .App tablewrapper {
+  .App .tablewrapper {
     overflow-x: visible;
   }
   .App .pathway-container form button,
