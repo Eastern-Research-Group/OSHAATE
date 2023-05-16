@@ -1,15 +1,21 @@
 import React, { useState } from 'react';
 import VaporsInput from './VaporsInput';
-import { VaporsPointEstimate } from './VaporsLookup';
 import { Buttons } from '../Buttons';
 import { Alert } from '../Alert';
+import { Validate } from '../ValidateCalculate';
+import { HandleFormChange, Reset } from '../Utils';
 
-const Vapors = ({ setVaporsResult, setShowVaporsResult }) => {
+const Vapors = ({
+  category,
+  RemoveRow,
+  setVaporsResult,
+  setShowVaporsResult,
+}) => {
   const [inputFields, setInputFields] = useState([
     {
       ingredient_vapors: '',
       weight_vapors: '',
-      LC50_vapors: '',
+      LDLC50_vapors: '',
       limitdose_vapors: '',
       classification_vapors: '',
     },
@@ -19,211 +25,8 @@ const Vapors = ({ setVaporsResult, setShowVaporsResult }) => {
   const [openAlert, setOpenAlert] = useState(false);
   const [alertText, setAlertText] = useState('');
 
-  const handleFormChange = (e, idx) => {
-    let data = [...inputFields];
-    //limit WT and LC50 input to 2 decimal places
-    if (e.target.name === 'weight_vapors' || e.target.name === 'LC50_vapors') {
-      let t = e.target.value;
-      data[idx][e.target.name] =
-        t.indexOf('.') >= 0
-          ? t.substr(0, t.indexOf('.')) + t.substr(t.indexOf('.'), 3)
-          : t;
-    } else {
-      data[idx][e.target.name] = e.target.value;
-    }
-    setInputFields(data);
-  };
-
-  const handleUnknownChange = (e) => {
+  const handleUnknownChange = (e, setUnknown) => {
     setUnknown(e.target.value);
-  };
-
-  const validateRows = (e) => {
-    e.preventDefault();
-    let data = [...inputFields];
-    let validArray = [];
-    data.forEach((item) => {
-      if (!item.ingredient_vapors) {
-        validArray.push(false);
-        setOpenAlert(true);
-        setAlertText('Ingredient is required in row.');
-      } else if (!item.weight_vapors) {
-        validArray.push(false);
-        setOpenAlert(true);
-        setAlertText('Weight (WT) is required in row.');
-      } else if (
-        !item.LC50_vapors &&
-        !item.limitdose_vapors &&
-        !item.classification_vapors
-      ) {
-        validArray.push(false);
-        setOpenAlert(true);
-        setAlertText(
-          'LC50 or Limit Dose Data or Classification is required in row.'
-        );
-      } else if (
-        !(
-          item.LC50_vapors &&
-          !item.limitdose_vapors &&
-          !item.classification_vapors
-        ) &&
-        !(
-          !item.LC50_vapors &&
-          item.limitdose_vapors &&
-          !item.classification_vapors
-        ) &&
-        !(
-          !item.LC50_vapors &&
-          !item.limitdose_vapors &&
-          item.classification_vapors
-        )
-      ) {
-        validArray.push(false);
-        setOpenAlert(true);
-        setAlertText(
-          'Enter only one of LC50, Limit Dose Data, or Classification in row.'
-        );
-      } else {
-        validArray.push(true);
-      }
-    });
-
-    //highlight invalid rows
-    validArray.forEach((item, index) => {
-      if (item === false) {
-        document
-          .querySelector('table#vapors tbody tr.row' + index)
-          .classList.add('usa-alert--error');
-      } else {
-        document
-          .querySelector('table#vapors tbody tr.row' + index)
-          .classList.remove('usa-alert--error');
-      }
-    });
-
-    //if valid data proceed to add rows or calculate
-    if (!validArray.includes(false) && e.target.id === 'add') {
-      addRow();
-    }
-    if (!validArray.includes(false) && e.target.id === 'calculate') {
-      calculate();
-    }
-  };
-
-  const addRow = () => {
-    let newfield = {
-      ingredient_vapors: '',
-      weight_vapors: '',
-      LC50_vapors: '',
-      limitdose_vapors: '',
-      classification_vapors: '',
-    };
-    setInputFields([...inputFields, newfield]);
-  };
-
-  const removeRow = (e, idx) => {
-    e.preventDefault();
-    let data = [...inputFields];
-    data.splice(idx, 1);
-    setInputFields(data);
-  };
-
-  const reset = (e) => {
-    e.preventDefault();
-    let data = [...inputFields];
-    data.splice(1);
-    setInputFields([
-      {
-        ingredient_vapors: '',
-        weight_vapors: '',
-        LC50_vapors: '',
-        limitdose_vapors: '',
-        classification_vapors: '',
-      },
-    ]);
-    setUnknown('');
-    setShowVaporsResult(false);
-  };
-
-  const calculate = (e) => {
-    let data = [...inputFields];
-    let results = data
-      .filter(
-        (obj) =>
-          (obj.LC50_vapors !== '' && parseFloat(obj.LC50_vapors) <= 20) ||
-          (obj.limitdose_vapors !== '' &&
-            obj.limitdose_vapors !== '> 20.0 (No signs of toxicity)') ||
-          (obj.classification_vapors !== '' &&
-            obj.classification_vapors !== 'Not Classified (LC50 > 20.0)')
-      )
-      .map((obj) => {
-        if (obj.LC50_vapors !== '') {
-          return {
-            ...obj,
-            LC50_vapors:
-              parseFloat(obj.weight_vapors) / parseFloat(obj.LC50_vapors),
-          };
-        }
-        if (obj.limitdose_vapors !== '') {
-          return {
-            ...obj,
-            limitdose_vapors:
-              parseFloat(obj.weight_vapors) /
-              VaporsPointEstimate('Limit Dose', obj.limitdose_vapors),
-          };
-        }
-        if (obj.classification_vapors !== '') {
-          return {
-            ...obj,
-            classification_vapors:
-              parseFloat(obj.weight_vapors) /
-              VaporsPointEstimate('Classification', obj.classification_vapors),
-          };
-        }
-        return obj;
-      });
-
-    const totalWTPercentVapors = results.reduce((accumulator, object) => {
-      return accumulator + parseFloat(object.weight_vapors);
-    }, 0);
-    //validate weight total to be calculated (not greater than 100)
-    if (
-      !(
-        (!unknown && totalWTPercentVapors > 100) ||
-        (unknown !== null && totalWTPercentVapors + parseFloat(unknown) > 100)
-      )
-    ) {
-      //if results, sum
-      let sum = 0;
-      if (results.length) {
-        results.forEach((item) => {
-          if (item.LC50_vapors !== '') {
-            sum += item.LC50_vapors;
-          }
-          if (item.limitdose_vapors !== '') {
-            sum += item.limitdose_vapors;
-          }
-          if (item.classification_vapors !== '') {
-            sum += item.classification_vapors;
-          }
-        });
-        //calculate result (round 1 decimal place)
-        if (unknown !== null && unknown > 10) {
-          setVaporsResult(Math.round(((100 - unknown) / sum) * 10) / 10);
-        } else {
-          setVaporsResult(Math.round((100 / sum) * 10) / 10);
-        }
-      } else {
-        setVaporsResult(null);
-      }
-      setShowVaporsResult(true);
-    } else {
-      setOpenAlert(true);
-      setAlertText(
-        'Total weight to be calculated must not be greater than 100%.'
-      );
-      setShowVaporsResult(false);
-    }
   };
 
   return (
@@ -233,13 +36,31 @@ const Vapors = ({ setVaporsResult, setShowVaporsResult }) => {
       ) : null}
       <form>
         <VaporsInput
+          category={category}
           inputFields={inputFields}
+          setInputFields={setInputFields}
+          HandleFormChange={HandleFormChange}
+          setAlertText={setAlertText}
+          RemoveRow={RemoveRow}
           unknown={unknown}
-          handleFormChange={handleFormChange}
+          setUnknown={setUnknown}
           handleUnknownChange={handleUnknownChange}
-          removeRow={removeRow}
         />
-        <Buttons validateRows={validateRows} reset={reset} />
+        <Buttons
+          category={category}
+          Validate={Validate}
+          Reset={Reset}
+          inputFields={inputFields}
+          setInputFields={setInputFields}
+          setOpenAlert={setOpenAlert}
+          setAlertText={setAlertText}
+          RemoveRow={RemoveRow}
+          setVaporsResult={setVaporsResult}
+          setShowVaporsResult={setShowVaporsResult}
+          unknown={unknown}
+          setUnknown={setUnknown}
+          handleUnknownChange={handleUnknownChange}
+        />
       </form>
     </>
   );

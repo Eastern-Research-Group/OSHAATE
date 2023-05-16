@@ -1,11 +1,40 @@
-export const Buttons = ({ validateRows, reset }) => {
+export const Buttons = ({
+  Validate,
+  inputFields,
+  setInputFields,
+  setOpenAlert,
+  setAlertText,
+  category,
+  unknown,
+  setUnknown,
+  setOralResult,
+  setShowOralResult,
+  setDermalResult,
+  setShowDermalResult,
+  setGasesResult,
+  setShowGasesResult,
+  setVaporsResult,
+  setShowVaporsResult,
+  setDustsResult,
+  setShowDustsResult,
+  Reset,
+}) => {
   return (
     <>
       <button
         className="usa-button usa-button--outline"
         type="button"
         id="add"
-        onClick={validateRows}
+        onClick={(e) =>
+          Validate(
+            e,
+            inputFields,
+            setInputFields,
+            setOpenAlert,
+            setAlertText,
+            category
+          )
+        }
       >
         Add Ingredient
       </button>
@@ -13,7 +42,20 @@ export const Buttons = ({ validateRows, reset }) => {
         className="usa-button usa-button--outline"
         type="button"
         id="reset"
-        onClick={reset}
+        onClick={(e) =>
+          Reset(
+            e,
+            inputFields,
+            setInputFields,
+            setUnknown,
+            setShowOralResult,
+            setShowDermalResult,
+            setShowGasesResult,
+            setShowVaporsResult,
+            setShowDustsResult,
+            category
+          )
+        }
       >
         Reset
       </button>
@@ -21,7 +63,27 @@ export const Buttons = ({ validateRows, reset }) => {
         className="usa-button"
         type="button"
         id="calculate"
-        onClick={validateRows}
+        onClick={(e) =>
+          Validate(
+            e,
+            inputFields,
+            setInputFields,
+            setOpenAlert,
+            setAlertText,
+            category,
+            unknown,
+            setOralResult,
+            setShowOralResult,
+            setDermalResult,
+            setShowDermalResult,
+            setGasesResult,
+            setShowGasesResult,
+            setVaporsResult,
+            setShowVaporsResult,
+            setDustsResult,
+            setShowDustsResult
+          )
+        }
       >
         Calculate
       </button>

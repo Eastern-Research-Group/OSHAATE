@@ -11,21 +11,24 @@ import Dusts from './dusts/Dusts';
 import DustsResult from './dusts/DustsResult';
 
 const Pathway = ({ title, category }) => {
-  const [dermalResult, setDermalResult] = useState(null);
-  let [showDermalResult, setShowDermalResult] = useState(false);
   const [oralResult, setOralResult] = useState(null);
-  let [showOralResult, setShowOralResult] = useState(false);
+  const [showOralResult, setShowOralResult] = useState(false);
+  const [dermalResult, setDermalResult] = useState(null);
+  const [showDermalResult, setShowDermalResult] = useState(false);
   const [gasesResult, setGasesResult] = useState(null);
-  let [showGasesResult, setShowGasesResult] = useState(false);
+  const [showGasesResult, setShowGasesResult] = useState(false);
   const [vaporsResult, setVaporsResult] = useState(null);
-  let [showVaporsResult, setShowVaporsResult] = useState(false);
+  const [showVaporsResult, setShowVaporsResult] = useState(false);
   const [dustsResult, setDustsResult] = useState(null);
-  let [showDustsResult, setShowDustsResult] = useState(false);
+  const [showDustsResult, setShowDustsResult] = useState(false);
+
   return (
     <>
       <h3>{title}</h3>
+
       {category === 'Dermal' ? (
         <Dermal
+          category={category}
           dermalResult={dermalResult}
           setDermalResult={setDermalResult}
           showDermalResult={showDermalResult}
@@ -34,6 +37,7 @@ const Pathway = ({ title, category }) => {
       ) : null}
       {category === 'Oral' ? (
         <Oral
+          category={category}
           oralResult={oralResult}
           setOralResult={setOralResult}
           showOralResult={showOralResult}
@@ -42,6 +46,7 @@ const Pathway = ({ title, category }) => {
       ) : null}
       {category === 'Gases' ? (
         <Gases
+          category={category}
           gasesResult={gasesResult}
           setGasesResult={setGasesResult}
           showGasesResult={showGasesResult}
@@ -50,6 +55,7 @@ const Pathway = ({ title, category }) => {
       ) : null}
       {category === 'Vapors' ? (
         <Vapors
+          category={category}
           vaporsResult={vaporsResult}
           setVaporsResult={setVaporsResult}
           showVaporsResult={showVaporsResult}
@@ -58,6 +64,7 @@ const Pathway = ({ title, category }) => {
       ) : null}
       {category === 'Dusts' ? (
         <Dusts
+          category={category}
           dustsResult={dustsResult}
           setDustsResult={setDustsResult}
           showDustsResult={showDustsResult}

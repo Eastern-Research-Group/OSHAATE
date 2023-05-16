@@ -1,12 +1,15 @@
 import React from 'react';
 import { Tooltip } from '../Tooltip';
+import { RemoveRow } from '../Utils';
 
 const Input = ({
   inputFields,
+  HandleFormChange,
+  setInputFields,
+  category,
   unknown,
-  handleFormChange,
+  setUnknown,
   handleUnknownChange,
-  removeRow,
 }) => {
   return (
     <div className="tablewrapper">
@@ -33,7 +36,15 @@ const Input = ({
                     name="ingredient_vapors"
                     placeholder="Enter ingredient"
                     value={input.ingredient_vapors}
-                    onChange={(e) => handleFormChange(e, idx)}
+                    onChange={(e) =>
+                      HandleFormChange(
+                        e,
+                        idx,
+                        inputFields,
+                        setInputFields,
+                        category
+                      )
+                    }
                   />
                 </label>
               </td>
@@ -47,21 +58,37 @@ const Input = ({
                     name="weight_vapors"
                     placeholder="Enter weight (%)"
                     value={input.weight_vapors}
-                    onChange={(e) => handleFormChange(e, idx)}
+                    onChange={(e) =>
+                      HandleFormChange(
+                        e,
+                        idx,
+                        inputFields,
+                        setInputFields,
+                        category
+                      )
+                    }
                   />
                 </label>
               </td>
               <td>
-                <label htmlFor="LC50_vapors">
+                <label htmlFor="LDLC50_vapors">
                   <input
                     type="number"
                     min="0"
                     step="0.01"
-                    id="LC50_vapors"
-                    name="LC50_vapors"
+                    id="LDLC50_vapors"
+                    name="LDLC50_vapors"
                     placeholder="Enter LC50 (mg/l)"
-                    value={input.LC50_vapors}
-                    onChange={(e) => handleFormChange(e, idx)}
+                    value={input.LDLC50_vapors}
+                    onChange={(e) =>
+                      HandleFormChange(
+                        e,
+                        idx,
+                        inputFields,
+                        setInputFields,
+                        category
+                      )
+                    }
                   />
                 </label>
               </td>
@@ -71,7 +98,15 @@ const Input = ({
                     name="limitdose_vapors"
                     id="limitdose_vapors"
                     value={input.limitdose_vapors}
-                    onChange={(e) => handleFormChange(e, idx)}
+                    onChange={(e) =>
+                      HandleFormChange(
+                        e,
+                        idx,
+                        inputFields,
+                        setInputFields,
+                        category
+                      )
+                    }
                   >
                     <option value="">Select Limit Dose Data</option>
                     <option>&le; 0.5</option>
@@ -88,7 +123,15 @@ const Input = ({
                     name="classification_vapors"
                     id="classification_vapors"
                     value={input.classification_vapors}
-                    onChange={(e) => handleFormChange(e, idx)}
+                    onChange={(e) =>
+                      HandleFormChange(
+                        e,
+                        idx,
+                        inputFields,
+                        setInputFields,
+                        category
+                      )
+                    }
                   >
                     <option value="">Select Classification</option>
                     <option>Category 1</option>
@@ -101,7 +144,12 @@ const Input = ({
               </td>
               <td>
                 {idx === 0 ? null : (
-                  <button type="button" onClick={(e) => removeRow(e, idx)}>
+                  <button
+                    type="button"
+                    onClick={(e) =>
+                      RemoveRow(e, idx, inputFields, setInputFields)
+                    }
+                  >
                     Remove
                   </button>
                 )}
@@ -128,7 +176,7 @@ const Input = ({
                 name="unknown_vapors"
                 placeholder="Enter weight (%)"
                 value={unknown}
-                onChange={(e) => handleUnknownChange(e)}
+                onChange={(e) => handleUnknownChange(e, setUnknown)}
               />
             </td>
           </tr>
