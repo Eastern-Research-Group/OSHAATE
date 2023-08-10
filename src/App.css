@@ -1,6 +1,11 @@
 .App {
   margin: 1rem;
 }
+
+.App .paragraph-text {
+  line-height: 1.3;
+}
+
 .App .pathway-container {
   margin: 2rem 0 2rem 0;
   padding-bottom: 1rem;
@@ -154,6 +159,24 @@
   color: #d54309;
   background: white;
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+.App sub {
+  vertical-align: baseline;
+  position: relative;
+  bottom: -0.33em;
+}
+
+@media only screen and (min-width: 992px) {
+  .App .paragraph-text {
+    width: 80%;
+  }
+}
+
+@media only screen and (min-width: 1200px) {
+  .App .paragraph-text {
+    width: 60%;
+  }
 }
 
 @media only screen and (max-width: 760px) {
