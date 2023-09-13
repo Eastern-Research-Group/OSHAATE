@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Checkbox } from './components/Checkbox';
 import PathwayList from './components/PathwayList';
 import './App.css';
+import pdf from "./doc/ATE-Calculator-User-Guide-Draft.pdf";
 
 const pathwaysList = [
   {
@@ -88,13 +89,18 @@ export default class App extends Component {
             The classification criteria use the ATE (acute toxicity estimate)
             value for classification purposes. For example, a substance or
             mixture having an ATE of 48 mg/kg for dermal is a category 1 for
-            acute toxicity. This information is found in Appendix A.1 in the HCS
-            and Chapter 3.1 in the GHS.
+            acute toxicity. This information is found in <a href="https://www.osha.gov/hazcom/appendix-a" target="_blank"  rel="noreferrer">Appendix A.1 in the HCS </a>
+             and <a href="https://unece.org/ghs-rev7-2017" target="_blank" rel="noreferrer">Chapter 3.1 in the GHS</a>.
           </p>
           <p>
             The ATE calculator is designed to calculate the ATE for a mixture
             even in the case where some of the information is not known for some
             ingredients.
+          </p>
+        </div>
+        <div>
+          <p>
+           <a href={pdf} target="_blank" rel="noreferrer">Guidnace on how to use the calculator</a> 
           </p>
         </div>
         <hr />
@@ -214,6 +220,12 @@ export default class App extends Component {
             for this specific endpoint.
           </p>
         </div>
+        <hr />
+  
+        <div class="alert alert-info">
+        <h4>Disclaimer</h4>
+              <p>Placeholder - This program is not a new standard or regulation, and creates no new legal obligations. It is intended to help ...  </p>
+          </div>
       </div>
     );
   }
