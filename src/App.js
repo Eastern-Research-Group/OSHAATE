@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Checkbox } from './components/Checkbox';
 import PathwayList from './components/PathwayList';
 import './App.css';
+import pdf from "./doc/ATE-Calculator-User-Guide.pdf";
 
 const pathwaysList = [
   {
@@ -88,13 +89,18 @@ export default class App extends Component {
             The classification criteria use the ATE (acute toxicity estimate)
             value for classification purposes. For example, a substance or
             mixture having an ATE of 48 mg/kg for dermal is a category 1 for
-            acute toxicity. This information is found in Appendix A.1 in the HCS
-            and Chapter 3.1 in the GHS.
+            acute toxicity. This information is found in <a href="https://www.osha.gov/hazcom/appendix-a" target="_blank"  rel="noreferrer">Appendix A.1 in the HCS </a>
+             and <a href="https://unece.org/ghs-rev7-2017" target="_blank" rel="noreferrer">Chapter 3.1 in the GHS</a>.
           </p>
           <p>
             The ATE calculator is designed to calculate the ATE for a mixture
             even in the case where some of the information is not known for some
             ingredients.
+          </p>
+        </div>
+        <div>
+          <p>
+           <a href={pdf} target="_blank" rel="noreferrer">Guidnace on how to use the calculator</a> 
           </p>
         </div>
         <hr />
@@ -142,78 +148,25 @@ export default class App extends Component {
           pathways={filteredPathways.length === 0 ? [] : filteredPathways}
         />
 
-        <h2>Definitions</h2>
+        <h2>References</h2>
         <div className="paragraph-text">
           <p>
-            <strong>Ingredient</strong> - the specific substance contained
-            within the mixture or a mixture within another mixture.
+          OSHA Hazard Communication Standard (29 CFR 1910.1200).
           </p>
 
           <p>
-            <strong>WT</strong> - percent by weight of the ingredient within the
-            mixture.
+          The United Nations Globally Harmonized System of Classification and Labelling of Chemicals (GHS); Seventh revised edition (ST/SG/AC.10/30/Rev.7).
           </p>
-
-          <p>
-            <strong>
-              LD<sub>50</sub> mg/kg
-            </strong>{' '}
-            - Dose (expressed in milligrams per kilogram) of a substance or
-            mixture that kills 50 percent (after single exposure) of animals in
-            an oral or dermal study. Oral studies are usually performed in rats
-            or mice while dermal studies often used rabbits. However, other
-            animal species may be used in the tests.
-          </p>
-
-          <p>
-            <strong>
-              LC<sub>50</sub> ppm
-            </strong>{' '}
-            - Concentration of a gas (expressed in parts per million) of a
-            substance or mixture that kills 50 percent (single exposure for 1-4
-            hours) of animals in an inhalation study. Inhalation studies are
-            usually performed in rats, however, other animal species (e.g.,
-            mice, rabbits, pigeons) may be used in the tests. The HCS and GHS
-            use a 4-hour time point to calculate lethality so any value other
-            than 4 hours would need to be converted to the 4-hour value (GHS,
-            Rev.10, paragraph 3.1.5.3). LC50 mg/l - Concentration of a vapor
-            (expressed in milligrams per liter air) of a substance or mixture
-            that kills 50 percent (single exposure for 1-4 hours) of animals in
-            an inhalation study. Inhalation studies are usually performed in
-            rats, however, other animal species (e.g., mice, rabbits, pigeons)
-            may be used in the tests. The HCS and GHS use a 4-hour time point to
-            calculate lethality so any value other than 4 hours would need to be
-            converted to the 4-hour value (GHS, Rev.10, paragraph 3.1.5.3).{' '}
-          </p>
-
-          <p>
-            <strong>
-              LC<sub>50</sub> mg/l
-            </strong>{' '}
-            - Concentration of a mist, dusts, or particles (expressed in
-            milligrams per liter air) of a substance or mixture that kills 50
-            percent (single exposure for 1-4 hours) of animals in an inhalation
-            study. Inhalation studies are usually performed in rats, however,
-            other animal species (e.g., mice, rabbits, pigeons) may be used in
-            the tests. Sometimes this information will be expressed as mg/m3.
-            This information is easily converted to mg/l by dividing the
-            concentration in mg/m3 by 1000 to get the mg/l value. The HCS and
-            GHS use a 4-hour time point to calculate lethality so any value
-            other than 4 hours would need to be converted to the 4-hour value
-            (GHS, Rev.10, paragraph 3.1.5.3).
-          </p>
-
-          <p>
-            <strong>Limit dose data</strong> - this value is used if the only
-            data available for an individual ingredient is a range estimate.
-          </p>
-
-          <p>
-            <strong>Classification </strong> - this value is used if the only
-            data available for an individual ingredient is the hazard category
-            for this specific endpoint.
-          </p>
+          
         </div>
+        <hr />
+  
+        <div class="alert alert-info">
+        <h4>Disclaimer</h4>
+              <p>The U.S. Department of Labor maintains this website to enhance public access to the department's information. This is a service that is continually under development. We will make every effort to keep this site current and to correct errors brought to our attention.
+              </p>
+              <p>The documents on this site may contain links to information created and maintained by other public and private organizations. Please be aware that we do not control or guarantee the accuracy, relevance, timeliness, or completeness of this outside information. Further, the inclusion of links to particular items is not intended to reflect their importance, nor is it intended to endorse any views expressed or products or services offered by the author of the reference or the organization operating the site on which the reference is maintained.</p>
+          </div>
       </div>
     );
   }
