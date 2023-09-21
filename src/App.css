@@ -53,6 +53,10 @@
   margin: 0;
 }
 
+.App button[type='button'] {
+  cursor: pointer;
+}
+
 .App .usa-button {
   font-size: 1rem;
   line-height: 0.9;
@@ -63,7 +67,6 @@
   appearance: none;
   border: 0;
   border-radius: 0.25rem;
-  cursor: pointer;
   display: inline-block;
   font-weight: 700;
   margin-right: 0.5rem;
