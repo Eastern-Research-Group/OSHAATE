@@ -1,5 +1,5 @@
 import React from 'react';
-import { Tooltip } from '../Tooltip';
+import { Tooltip } from '../tooltip/Tooltip';
 import { RemoveRow } from '../Utils';
 
 const Input = ({
@@ -16,13 +16,21 @@ const Input = ({
       <table id="oral">
         <thead>
           <tr>
-            <th>Ingredient</th>
-            <th>WT%</th>
             <th>
-              LD<sub>50</sub> (mg/kg)
+              Ingredient <Tooltip text="ingredient" />
             </th>
-            <th>Limit Dose Data (mg/kg)</th>
-            <th>Classification</th>
+            <th>
+              WT% <Tooltip text="WT" />
+            </th>
+            <th>
+              LD<sub>50</sub> (mg/kg) <Tooltip text="LD50" />
+            </th>
+            <th>
+              Limit Dose Data (mg/kg) <Tooltip text="limitdose" />
+            </th>
+            <th>
+              Classification <Tooltip text="classification" />
+            </th>
           </tr>
         </thead>
         <tbody>
@@ -162,10 +170,7 @@ const Input = ({
             <td>
               <br />
               <label htmlFor="unknown_oral" className="tooltip">
-                Sum Unknown Toxicity{' '}
-                <span>
-                  <Tooltip>&#9432;</Tooltip>
-                </span>
+                Sum Unknown Toxicity <Tooltip text="unknown" />
               </label>
             </td>
             <td>
