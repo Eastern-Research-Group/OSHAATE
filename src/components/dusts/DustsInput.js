@@ -37,11 +37,11 @@ const Input = ({
           {inputFields.map((input, idx) => (
             <tr key={idx} className={`row${idx}`}>
               <td>
-                <label htmlFor="ingredient_dusts">
+                <label htmlFor={`ingredient_dusts-${idx}`}>
                   <input
-                    type="text"
-                    id="ingredient_dusts"
+                    id={`ingredient_dusts-${idx}`}
                     name="ingredient_dusts"
+                    type="text"
                     placeholder="Enter ingredient"
                     value={input.ingredient_dusts}
                     onChange={(e) =>
@@ -57,13 +57,13 @@ const Input = ({
                 </label>
               </td>
               <td>
-                <label htmlFor="weight_dusts">
+                <label htmlFor={`weight_dusts-${idx}`}>
                   <input
+                    id={`weight_dusts-${idx}`}
+                    name="weight_dusts"
                     type="number"
                     min="0"
                     step="0.01"
-                    id="weight_dusts"
-                    name="weight_dusts"
                     placeholder="Enter weight (%)"
                     value={input.weight_dusts}
                     onChange={(e) =>
@@ -79,13 +79,13 @@ const Input = ({
                 </label>
               </td>
               <td>
-                <label htmlFor="LDLC50_dusts">
+                <label htmlFor={`LDLC50_dusts-${idx}`}>
                   <input
+                    id={`LDLC50_dusts-${idx}`}
+                    name="LDLC50_dusts"
                     type="number"
                     min="0"
                     step="0.01"
-                    id="LDLC50_dusts"
-                    name="LDLC50_dusts"
                     placeholder="Enter LC50 (mg/l)"
                     value={input.LDLC50_dusts}
                     onChange={(e) =>
@@ -101,10 +101,10 @@ const Input = ({
                 </label>
               </td>
               <td>
-                <label htmlFor="limitdose_dusts">
+                <label htmlFor={`limitdose_dusts-${idx}`}>
                   <select
+                    id={`limitdose_dusts-${idx}`}
                     name="limitdose_dusts"
-                    id="limitdose_dusts"
                     value={input.limitdose_dusts}
                     onChange={(e) =>
                       HandleFormChange(
@@ -126,10 +126,10 @@ const Input = ({
                 </label>
               </td>
               <td>
-                <label htmlFor="classification_dusts">
+                <label htmlFor={`classification_dusts-${idx}`}>
                   <select
+                    id={`classification_dusts-${idx}`}
                     name="classification_dusts"
-                    id="classification_dusts"
                     value={input.classification_dusts}
                     onChange={(e) =>
                       HandleFormChange(
