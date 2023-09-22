@@ -37,10 +37,10 @@ const Input = ({
           {inputFields.map((input, idx) => (
             <tr key={idx} className={`row${idx}`}>
               <td>
-                <label htmlFor="ingredient_dermal">
+                <label htmlFor={`ingredient_dermal-${idx}`}>
                   <input
                     type="text"
-                    id="ingredient_dermal"
+                    id={`ingredient_dermal-${idx}`}
                     name="ingredient_dermal"
                     placeholder="Enter ingredient"
                     value={input.ingredient_dermal}
@@ -57,12 +57,12 @@ const Input = ({
                 </label>
               </td>
               <td>
-                <label htmlFor="weight_dermal">
+                <label htmlFor={`weight_dermal-${idx}`}>
                   <input
                     type="number"
                     min="0"
                     step="0.01"
-                    id="weight_dermal"
+                    id={`weight_dermal-${idx}`}
                     name="weight_dermal"
                     placeholder="Enter weight (%)"
                     value={input.weight_dermal}
@@ -79,12 +79,12 @@ const Input = ({
                 </label>
               </td>
               <td>
-                <label htmlFor="LDLC50_dermal">
+                <label htmlFor={`LDLC50_dermal-${idx}`}>
                   <input
                     type="number"
                     min="0"
                     step="0.01"
-                    id="LDLC50_dermal"
+                    id={`LDLC50_dermal-${idx}`}
                     name="LDLC50_dermal"
                     placeholder="Enter LD50 (mg/kg)"
                     value={input.LDLC50_dermal}
@@ -101,10 +101,10 @@ const Input = ({
                 </label>
               </td>
               <td>
-                <label htmlFor="limitdose_dermal">
+                <label htmlFor={`limitdose_dermal-${idx}`}>
                   <select
                     name="limitdose_dermal"
-                    id="limitdose_dermal"
+                    id={`limitdose_dermal-${idx}`}
                     value={input.limitdose_dermal}
                     onChange={(e) =>
                       HandleFormChange(
@@ -127,10 +127,10 @@ const Input = ({
                 </label>
               </td>
               <td>
-                <label htmlFor="classification_dermal">
+                <label htmlFor={`classification_dermal-${idx}`}>
                   <select
                     name="classification_dermal"
-                    id="classification_dermal"
+                    id={`classification_dermal-${idx}`}
                     value={input.classification_dermal}
                     onChange={(e) =>
                       HandleFormChange(

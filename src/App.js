@@ -174,7 +174,7 @@ export default class App extends Component {
 
           <hr />
 
-          <h4>Disclaimer</h4>
+          <h3>Disclaimer</h3>
           <p>
             The U.S. Department of Labor maintains this website to enhance
             public access to the department's information. This is a service
