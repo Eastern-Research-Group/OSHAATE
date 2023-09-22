@@ -39,9 +39,9 @@ const Input = ({
               <td>
                 <label htmlFor={`ingredient_oral-${idx}`}>
                   <input
+                    type="text"
                     id={`ingredient_oral-${idx}`}
                     name="ingredient_oral"
-                    type="text"
                     placeholder="Enter ingredient"
                     value={input.ingredient_oral}
                     onChange={(e) =>
@@ -59,11 +59,11 @@ const Input = ({
               <td>
                 <label htmlFor={`weight_oral-${idx}`}>
                   <input
-                    id={`weight_oral-${idx}`}
-                    name="weight_oral"
                     type="number"
                     min="0"
                     step="0.01"
+                    id={`weight_oral-${idx}`}
+                    name="weight_oral"
                     placeholder="Enter weight (%)"
                     value={input.weight_oral}
                     onChange={(e) =>
@@ -81,11 +81,11 @@ const Input = ({
               <td>
                 <label htmlFor={`LDLC50_oral-${idx}`}>
                   <input
-                    id={`LDLC50_oral-${idx}`}
-                    name="LDLC50_oral"
                     type="number"
                     min="0"
                     step="0.01"
+                    id={`LDLC50_oral-${idx}`}
+                    name="LDLC50_oral"
                     placeholder="Enter LD50 (mg/kg)"
                     value={input.LD50_oral}
                     onChange={(e) =>
@@ -103,8 +103,8 @@ const Input = ({
               <td>
                 <label htmlFor={`limitdose_oral-${idx}`}>
                   <select
-                    id={`limitdose_oral-${idx}`}
                     name="limitdose_oral"
+                    id={`limitdose_oral-${idx}`}
                     value={input.limitdose_oral}
                     onChange={(e) =>
                       HandleFormChange(
@@ -129,8 +129,8 @@ const Input = ({
               <td>
                 <label htmlFor={`classification_oral-${idx}`}>
                   <select
-                    id={`classification_oral-${idx}`}
                     name="classification_oral"
+                    id={`classification_oral-${idx}`}
                     value={input.classification_oral}
                     onChange={(e) =>
                       HandleFormChange(

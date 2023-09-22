@@ -39,9 +39,9 @@ const Input = ({
               <td>
                 <label htmlFor={`ingredient_vapors-${idx}`}>
                   <input
+                    type="text"
                     id={`ingredient_vapors-${idx}`}
                     name="ingredient_vapors"
-                    type="text"
                     placeholder="Enter ingredient"
                     value={input.ingredient_vapors}
                     onChange={(e) =>
@@ -59,11 +59,11 @@ const Input = ({
               <td>
                 <label htmlFor={`weight_vapors-${idx}`}>
                   <input
-                    id={`weight_vapors-${idx}`}
-                    name="weight_vapors"
                     type="number"
                     min="0"
                     step="0.01"
+                    id={`weight_vapors-${idx}`}
+                    name="weight_vapors"
                     placeholder="Enter weight (%)"
                     value={input.weight_vapors}
                     onChange={(e) =>
@@ -81,11 +81,11 @@ const Input = ({
               <td>
                 <label htmlFor={`LDLC50_vapors-${idx}`}>
                   <input
-                    id={`LDLC50_vapors-${idx}`}
-                    name="LDLC50_vapors"
                     type="number"
                     min="0"
                     step="0.01"
+                    id={`LDLC50_vapors-${idx}`}
+                    name="LDLC50_vapors"
                     placeholder="Enter LC50 (mg/l)"
                     value={input.LDLC50_vapors}
                     onChange={(e) =>
@@ -103,8 +103,8 @@ const Input = ({
               <td>
                 <label htmlFor={`limitdose_vapors-${idx}`}>
                   <select
-                    id={`limitdose_vapors-${idx}`}
                     name="limitdose_vapors"
+                    id={`limitdose_vapors-${idx}`}
                     value={input.limitdose_vapors}
                     onChange={(e) =>
                       HandleFormChange(
@@ -128,8 +128,8 @@ const Input = ({
               <td>
                 <label htmlFor={`classification_vapors-${idx}`}>
                   <select
-                    id={`classification_vapors-${idx}`}
                     name="classification_vapors"
+                    id={`classification_vapors-${idx}`}
                     value={input.classification_vapors}
                     onChange={(e) =>
                       HandleFormChange(
