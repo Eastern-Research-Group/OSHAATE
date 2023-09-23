@@ -182,3 +182,7 @@
     display: none;
   }
 }
+
+.alert-info{background-color:#d9edf7;border-color:#bce8f1;color:#31708f;}
+.alert-info hr{border-top-color:#a6e1ec;}
+.alert{padding:15px;margin-bottom:20px;border:1px solid transparent;border-radius:4px;}
