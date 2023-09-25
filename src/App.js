@@ -37,7 +37,7 @@ export default class App extends Component {
     pathways: pathwaysList,
     categories: {
       Dermal: false,
-      Oral: false,
+      Oral: true,
       Gases: false,
       Vapors: false,
       Dusts: false,
@@ -171,9 +171,9 @@ export default class App extends Component {
             Labelling of Chemicals (GHS); Seventh revised edition
             (ST/SG/AC.10/30/Rev.7).
           </p>
-
+</div>
           <hr />
-
+<div class="alert alert-info">
           <h3>Disclaimer</h3>
           <p>
             The U.S. Department of Labor maintains this website to enhance
