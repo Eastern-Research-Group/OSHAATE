@@ -74,14 +74,10 @@ export default class App extends Component {
             adverse health effects (i.e., lethality) occurring after a single or
             short-term oral, dermal or inhalation exposure to a substance or
             mixture. In other words, it is the ability for a substance or
-            mixture to lead to lethality at a specific dose (e.g., LD
-            <sub>50</sub> or LC
-            <sub>50</sub>). Acute toxicity values are expressed as LD
-            <sub>50</sub> (oral, dermal) or LC<sub>50</sub> (inhalation) values
+            mixture to lead to lethality at a specific dose (e.g., LD<sub>50</sub> or LC<sub>50</sub>). Acute toxicity values are expressed as LD<sub>50</sub> (oral, dermal) or LC<sub>50</sub> (inhalation) values
             or as acute toxicity estimates (ATE). The LD<sub>50</sub> refers to
             the dose that causes 50 percent lethality in an oral or dermal
-            study. The LC
-            <sub>50</sub> refers to the concentration in air that causes 50
+            study. The LC<sub>50</sub> refers to the concentration in air that causes 50
             percent lethality in an inhalation study (gas, vapor, mist, or
             dust).
           </p>
@@ -102,10 +98,7 @@ export default class App extends Component {
               href="https://unece.org/ghs-rev7-2017"
               target="_blank"
               rel="noreferrer"
-            >
-              Chapter 3.1 in the GHS
-            </a>
-            .
+            >Chapter 3.1 in the GHS.</a>
           </p>
           <p>
             The ATE calculator is designed to calculate the ATE for a mixture
@@ -174,7 +167,7 @@ export default class App extends Component {
           </p>
 </div>
           <hr />
-<div class="alert alert-info">
+<div className="alert alert-info">
           <h3>Disclaimer</h3>
           <p>
             The U.S. Department of Labor maintains this website to enhance
