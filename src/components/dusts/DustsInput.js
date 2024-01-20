@@ -37,7 +37,7 @@ const Input = ({
           {inputFields.map((input, idx) => (
             <tr key={idx} className={`row${idx}`}>
               <td>
-                <label htmlFor={`ingredient_dusts-${idx}`}>
+                <label htmlFor={`ingredient_dusts-${idx}`} aria-label="Enter ingredient">
                   <input
                     type="text"
                     id={`ingredient_dusts-${idx}`}
@@ -57,7 +57,7 @@ const Input = ({
                 </label>
               </td>
               <td>
-                <label htmlFor={`weight_dusts-${idx}`}>
+                <label htmlFor={`weight_dusts-${idx}`}  aria-label="Enter weight (%)">
                   <input
                     type="number"
                     min="0"
@@ -79,7 +79,7 @@ const Input = ({
                 </label>
               </td>
               <td>
-                <label htmlFor={`LDLC50_dusts-${idx}`}>
+                <label htmlFor={`LDLC50_dusts-${idx}`} aria-label="Enter LC50 (mg/l)">
                   <input
                     type="number"
                     min="0"
@@ -104,6 +104,7 @@ const Input = ({
                 <label htmlFor={`limitdose_dusts-${idx}`}>
                   <select
                     name="limitdose_dusts"
+                    aria-label="Select Limit Dose Data"
                     id={`limitdose_dusts-${idx}`}
                     value={input.limitdose_dusts}
                     onChange={(e) =>
@@ -129,6 +130,7 @@ const Input = ({
                 <label htmlFor={`classification_dusts-${idx}`}>
                   <select
                     name="classification_dusts"
+                    aria-label="Select Classification"
                     id={`classification_dusts-${idx}`}
                     value={input.classification_dusts}
                     onChange={(e) =>

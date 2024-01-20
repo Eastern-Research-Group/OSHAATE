@@ -14,6 +14,7 @@ const Input = ({
   return (
     <div className="tablewrapper">
       <table id="gases">
+      <caption>Inhalation - Gases</caption>
         <thead>
           <tr>
             <th>
@@ -37,7 +38,7 @@ const Input = ({
           {inputFields.map((input, idx) => (
             <tr key={idx} className={`row${idx}`}>
               <td>
-                <label htmlFor={`ingredient_gases-${idx}`}>
+                <label htmlFor={`ingredient_gases-${idx}`} aria-label="Enter ingredient">
                   <input
                     type="text"
                     id={`ingredient_gases-${idx}`}
@@ -57,7 +58,7 @@ const Input = ({
                 </label>
               </td>
               <td>
-                <label htmlFor={`weight_gases-${idx}`}>
+                <label htmlFor={`weight_gases-${idx}`}  aria-label="Enter weight (%)">
                   <input
                     type="number"
                     min="0"
@@ -79,7 +80,7 @@ const Input = ({
                 </label>
               </td>
               <td>
-                <label htmlFor={`LDLC50_gases-${idx}`}>
+                <label htmlFor={`LDLC50_gases-${idx}`} aria-label="Enter LC50 (ppmV)">
                   <input
                     type="number"
                     min="0"
@@ -104,6 +105,7 @@ const Input = ({
                 <label htmlFor={`limitdose_gases-${idx}`}>
                   <select
                     name="limitdose_gases"
+                    aria-label="Select Limit Dose Data"
                     id={`limitdose_gases-${idx}`}
                     value={input.limitdose_gases}
                     onChange={(e) =>
@@ -129,6 +131,7 @@ const Input = ({
                 <label htmlFor={`classification_gases-${idx}`}>
                   <select
                     name="classification_gases"
+                    aria-label="Select Classification"
                     id={`classification_gases-${idx}`}
                     value={input.classification_gases}
                     onChange={(e) =>
