@@ -14,6 +14,7 @@ const Input = ({
   return (
     <div className="tablewrapper">
       <table id="vapors">
+      <caption>Inhalation - Vapors</caption>
         <thead>
           <tr>
             <th>
