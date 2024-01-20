@@ -165,7 +165,8 @@ export default class App extends Component {
 
         <div className="paragraph-text">
           <h2>References</h2>
-          <p><a href="https://www.osha.gov/laws-regs/regulations/standardnumber/1910/1910.1200" title="29 CFR 1910.1200">OSHA Hazard Communication Standard (29 CFR 1910.1200)</a>.</p>
+          <p><a href="https://www.osha.gov/laws-regs/regulations/standardnumber/1910/1910.1200" title="29 CFR 1910.1200" target="_blank"
+              rel="noreferrer">OSHA Hazard Communication Standard (29 CFR 1910.1200)</a>.</p>
           <p>
             The United Nations Globally Harmonized System of Classification and
             Labelling of Chemicals (GHS); Seventh revised edition
