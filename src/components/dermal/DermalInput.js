@@ -14,6 +14,7 @@ const Input = ({
   return (
     <div className="tablewrapper">
       <table id="dermal">
+      <caption>Dermal</caption>
         <thead>
           <tr>
             <th>
