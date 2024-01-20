@@ -14,6 +14,7 @@ const Input = ({
   return (
     <div className="tablewrapper">
       <table id="dermal">
+      <caption>Dermal</caption>
         <thead>
           <tr>
             <th>
@@ -37,7 +38,7 @@ const Input = ({
           {inputFields.map((input, idx) => (
             <tr key={idx} className={`row${idx}`}>
               <td>
-                <label htmlFor={`ingredient_dermal-${idx}`}>
+                <label htmlFor={`ingredient_dermal-${idx}`} aria-label="Enter ingredient">
                   <input
                     type="text"
                     id={`ingredient_dermal-${idx}`}
@@ -57,7 +58,7 @@ const Input = ({
                 </label>
               </td>
               <td>
-                <label htmlFor={`weight_dermal-${idx}`}>
+                <label htmlFor={`weight_dermal-${idx}`}  aria-label="Enter weight (%)">
                   <input
                     type="number"
                     min="0"
@@ -79,7 +80,7 @@ const Input = ({
                 </label>
               </td>
               <td>
-                <label htmlFor={`LDLC50_dermal-${idx}`}>
+                <label htmlFor={`LDLC50_dermal-${idx}`} aria-label="Enter LD50 (mg/kg)">
                   <input
                     type="number"
                     min="0"
@@ -104,6 +105,7 @@ const Input = ({
                 <label htmlFor={`limitdose_dermal-${idx}`}>
                   <select
                     name="limitdose_dermal"
+                    aria-label="Select Limit Dose Data"
                     id={`limitdose_dermal-${idx}`}
                     value={input.limitdose_dermal}
                     onChange={(e) =>
@@ -130,6 +132,7 @@ const Input = ({
                 <label htmlFor={`classification_dermal-${idx}`}>
                   <select
                     name="classification_dermal"
+                    aria-label="Select Classification"
                     id={`classification_dermal-${idx}`}
                     value={input.classification_dermal}
                     onChange={(e) =>

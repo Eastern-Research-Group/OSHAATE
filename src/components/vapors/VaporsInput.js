@@ -14,6 +14,7 @@ const Input = ({
   return (
     <div className="tablewrapper">
       <table id="vapors">
+      <caption>Inhalation - Vapors</caption>
         <thead>
           <tr>
             <th>
@@ -37,7 +38,7 @@ const Input = ({
           {inputFields.map((input, idx) => (
             <tr key={idx} className={`row${idx}`}>
               <td>
-                <label htmlFor={`ingredient_vapors-${idx}`}>
+                <label htmlFor={`ingredient_vapors-${idx}`} aria-label="Enter ingredient">
                   <input
                     type="text"
                     id={`ingredient_vapors-${idx}`}
@@ -57,7 +58,7 @@ const Input = ({
                 </label>
               </td>
               <td>
-                <label htmlFor={`weight_vapors-${idx}`}>
+                <label htmlFor={`weight_vapors-${idx}`}  aria-label="Enter weight (%)">
                   <input
                     type="number"
                     min="0"
@@ -79,7 +80,7 @@ const Input = ({
                 </label>
               </td>
               <td>
-                <label htmlFor={`LDLC50_vapors-${idx}`}>
+                <label htmlFor={`LDLC50_vapors-${idx}`} aria-label="Enter LC50 (mg/l)">
                   <input
                     type="number"
                     min="0"
@@ -104,6 +105,7 @@ const Input = ({
                 <label htmlFor={`limitdose_vapors-${idx}`}>
                   <select
                     name="limitdose_vapors"
+                    aria-label="Select Limit Dose Data"
                     id={`limitdose_vapors-${idx}`}
                     value={input.limitdose_vapors}
                     onChange={(e) =>
@@ -129,6 +131,7 @@ const Input = ({
                 <label htmlFor={`classification_vapors-${idx}`}>
                   <select
                     name="classification_vapors"
+                    aria-label="Select Classification"
                     id={`classification_vapors-${idx}`}
                     value={input.classification_vapors}
                     onChange={(e) =>

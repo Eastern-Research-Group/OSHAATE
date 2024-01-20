@@ -14,21 +14,22 @@ const Input = ({
   return (
     <div className="tablewrapper">
       <table id="oral">
+      <caption>Oral Route</caption>
         <thead>
           <tr>
-            <th>
+            <th scope="col">
               Ingredient <Tooltip text="ingredient" />
             </th>
-            <th>
+            <th scope="col">
               WT% <Tooltip text="WT" />
             </th>
-            <th>
+            <th scope="col">
               LD<sub>50</sub> (mg/kg) <Tooltip text="LD50" />
             </th>
-            <th>
+            <th scope="col">
               Limit Dose Data (mg/kg) <Tooltip text="limitdose" />
             </th>
-            <th>
+            <th scope="col">
               Classification <Tooltip text="classification" />
             </th>
           </tr>
@@ -37,11 +38,12 @@ const Input = ({
           {inputFields.map((input, idx) => (
             <tr key={idx} className={`row${idx}`}>
               <td>
-                <label htmlFor={`ingredient_oral-${idx}`}>
+             <label htmlFor={`ingredient_oral-${idx}`} aria-label="Enter ingredient">
                   <input
                     type="text"
                     id={`ingredient_oral-${idx}`}
                     name="ingredient_oral"
+                   
                     placeholder="Enter ingredient"
                     value={input.ingredient_oral}
                     onChange={(e) =>
@@ -54,10 +56,10 @@ const Input = ({
                       )
                     }
                   />
-                </label>
+         </label>
               </td>
               <td>
-                <label htmlFor={`weight_oral-${idx}`}>
+                <label htmlFor={`weight_oral-${idx}`} aria-label="Enter weight (%)">
                   <input
                     type="number"
                     min="0"
@@ -79,7 +81,7 @@ const Input = ({
                 </label>
               </td>
               <td>
-                <label htmlFor={`LDLC50_oral-${idx}`}>
+                <label htmlFor={`LDLC50_oral-${idx}`} aria-label="Enter LD50 (mg/kg)">
                   <input
                     type="number"
                     min="0"
@@ -104,6 +106,7 @@ const Input = ({
                 <label htmlFor={`limitdose_oral-${idx}`}>
                   <select
                     name="limitdose_oral"
+                    aria-label="Select Limit Dose Data"
                     id={`limitdose_oral-${idx}`}
                     value={input.limitdose_oral}
                     onChange={(e) =>
@@ -130,6 +133,7 @@ const Input = ({
                 <label htmlFor={`classification_oral-${idx}`}>
                   <select
                     name="classification_oral"
+                    aria-label="Select Classification"
                     id={`classification_oral-${idx}`}
                     value={input.classification_oral}
                     onChange={(e) =>
